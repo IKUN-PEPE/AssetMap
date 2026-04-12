@@ -1,0 +1,35 @@
+[
+  {
+    "source": "fofa",
+    "ip": "1.1.1.1",
+    "port": 443,
+    "protocol": "https",
+    "domain": "demo.example.com",
+    "url": "https://demo.example.com",
+    "title": "Demo Site",
+    "status_code": 200,
+    "observed_at": "2026-04-12T10:00:00"
+  },
+  {
+    "source": "hunter",
+    "ip": "2.2.2.2",
+    "port": 80,
+    "protocol": "http",
+    "domain": "report.example.com",
+    "url": "http://report.example.com",
+    "title": "Report Portal",
+    "status_code": 200,
+    "observed_at": "2026-04-12T10:05:00"
+  },
+  {
+    "source": "zoomeye",
+    "ip": "3.3.3.3",
+    "port": 8080,
+    "protocol": "http",
+    "domain": "asset.example.com",
+    "url": "http://asset.example.com:8080",
+    "title": "Asset Console",
+    "status_code": 302,
+    "observed_at": "2026-04-12T10:10:00"
+  }
+]

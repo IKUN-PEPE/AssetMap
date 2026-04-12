@@ -1,0 +1,9 @@
+2026-04-12 01:26:37,115 INFO Starting screenshot job
+2026-04-12 01:26:37,137 INFO Loaded 3 assets
+2026-04-12 01:26:38,374 INFO Skipped asset 2 -> http://www.szkljcsl.com
+2026-04-12 01:26:38,374 INFO Skipped asset 3 -> http://www.szcmad.com
+2026-04-12 01:27:08,659 ERROR Failed asset 1 -> http://www.dhled.net: Page.goto: Timeout 15000ms exceeded.
+Call log:
+  - navigating to "http://www.dhled.net/", waiting until "domcontentloaded"
+
+2026-04-12 01:27:08,782 INFO Completed screenshot job
