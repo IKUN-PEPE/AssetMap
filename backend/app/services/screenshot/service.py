@@ -1,13 +1,7 @@
 import logging
-import sys
 from pathlib import Path
 
-from app.core.config import PROJECT_ROOT
-
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
-from web_screenshot_xlsx import (
+from app.services.screenshot.core import (
     build_candidate_urls,
     build_output_filename,
     build_output_path,
@@ -17,8 +11,8 @@ from web_screenshot_xlsx import (
     finalize_screenshot_path,
     render_summary_text,
     run_batch,
-    write_summary_text,
     write_results_csv,
+    write_summary_text,
 )
 
 LOGGER = logging.getLogger("assetmap.screenshot")

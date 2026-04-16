@@ -15,11 +15,24 @@
         <el-menu-item index="/assets">资产列表</el-menu-item>
         <el-menu-item index="/selections">选择集</el-menu-item>
         <el-menu-item index="/reports">报告中心</el-menu-item>
+        <el-menu-item index="/logs">实时日志</el-menu-item>
         <el-menu-item index="/system">系统配置</el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="header">AssetMap 管理后台</el-header>
+      <el-header class="header">
+        <div class="header-inner">
+          <div class="header-left">AssetMap 管理后台</div>
+          <div class="header-right">
+            <el-button
+              circle
+              :icon="isDark ? Sunny : Moon"
+              @click="toggleDark()"
+              class="theme-toggle"
+            />
+          </div>
+        </div>
+      </el-header>
       <el-main class="main-content">
         <router-view />
       </el-main>
@@ -30,21 +43,25 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useDark, useToggle } from '@vueuse/core'
+import { Moon, Sunny } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const activePath = computed(() => route.path)
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <style scoped>
 .layout-container {
   min-height: 100vh;
-  background: var(--app-bg);
+  background: var(--el-bg-color-page);
 }
 
 .sidebar {
-  background: var(--app-sidebar);
-  border-right: 1px solid var(--app-border);
-  color: var(--app-text);
+  background: var(--el-bg-color);
+  border-right: 1px solid var(--el-border-color-light);
 }
 
 .logo {
@@ -54,42 +71,37 @@ const activePath = computed(() => route.path)
   justify-content: center;
   font-size: 20px;
   font-weight: 700;
-  color: var(--app-text);
-  border-bottom: 1px solid var(--app-border);
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.menu {
-  border-right: none;
-  padding: 12px 10px;
-}
-
-.menu :deep(.el-menu-item) {
-  margin-bottom: 6px;
-  border-radius: 10px;
-}
-
-.menu :deep(.el-menu-item:hover) {
-  background: var(--app-sidebar-hover);
-}
-
-.menu :deep(.el-menu-item.is-active) {
-  background: var(--app-primary-soft);
-  color: var(--app-primary);
-  font-weight: 600;
+  color: var(--el-text-color-primary);
+  border-bottom: 1px solid var(--el-border-color-light);
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(8px);
+  background: var(--el-bg-color);
   border-bottom: 1px solid var(--app-border);
-  color: var(--app-text);
-  font-weight: 600;
+  color: var(--app-text-main);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  padding: 0; /* 这里的内边距交给 inner 处理 */
+  height: 64px;
+}
+
+.header-inner {
+  width: 100%;
+  margin: 0; /* 取消居中 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px; /* 同步 page-shell 的内边距 */
+}
+
+.header-right {
   display: flex;
   align-items: center;
 }
 
 .main-content {
-  background: var(--app-bg);
+  background: var(--el-bg-color-page);
+  padding: 0 !important; /* 彻底移除 Main 的默认内边距 */
 }
 </style>

@@ -1,11 +1,16 @@
 export interface AssetItem {
   id: string
   normalized_url: string
-  domain?: string | null
   title?: string | null
   status_code?: number | null
   screenshot_status: string
   label_status: string
+  verified?: boolean
+  source?: string | null
+  first_seen_at?: string | null
+  last_seen_at?: string | null
+  screenshot_url?: string | null
+  has_screenshot?: boolean
 }
 
 export interface SystemConfig {
@@ -42,12 +47,77 @@ export interface JobCreatePayload {
   sources: string[]
   queries: Array<Record<string, unknown>>
   time_window?: Record<string, unknown> | null
+  file_path?: string | null
+  dedup_strategy?: string
+  field_mapping?: Record<string, string>
+  auto_verify?: boolean
+  created_by?: string
+}
+
+export interface FofaCsvImportPayload {
+  job_name: string
+  file_path: string
+  created_by?: string
 }
 
 export interface JobCreateResult {
   job_id: string
   status: string
   imported?: number
+}
+
+export interface LogItem {
+  timestamp: string
+  level: string
+  source: 'task' | 'service'
+  message: string
+}
+
+export interface LogsResponse {
+  items: LogItem[]
+  next_since?: string | null
+}
+
+export interface VerifyAssetsResult {
+  updated: number
+  verified: boolean
+  success: number
+  failed: number
+}
+
+export interface VerifyTaskStartResult {
+  task_id: string
+  status: string
+}
+
+export interface TaskProgress {
+  task_id: string
+  task_type: 'asset_verify' | 'asset_screenshot'
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
+  total: number
+  processed: number
+  success: number
+  failed: number
+  message?: string | null
+}
+
+export interface CollectJob {
+  id: string
+  job_name: string
+  status: 'pending' | 'running' | 'success' | 'failed' | 'cancelled'
+  sources: string[] | Record<string, unknown>
+  query_payload: Record<string, unknown>
+  progress: number
+  success_count: number
+  failed_count: number
+  duplicate_count: number
+  total_count: number
+  dedup_strategy: string
+  field_mapping: Record<string, string>
+  auto_verify: boolean
+  created_at?: string
+  finished_at?: string | null
+  error_message?: string | null
 }
 
 export interface SelectionCreatePayload {

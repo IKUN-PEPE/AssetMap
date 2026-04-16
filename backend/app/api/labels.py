@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -8,10 +8,14 @@ from app.models import Label, LabelAuditLog, WebEndpoint
 from app.schemas import LabelBatchRequest
 
 router = APIRouter()
+ALLOWED_LABEL_TYPES = {"irrelevant", "registered"}
 
 
 @router.post("/batch")
 def batch_labels(payload: LabelBatchRequest, db: Session = Depends(get_db)):
+    if payload.label_type not in ALLOWED_LABEL_TYPES:
+        raise HTTPException(status_code=400, detail="Invalid label_type")
+
     batch_id = str(uuid4())
     for asset_id in payload.asset_ids:
         asset = db.get(WebEndpoint, asset_id)

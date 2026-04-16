@@ -1,0 +1,81 @@
+﻿host,ip,port,protocol,title,domain,country,city,link,org
+82.156.140.125:9008,82.156.140.125,9008,http,深圳地铁,,CN,Beijing,http://82.156.140.125:9008,Shenzhen Tencent Computer Systems Company Limited
+183.238.156.135,183.238.156.135,80,http,深圳地铁安保区信息一体化平台,,CN,Shenzhen,http://183.238.156.135,"China Mobile Communications Group Co., Ltd."
+183.238.156.138,183.238.156.138,80,http,深圳地铁,,CN,Shenzhen,http://183.238.156.138,"China Mobile Communications Group Co., Ltd."
+58.251.18.56,58.251.18.56,80,http,深圳地铁,,CN,Shenzhen,http://58.251.18.56,China Unicom Shenzen network
+58.251.18.58,58.251.18.58,80,http,深圳地铁安全管理平台,,CN,Shenzhen,http://58.251.18.58,China Unicom Shenzen network
+58.251.18.59,58.251.18.59,80,http,深圳地铁安保区信息一体化平台,,CN,Shenzhen,http://58.251.18.59,China Unicom Shenzen network
+https://183.238.156.131,183.238.156.131,443,https,深圳地铁安保区信息化管理系统,,CN,Shenzhen,https://183.238.156.131,"China Mobile Communications Group Co., Ltd."
+https://183.238.156.135,183.238.156.135,443,https,深圳地铁安保区信息一体化平台,,CN,Shenzhen,https://183.238.156.135,"China Mobile Communications Group Co., Ltd."
+https://120.76.55.226,120.76.55.226,443,https,深圳地铁11号线 - 实时到站,,CN,Shenzhen,https://120.76.55.226,"Hangzhou Alibaba Advertising Co.,Ltd."
+81.71.72.98:3000,81.71.72.98,3000,http,深圳地铁大亨,,CN,Guangzhou,http://81.71.72.98:3000,Shenzhen Tencent Computer Systems Company Limited
+81.71.72.98,81.71.72.98,80,http,深圳地铁大亨,,CN,Guangzhou,http://81.71.72.98,Shenzhen Tencent Computer Systems Company Limited
+8.153.205.134,8.153.205.134,80,http,深圳地铁灯箱管理系统,,CN,Shanghai,http://8.153.205.134,"Hangzhou Alibaba Advertising Co.,Ltd."
+https://58.251.18.58,58.251.18.58,443,https,深圳地铁安全管理平台,,CN,Shenzhen,https://58.251.18.58,China Unicom Shenzen network
+www.szmc.net,58.251.18.56,80,http,深圳地铁,szmc.net,CN,Shenzhen,http://www.szmc.net,China Unicom Shenzen network
+https://183.238.156.138,183.238.156.138,443,https,深圳地铁,,CN,Shenzhen,https://183.238.156.138,"China Mobile Communications Group Co., Ltd."
+https://58.251.18.56,58.251.18.56,443,https,深圳地铁,,CN,Shenzhen,https://58.251.18.56,China Unicom Shenzen network
+https://58.251.18.59,58.251.18.59,443,https,深圳地铁安保区信息一体化平台,,CN,Shenzhen,https://58.251.18.59,China Unicom Shenzen network
+https://m.szmrt-ad.com,183.60.226.49,443,https,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Dongguan,https://m.szmrt-ad.com,CHINANET Guangdong province network
+https://www.szmrt-ad.com,27.222.2.49,443,https,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Jinan,https://www.szmrt-ad.com,CHINA UNICOM China169 Backbone
+www.szmrt.com,47.238.173.27,80,http,深圳地铁广告公司2026年,szmrt.com,CN,Hong Kong,http://www.szmrt.com,"Alibaba US Technology Co., Ltd."
+m.szmrt-ad.com,183.60.226.49,80,http,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Dongguan,http://m.szmrt-ad.com,CHINANET Guangdong province network
+www.szmrt-ad.com,120.240.164.90,80,http,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Jieyang,http://www.szmrt-ad.com,"China Mobile Communications Group Co., Ltd."
+https://cg.shenzhenmc.com,58.251.18.50,443,https,深圳地铁-智能招采管理平台 ,shenzhenmc.com,CN,Shenzhen,https://cg.shenzhenmc.com,China Unicom Shenzen network
+https://www.szmc.net,183.238.156.138,443,https,深圳地铁,szmc.net,CN,Shenzhen,https://www.szmc.net,"China Mobile Communications Group Co., Ltd."
+https://jt.shenchuang.com,183.62.138.29,443,https,深圳交通资讯_深圳交通最新消息_深圳地铁最新动态-深圳之窗,shenchuang.com,CN,Shenzhen,https://jt.shenchuang.com,Chinanet
+https://dt.shzh-tech.com,110.41.23.219,443,https,深圳地铁物业管理发展有限公司,shzh-tech.com,CN,Guangzhou,https://dt.shzh-tech.com,Huawei Cloud Service data center
+dt.shzh-tech.com,110.41.23.219,80,http,深圳地铁物业管理发展有限公司,shzh-tech.com,CN,Guangzhou,http://dt.shzh-tech.com,Huawei Cloud Service data center
+stxx.jnqj.net,1.95.62.135,80,http,深铁信息 - 深圳地铁互动数字人管理平台,jnqj.net,CN,Beijing,http://stxx.jnqj.net,Huawei Cloud Service data center
+stpw.jnqj.net,1.95.62.135,80,http,深圳地铁票务异常处理中心,jnqj.net,CN,Beijing,http://stpw.jnqj.net,Huawei Cloud Service data center
+https://stpw.jnqj.net,1.95.62.135,443,https,深圳地铁票务异常处理中心,jnqj.net,CN,Beijing,https://stpw.jnqj.net,Huawei Cloud Service data center
+szdtjt.fukang123.com,156.245.119.27,80,http,深圳《地铁集团,fukang123.com,CN,Hong Kong,http://szdtjt.fukang123.com,PEG TECH INC
+https://bjxt.jnqj.net,1.95.62.135,443,https,深圳地铁互动数字人报价系统,jnqj.net,CN,Beijing,https://bjxt.jnqj.net,Huawei Cloud Service data center
+bjxt.jnqj.net,1.95.62.135,80,http,深圳地铁互动数字人报价系统,jnqj.net,CN,Beijing,http://bjxt.jnqj.net,Huawei Cloud Service data center
+82.156.140.125:8090,82.156.140.125,8090,http,深圳地铁,,CN,Beijing,http://82.156.140.125:8090,Shenzhen Tencent Computer Systems Company Limited
+119.188.210.140:8090,119.188.210.140,8090,http,深圳地铁拟直达东莞,,CN,Zaozhuang,http://119.188.210.140:8090,CHINA UNICOM China169 Backbone
+jt.shenchuang.com,183.62.138.29,80,http,深圳交通资讯_深圳交通最新消息_深圳地铁最新动态-深圳之窗,shenchuang.com,CN,Shenzhen,http://jt.shenchuang.com,Chinanet
+https://1jcs8ot.lsvvzjn.cn,172.67.220.230,443,https,深圳地铁2号线线路图查询,lsvvzjn.cn,US,San Francisco,https://1jcs8ot.lsvvzjn.cn,CLOUDFLARENET
+https://www-1jcs8ot.lsvvzjn.cn,104.21.94.74,443,https,深圳地铁2号线线路图查询,lsvvzjn.cn,US,San Francisco,https://www-1jcs8ot.lsvvzjn.cn,CLOUDFLARENET
+https://szdtds.zycysz.com,120.76.201.107,443,https,深圳地铁大厦 - 物业招商中心,zycysz.com,CN,Shenzhen,https://szdtds.zycysz.com,"Hangzhou Alibaba Advertising Co.,Ltd."
+szdtds.zycysz.com,120.76.201.107,80,http,深圳地铁大厦 - 物业招商中心,zycysz.com,CN,Shenzhen,http://szdtds.zycysz.com,"Hangzhou Alibaba Advertising Co.,Ltd."
+https://szmc.jclinx.com,116.253.29.37,443,https,深圳地铁,jclinx.com,CN,Nanning,https://szmc.jclinx.com,"CHINATELECOM Guangxi Nanning IDC networkdescr: NanningGuangxi Province, P.R.China."
+ru.xmydtq.com,182.140.180.197,80,http,深圳地铁拟直达东莞,xmydtq.com,CN,Chengdu,http://ru.xmydtq.com,CHINANET SiChuan Telecom Internet Data Center
+https://183.238.156.141:8443,183.238.156.141,8443,https,深圳地铁-智能招采管理平台 ,,CN,Shenzhen,https://183.238.156.141:8443,"China Mobile Communications Group Co., Ltd."
+14.23.112.117:7000,14.23.112.117,7000,http,深圳地铁成本大数据管理平台,,CN,Guangzhou,http://14.23.112.117:7000,Chinanet
+https://58.251.18.50:8443,58.251.18.50,8443,https,深圳地铁-智能招采管理平台 ,,CN,Shenzhen,https://58.251.18.50:8443,China Unicom Shenzen network
+https://ditie.500shou.cc,60.247.147.25,443,https,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 经典老歌500首,500shou.cc,CN,Chengdu,https://ditie.500shou.cc,CHINANET SiChuan Telecom Internet Data Center
+ditie.500shou.cc,60.247.147.25,80,http,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 经典老歌500首,500shou.cc,CN,Chengdu,http://ditie.500shou.cc,CHINANET SiChuan Telecom Internet Data Center
+https://ditie.25352.com,60.247.147.25,443,https,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 二五三,25352.com,CN,Chengdu,https://ditie.25352.com,CHINANET SiChuan Telecom Internet Data Center
+ditie.25352.com,60.247.147.25,80,http,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 二五三,25352.com,CN,Chengdu,http://ditie.25352.com,CHINANET SiChuan Telecom Internet Data Center
+pic.fukang123.com,156.245.119.27,80,http,深圳图片大全 深圳图片风景图片 深圳地铁图片夜景 深圳城市图片大全 深圳城市图片美 深圳市心图片 深圳市区图片 深圳文字图片 深圳美食图片大全图片,fukang123.com,CN,Hong Kong,http://pic.fukang123.com,PEG-LA
+https://ditie.name2012.com,60.247.147.25,443,https,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 名字含义大全,name2012.com,CN,Chengdu,https://ditie.name2012.com,CHINANET SiChuan Telecom Internet Data Center
+ditie.name2012.com,60.247.147.25,80,http,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 名字含义大全,name2012.com,CN,Chengdu,http://ditie.name2012.com,CHINANET SiChuan Telecom Internet Data Center
+114.115.184.70:7150,114.115.184.70,7150,http,深圳地铁温湿度距离检测系统 v1.0,,CN,Beijing,http://114.115.184.70:7150,China Unicom Beijing Province Network
+https://sz.ad-metro.com,39.101.64.240,443,https,深圳地铁广告,ad-metro.com,CN,Hangzhou,https://sz.ad-metro.com,"Hangzhou Alibaba Advertising Co.,Ltd."
+https://www.szcmad.com,219.234.30.92,443,https,航空杂志_南方航空杂志_深圳地铁广告_深圳电台广告_深圳电梯广告-深圳市创茗广告有限公司,szcmad.com,CN,Beijing,https://www.szcmad.com,West263 International Limited
+www.szcmad.com,219.234.30.92,80,http,航空杂志_南方航空杂志_深圳地铁广告_深圳电台广告_深圳电梯广告-深圳市创茗广告有限公司,szcmad.com,CN,Beijing,http://www.szcmad.com,West263 International Limited
+https://szcmad.vido.cn,219.234.30.92,443,https,航空杂志_南方航空杂志_深圳地铁广告_深圳电台广告_深圳电梯广告-深圳市创茗广告有限公司,vido.cn,CN,Beijing,https://szcmad.vido.cn,West263 International Limited
+szcmad.vido.cn,219.234.30.92,80,http,航空杂志_南方航空杂志_深圳地铁广告_深圳电台广告_深圳电梯广告-深圳市创茗广告有限公司,vido.cn,CN,Beijing,http://szcmad.vido.cn,West263 International Limited
+sthf.shenzhenmc.com,58.251.18.59,80,http,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,http://sthf.shenzhenmc.com,China Unicom Shenzen network
+zysj.shenzhenmc.com,183.238.156.134,80,http,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,http://zysj.shenzhenmc.com,"China Mobile Communications Group Co., Ltd."
+https://mallh5.shenzhenmc.com,183.238.156.173,443,https,深圳地铁商城,shenzhenmc.com,CN,Shenzhen,https://mallh5.shenzhenmc.com,"China Mobile Communications Group Co., Ltd."
+https://sthf.shenzhenmc.com,58.251.18.59,443,https,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,https://sthf.shenzhenmc.com,China Unicom Shenzen network
+https://zysj.shenzhenmc.com,58.251.18.59,443,https,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,https://zysj.shenzhenmc.com,China Unicom Shenzen network
+https://jt.shenchuang.com,240e:6b1:c0:3::203,443,https,深圳交通资讯_深圳交通最新消息_深圳地铁最新动态-深圳之窗,shenchuang.com,CN,Beijing,https://jt.shenchuang.com,CHINANET Guangdong province Shenzhen MAN network
+https://www.szmc.net,2408:8656:30f6:f004::9,443,https,深圳地铁,szmc.net,CN,Harbin,https://www.szmc.net,China Unicom Shenzen network
+183.238.156.131:9092,183.238.156.131,9092,http,深圳地铁视频设备管理管理系统-用户登录,,CN,Shenzhen,http://183.238.156.131:9092,"China Mobile Communications Group Co., Ltd."
+www.szmc.net,2408:8656:30f6:f004::9,80,http,深圳地铁,szmc.net,CN,Harbin,http://www.szmc.net,China Unicom Shenzen network
+https://ditie.laoxiezi.com,60.247.157.115,443,https,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 老鞋子艺术字网,laoxiezi.com,CN,Chengdu,https://ditie.laoxiezi.com,CHINANET SiChuan Telecom Internet Data Center
+ditie.laoxiezi.com,60.247.157.115,80,http,地铁线路图_成都天津上海地铁线路图_北京广州深圳地铁线路图_南京重庆香港武汉地铁线路图 - 老鞋子艺术字网,laoxiezi.com,CN,Chengdu,http://ditie.laoxiezi.com,CHINANET SiChuan Telecom Internet Data Center
+58.251.18.60:8082,58.251.18.60,8082,http,深圳地铁太阳能监控设备管理系统-用户登录,,CN,Shenzhen,http://58.251.18.60:8082,China Unicom Shenzen network
+https://m.szmrt-ad.com,240e:97d:10:1401::321,443,https,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Beijing,https://m.szmrt-ad.com,CHINANET Guangdong province network
+183.238.156.131:8082,183.238.156.131,8082,http,深圳地铁太阳能监控设备管理系统-用户登录,,CN,Shenzhen,http://183.238.156.131:8082,"China Mobile Communications Group Co., Ltd."
+m.szmrt-ad.com,240e:97d:10:1401::321,80,http,"	深圳地铁广告-深圳地铁广告投放中心-城市轨道广告部",szmrt-ad.com,CN,Beijing,http://m.szmrt-ad.com,CHINANET Guangdong province network
+https://mallqw.shenzhenmc.com,183.238.156.173,443,https,深圳地铁商城,shenzhenmc.com,CN,Shenzhen,https://mallqw.shenzhenmc.com,"China Mobile Communications Group Co., Ltd."
+cn-shenzhen.mditie.com,47.244.241.239,80,http,深圳地铁,mditie.com,CN,Hong Kong,http://cn-shenzhen.mditie.com,"Alibaba US Technology Co., Ltd."
+epjw.dxb1.com,38.49.34.5,80,http,亚洲国产精品17c-深圳地铁11号线发生爆炸?辟谣,dxb1.com,US,Los Angeles,http://epjw.dxb1.com,FD-298-8796
+https://byvb9sfn.lcsgsr.com,2606:4700:3034::6815:35e9,443,https,深圳地铁7号线二期（东延）工程完成初期运营前安全评估-前沿观察网,lcsgsr.com,US,San Francisco,https://byvb9sfn.lcsgsr.com,CLOUDFLARENET
+https://bpm-zykf.shenzhenmc.com,58.251.18.59,443,https,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,https://bpm-zykf.shenzhenmc.com,China Unicom Shenzen network
+bpm-zykf.shenzhenmc.com,58.251.18.59,80,http,深圳地铁安保区信息一体化平台,shenzhenmc.com,CN,Shenzhen,http://bpm-zykf.shenzhenmc.com,China Unicom Shenzen network
+https://taidong.wwg011.com,172.67.194.216,443,https,深圳地铁上学生争分夺秒赶作业：等车时跪着写，上车后坐地写，出站后趴着写-时事速递网,wwg011.com,US,San Francisco,https://taidong.wwg011.com,CLOUDFLARENET

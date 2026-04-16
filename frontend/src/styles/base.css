@@ -1,90 +1,161 @@
 :root {
-  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
-  color: #1f2d3d;
-  background: #f3f6fb;
-  --app-bg: #f3f6fb;
-  --app-surface: #ffffff;
-  --app-surface-soft: #f8faff;
-  --app-sidebar: #eaf0f7;
-  --app-sidebar-hover: #dde7f3;
-  --app-primary: #5b8def;
-  --app-primary-soft: #e8f0ff;
-  --app-border: #e3e9f2;
-  --app-text: #1f2d3d;
-  --app-text-secondary: #5b6b7f;
+  /* 现代中性色系统 - 亮色模式 (Inspired by Inter/Linear) */
+  --el-color-primary: #3b82f6;
+  --el-border-radius-base: 12px;
+  --el-font-family: "Inter", "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --app-bg: #f8fafc;
+  --app-card-bg: #ffffff;
+  --app-sidebar-bg: #ffffff;
+  --app-text-main: #0f172a;
+  --app-text-dim: #64748b;
+  --app-border: #e2e8f0;
+
+  /* 精细阴影系统 */
+  --app-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --app-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --app-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 body {
   margin: 0;
   min-width: 1200px;
-  background: var(--app-bg);
-  color: var(--app-text);
+  background-color: var(--app-bg);
+  color: var(--app-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-}
+/* 暗黑模式重塑 - 采用极简 Slate 灰蓝 (Advanced Aesthetic) */
+html.dark {
+  --app-bg: #020617;
+  --app-card-bg: #0f172a;
+  --app-sidebar-bg: #020617;
+  --app-text-main: #f8fafc;
+  --app-text-dim: #94a3b8;
+  --app-border: #1e293b;
 
-#app {
-  min-height: 100vh;
+  --el-bg-color: #0f172a;
+  --el-bg-color-page: #020617;
+  --el-bg-color-overlay: #1e293b;
+  --el-text-color-primary: #f8fafc;
+  --el-border-color: #1e293b;
+  --el-fill-color: #1e293b;
 }
 
 .page-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  max-width: 1540px;
+  margin-top: -12px; /* 强力上移，抵消潜在的渲染间隙 */
+  padding: 0 40px 40px 40px;
+  animation: slideUp 0.4s ease-out;
 }
 
-.page-header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .page-title {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--app-text);
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  margin-bottom: 8px;
 }
 
-.page-subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: var(--app-text-secondary);
+/* 统一卡片极致美学 - 黄金呼吸感平衡 */
+.el-card {
+  border-radius: 16px !important;
+  border: 1px solid var(--app-border) !important;
+  background: var(--app-card-bg) !important;
+  box-shadow: var(--app-shadow) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 16px; /* 适中的外部间距 */
 }
 
-.page-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.el-card__body {
+  padding: 20px 24px !important; /* 黄金比例：既透气又不空旷 */
 }
 
+.el-card:hover {
+  box-shadow: var(--app-shadow-lg) !important;
+  transform: translateY(-2px);
+}
+
+/* 工具栏优化 */
 .toolbar-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
 }
 
-.el-card {
-  border: 1px solid var(--app-border);
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(31, 45, 61, 0.05);
+/* 侧边栏菜单美化 */
+.el-menu-item {
+  height: 44px !important;
+  line-height: 44px !important;
+  margin: 4px 12px !important;
+  border-radius: 10px !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
 }
 
-.el-card__header {
-  color: var(--app-text);
-  font-weight: 600;
+/* 暗黑模式专用菜单增强 */
+html.dark .el-menu-item {
+  color: #f8fafc !important;
 }
 
-.metric-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--app-text);
+html.dark .el-menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  color: #ffffff !important;
 }
 
-.metric-note {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--app-text-secondary);
+html.dark .el-menu-item.is-active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* 暗黑模式自定义 - 现代灰蓝配色 (Slate/Zinc Style) */
+html.dark {
+  --el-bg-color: #0f172a;
+  --el-bg-color-page: #020617;
+  --el-bg-color-overlay: #1e293b;
+  --el-border-color: #334155;
+  --el-border-color-light: #1e293b;
+  --el-border-color-extra-light: #0f172a;
+  --el-text-color-primary: #f8fafc;
+  --el-text-color-regular: #cbd5e1;
+  --el-text-color-secondary: #94a3b8;
+  --el-text-color-placeholder: #64748b;
+  --el-color-primary: #3b82f6;
+  --el-color-primary-light-3: #60a5fa;
+  --el-fill-color-blank: #1e293b;
+  --el-fill-color: #0f172a;
+  --el-fill-color-light: #334155;
+}
+
+/* 兼容自定义卡片阴影 */
+html.dark .el-card {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+html.dark .sidebar {
+  background-color: #0f172a;
+  border-right-color: #1e293b;
+}
+
+html.dark .header {
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom-color: #1e293b;
+}
+
+html.dark .logo {
+  border-bottom-color: #1e293b;
+  background: transparent;
 }

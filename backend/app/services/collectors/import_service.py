@@ -9,12 +9,18 @@ from app.services.normalizer.service import build_url_hash, normalize_url
 class SampleImportService:
     def import_records(self, db: Session, job: CollectJob, records: list[dict]) -> dict[str, int]:
         imported = 0
+        current_now = datetime.now()
         for record in records:
-            observed_at = self._parse_dt(record.get("observed_at"))
+            # 强化时间解析逻辑：即使 record.get("observed_at") 键不存在或值为 None，也必须返回一个时间对象
+            observed_at = self._parse_dt(record.get("observed_at")) or current_now
+
             host = db.query(Host).filter(Host.ip == record["ip"]).one_or_none()
             if not host:
                 host = Host(
                     ip=record["ip"],
+                    org_name=record.get("org"),
+                    country=record.get("country"),
+                    city=record.get("city"),
                     first_seen_at=observed_at,
                     last_seen_at=observed_at,
                 )
@@ -53,10 +59,28 @@ class SampleImportService:
                     scheme=record.get("protocol"),
                     first_seen_at=observed_at,
                     last_seen_at=observed_at,
-                    source_meta={"source": record.get("source")},
+                    source_meta={
+                        "source": record.get("source"),
+                        "host": record.get("host"),
+                        "org": record.get("org"),
+                        "country": record.get("country"),
+                        "city": record.get("city"),
+                    },
                 )
                 db.add(web)
-                db.flush()
+            else:
+                # 资产已存在，按需更新时间
+                if not web.first_seen_at:
+                    web.first_seen_at = observed_at
+                web.last_seen_at = observed_at
+
+                # 更新一下标题等可能变化的信息
+                if not web.title and record.get("title"):
+                    web.title = record.get("title")
+                if record.get("status_code"):
+                    web.status_code = record.get("status_code")
+
+            db.flush()
 
             db.add(
                 SourceObservation(
@@ -65,7 +89,7 @@ class SampleImportService:
                     source_record_id=f"{record.get('source', 'sample')}:{record['ip']}:{record['port']}",
                     observed_at=observed_at,
                     raw_payload=record,
-                    quota_meta={"mode": "sample"},
+                    quota_meta={"mode": "sample" if record.get("source") == "sample" else "import"},
                 )
             )
             imported += 1

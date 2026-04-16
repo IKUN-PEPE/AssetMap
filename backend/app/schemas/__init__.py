@@ -5,11 +5,12 @@ from app.schemas.common import (
     ScreenshotBatchRequest,
     SelectionCreateRequest,
 )
-from app.schemas.job import CollectJobCreate, CollectJobRead
+from app.schemas.job import CollectJobCreate, CollectJobRead, FofaCsvImportRequest
 
 __all__ = [
     "CollectJobCreate",
     "CollectJobRead",
+    "FofaCsvImportRequest",
     "AssetRead",
     "ScreenshotBatchRequest",
     "LabelBatchRequest",

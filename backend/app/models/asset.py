@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -58,6 +58,7 @@ class WebEndpoint(Base):
     scheme: Mapped[str | None] = mapped_column(String(16), nullable=True)
     screenshot_status: Mapped[str] = mapped_column(String(32), default="none", index=True)
     label_status: Mapped[str] = mapped_column(String(32), default="none", index=True)
+    verified: Mapped[bool] = mapped_column(Boolean, default=False)
     first_seen_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     last_seen_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     source_meta: Mapped[dict | None] = mapped_column(JSONB, nullable=True)

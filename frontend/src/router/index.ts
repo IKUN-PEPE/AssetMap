@@ -8,6 +8,7 @@ const AssetDetailView = () => import('@/views/AssetDetailView.vue')
 const SelectionsView = () => import('@/views/SelectionsView.vue')
 const ReportsView = () => import('@/views/ReportsView.vue')
 const SystemView = () => import('@/views/SystemView.vue')
+const LogsView = () => import('@/views/LogsView.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -22,6 +23,7 @@ const router = createRouter({
         { path: 'assets/:id', name: 'asset-detail', component: AssetDetailView, props: true },
         { path: 'selections', name: 'selections', component: SelectionsView },
         { path: 'reports', name: 'reports', component: ReportsView },
+        { path: 'logs', name: 'logs', component: LogsView },
         { path: 'system', name: 'system', component: SystemView },
       ],
     },
