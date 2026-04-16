@@ -1,27 +1,33 @@
 <template>
-  <el-card>
-    <template #header>创建采集任务</template>
-    <el-form label-width="100px">
-      <el-form-item label="任务名称">
-        <el-input v-model="form.job_name" />
-      </el-form-item>
-      <el-form-item label="数据源">
-        <el-checkbox-group v-model="form.sources">
-          <el-checkbox label="sample" />
-          <el-checkbox label="fofa" />
-          <el-checkbox label="hunter" />
-          <el-checkbox label="zoomeye" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="查询 JSON">
-        <el-input v-model="queryText" type="textarea" :rows="8" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submit">提交任务</el-button>
-      </el-form-item>
-    </el-form>
-    <el-alert v-if="result" :title="`已创建任务：${result.job_id}`" type="success" show-icon />
-  </el-card>
+  <div class="page-shell">
+    <div class="page-header">
+      <h1 class="page-title">采集任务</h1>
+      <p class="page-subtitle">创建资产采集任务，当前优先支持 sample 模式联调。</p>
+    </div>
+
+    <el-card>
+      <el-form label-width="100px">
+        <el-form-item label="任务名称">
+          <el-input v-model="form.job_name" />
+        </el-form-item>
+        <el-form-item label="数据源">
+          <el-checkbox-group v-model="form.sources">
+            <el-checkbox label="sample" />
+            <el-checkbox label="fofa" />
+            <el-checkbox label="hunter" />
+            <el-checkbox label="zoomeye" />
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="查询 JSON">
+          <el-input v-model="queryText" type="textarea" :rows="8" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submit">提交任务</el-button>
+        </el-form-item>
+      </el-form>
+      <el-alert v-if="result" :title="`已创建任务：${result.job_id}`" type="success" show-icon />
+    </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
