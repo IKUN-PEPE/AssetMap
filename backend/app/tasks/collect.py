@@ -244,24 +244,28 @@ def run_auto_post_process(job_id: str):
 
         logger.info(f"Post-processing {len(target_assets)} assets for job {job_id}")
 
-        # 1. 自动截图
-        from app.services.screenshot.service import run_screenshot_job
+        # 1. 批量自动截图
+        from app.services.screenshot.service import run_screenshot_job, build_output_filename
         from app.core.config import settings
+        from app.models.support import Screenshot
         import asyncio
 
         output_dir = Path(settings.screenshot_output_dir)
         result_csv = Path(settings.result_output_dir) / 'assetmap_results.csv'
         summary_txt = Path(settings.result_output_dir) / 'assetmap_summary.txt'
 
+        asset_rows = []
         for asset in target_assets:
+            asset_rows.append({
+                'seq': asset.id,
+                'host': asset.domain or asset.normalized_url,
+                'title': asset.title or '未命名',
+                'url': asset.normalized_url,
+            })
+
+        if asset_rows:
             try:
-                asset_rows = [{
-                    'seq': asset.id,
-                    'host': asset.domain or asset.normalized_url,
-                    'title': asset.title or '未命名',
-                    'url': asset.normalized_url,
-                }]
-                # 在同步环境中运行异步函数
+                # 批量执行截图
                 asyncio.run(run_screenshot_job(
                     asset_rows=asset_rows,
                     output_dir=output_dir,
@@ -269,10 +273,28 @@ def run_auto_post_process(job_id: str):
                     summary_txt=summary_txt,
                     skip_existing=True
                 ))
-                asset.screenshot_status = 'success'
+                
+                # 同步更新数据库状态与记录
+                for asset in target_assets:
+                    asset.screenshot_status = 'success'
+                    # 生成预期的文件名
+                    file_name = build_output_filename(asset.id, asset.title or '未命名', asset.normalized_url)
+                    full_path = str(output_dir / file_name)
+                    
+                    # 清理旧记录并添加新记录
+                    db.query(Screenshot).filter(Screenshot.web_endpoint_id == asset.id).delete(synchronize_session=False)
+                    db.add(Screenshot(
+                        web_endpoint_id=asset.id,
+                        file_name=file_name,
+                        object_path=full_path,
+                        status='success'
+                    ))
+                
                 db.commit()
+                logger.info(f"Batch screenshot completed for job {job_id}")
             except Exception as e:
-                logger.error(f"Auto screenshot failed for asset {asset.id}: {e}")
+                logger.error(f"Batch auto screenshot failed for job {job_id}: {e}")
+                db.rollback()
 
     except Exception as e:
         logger.exception(f"Error in auto post-process for job {job_id}: {e}")

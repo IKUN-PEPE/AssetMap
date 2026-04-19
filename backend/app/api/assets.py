@@ -140,6 +140,7 @@ async def process_one_asset(
                 task.status = "cancelled"
                 task.message = f"已取消，已处理 {task.processed} / {task.total}"
 
+
         except Exception:
             db.rollback()
             logger.warning("Process single asset failed asset_id=%s", asset_id, exc_info=True)
@@ -295,6 +296,7 @@ def verify_assets(payload: VerifyBatchRequest, background_tasks: BackgroundTasks
         message=f"正在验证 0 / {len(assets)}",
         cancel_requested=False,
     )
+
     VERIFY_TASKS[task.task_id] = task
 
     # Fire and forget async task via BackgroundTasks

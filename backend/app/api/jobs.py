@@ -45,11 +45,12 @@ async def preview_csv(
         logger.warning("Rejected preview because file is empty: %s", file.filename)
         raise HTTPException(status_code=400, detail="预览文件为空")
 
-    # 净化文件名
-    filename = os.path.basename(file.filename)
-    target_path = UPLOAD_DIR / filename
+    # 使用安全的随机文件名避免路径穿越
+    import uuid
+    safe_filename = f"preview_{uuid.uuid4().hex}.csv"
+    target_path = UPLOAD_DIR / safe_filename
     target_path.write_bytes(content)
-    logger.info("Saved preview CSV path=%s size=%s", target_path, len(content))
+    logger.info("Saved preview CSV safe_path=%s size=%s", target_path, len(content))
 
     try:
         preview_data = get_csv_preview(target_path)
@@ -110,9 +111,9 @@ def start_task(job_id: str, db: Session = Depends(get_db)):
     db.commit()
 
     from app.tasks.collect import run_collect_task
-    run_collect_task(job_id)
+    run_collect_task.schedule(args=(job_id,), delay=1)
 
-    return {"message": "Job started", "job_id": job_id}
+    return {"message": "Job started in background", "job_id": job_id}
 
 
 @router.post("/{job_id}/stop")
