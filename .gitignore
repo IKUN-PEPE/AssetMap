@@ -1,1 +1,9 @@
-.worktrees/
+.claude/
+.vscode/
+test.py
+*.png
+test.pyshots
+*.json
+*.pdf
+*.md
+!docs/README.md
