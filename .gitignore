@@ -7,3 +7,8 @@ test.pyshots
 *.pdf
 *.md
 !docs/README.md
+.claude/
+.vscode/
+__pycache__/
+*.txt
+screenshots/
