@@ -8,6 +8,7 @@
       <el-descriptions-item label="状态码">{{ asset.status_code }}</el-descriptions-item>
       <el-descriptions-item label="截图状态">{{ asset.screenshot_status }}</el-descriptions-item>
       <el-descriptions-item label="标签状态">{{ asset.label_status }}</el-descriptions-item>
+      <el-descriptions-item label="验证失败原因">{{ asset.verify_error || '-' }}</el-descriptions-item>
     </el-descriptions>
   </el-card>
 </template>

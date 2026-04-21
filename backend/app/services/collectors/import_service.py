@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app.models import CollectJob, Host, Service, SourceObservation, WebEndpoint
+from app.services.collectors.dedup import touch_existing_web_endpoint
 from app.services.normalizer.service import build_url_hash, normalize_url
 
 
@@ -69,16 +70,7 @@ class SampleImportService:
                 )
                 db.add(web)
             else:
-                # 资产已存在，按需更新时间
-                if not web.first_seen_at:
-                    web.first_seen_at = observed_at
-                web.last_seen_at = observed_at
-
-                # 更新一下标题等可能变化的信息
-                if not web.title and record.get("title"):
-                    web.title = record.get("title")
-                if record.get("status_code"):
-                    web.status_code = record.get("status_code")
+                touch_existing_web_endpoint(web, observed_at)
 
             db.flush()
 

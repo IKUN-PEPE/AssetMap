@@ -1,0 +1,33 @@
+2026-04-21T11:46:39.444339 - INFO - Task created name=采集任务_0421_1946 sources=['zoomeye']
+2026-04-21 19:46:40,568 - INFO - Task created job_id=f9be7faa-5019-45aa-8943-0b171750cd04 name=采集任务_0421_1946 sources=['zoomeye']
+2026-04-21 19:46:40,575 - INFO - Task started
+2026-04-21 19:46:40,585 - INFO - Source start source=zoomeye query=app:"nginx"
+2026-04-21 19:46:40,607 - INFO - [zoomeye] query=app:"nginx" page_size=20 max_pages=5 limit=100
+2026-04-21 19:46:47,852 - INFO - [zoomeye] request page=1
+2026-04-21 19:46:47,853 - INFO - [zoomeye] HTTP GET https://api.zoomeye.ai/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 headers={'host': 'api.zoomeye.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1', 'api-key': '4d7***8e'}
+2026-04-21 19:46:49,445 - INFO - [zoomeye] HTTP GET https://api.zoomeye.ai/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 -> 401 
+2026-04-21 19:46:49,460 - INFO - [zoomeye] HTTP GET https://api.zoomeye.org/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 headers={'host': 'api.zoomeye.org', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1', 'api-key': '4d7***8e'}
+2026-04-21 19:46:50,111 - INFO - [zoomeye] HTTP GET https://api.zoomeye.org/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 -> 402 
+2026-04-21 19:46:50,114 - ERROR - Collector zoomeye failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 1239, in run_collect_task
+    assets = run_collector_query(
+        collector,
+    ...<4 lines>...
+        job_logger=job_logger,
+    )
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 225, in run_collector_query
+    return run_coro_in_fresh_loop(collector.run(query_str, payload, config))
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 202, in run_coro_in_fresh_loop
+    return loop.run_until_complete(coro)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 131, in run
+    _raise_if_zoomeye_api_error(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 19, in _raise_if_zoomeye_api_error
+    raise RuntimeError("ZoomEye 查询额度不足，请稍后重试或充值账户积分")
+RuntimeError: ZoomEye 查询额度不足，请稍后重试或充值账户积分
+2026-04-21 19:46:50,144 - INFO - Task finished status=failed success=0 duplicate=0 failed=0 total=0

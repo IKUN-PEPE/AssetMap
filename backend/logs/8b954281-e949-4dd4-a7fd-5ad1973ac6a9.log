@@ -1,0 +1,39 @@
+2026-04-21T11:59:43.478413 - INFO - Task created name=采集任务_0421_1959 sources=['hunter']
+2026-04-21 19:59:44,839 - INFO - Task created job_id=8b954281-e949-4dd4-a7fd-5ad1973ac6a9 name=采集任务_0421_1959 sources=['hunter']
+2026-04-21 19:59:44,848 - INFO - Task started
+2026-04-21 19:59:44,856 - INFO - Source start source=hunter query=web.title="后台管理"
+2026-04-21 19:59:44,860 - INFO - [hunter] query=web.title="后台管理" page_size=20 max_pages=5 limit=100
+2026-04-21 19:59:54,573 - INFO - [hunter] request page=1
+2026-04-21 19:59:54,575 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=1&page_size=20 headers={'host': 'hunter.qianxin.com', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'}
+2026-04-21 19:59:56,573 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=1&page_size=20 -> 200 
+2026-04-21 19:59:56,580 - INFO - [hunter] response page=1 items=20
+2026-04-21 19:59:56,581 - INFO - [hunter] request page=2
+2026-04-21 19:59:56,584 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=2&page_size=20 headers={'host': 'hunter.qianxin.com', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'}
+2026-04-21 19:59:57,073 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=2&page_size=20 -> 200 
+2026-04-21 19:59:57,075 - INFO - [hunter] response page=2 items=20
+2026-04-21 19:59:57,075 - INFO - [hunter] request page=3
+2026-04-21 19:59:57,077 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=3&page_size=20 headers={'host': 'hunter.qianxin.com', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'}
+2026-04-21 19:59:57,496 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=3&page_size=20 -> 200 
+2026-04-21 19:59:57,498 - ERROR - Collector hunter failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 1239, in run_collect_task
+    assets = run_collector_query(
+        collector,
+    ...<4 lines>...
+        job_logger=job_logger,
+    )
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 225, in run_collector_query
+    return run_coro_in_fresh_loop(collector.run(query_str, payload, config))
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 202, in run_coro_in_fresh_loop
+    return loop.run_until_complete(coro)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\hunter.py", line 100, in run
+    _raise_if_hunter_api_error(resp, data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\hunter.py", line 24, in _raise_if_hunter_api_error
+    raise RuntimeError(str(message))
+RuntimeError: 请求太多啦，稍后再试试
+2026-04-21 19:59:57,547 - INFO - Task finished status=failed success=0 duplicate=0 failed=0 total=0

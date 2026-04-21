@@ -75,18 +75,38 @@ def start_screenshot_task(task: SimpleNamespace, asset_ids: list[str], skip_exis
                     file_name = build_output_filename(asset.id, asset.title or '未命名', asset.normalized_url)
                     actual_path = str(output_dir / file_name)
 
-                asset.screenshot_status = 'success'
+                screenshot_path = Path(actual_path)
                 db.query(Screenshot).filter(Screenshot.web_endpoint_id == asset.id).delete(synchronize_session=False)
-                db.add(
-                    Screenshot(
-                        web_endpoint_id=asset.id,
-                        file_name=Path(actual_path).name,
-                        object_path=str(actual_path),
-                        status='success',
+                if screenshot_path.exists():
+                    asset.screenshot_status = 'success'
+                    source_meta = dict(asset.source_meta or {})
+                    source_meta.pop('screenshot_error', None)
+                    asset.source_meta = source_meta
+                    db.add(
+                        Screenshot(
+                            web_endpoint_id=asset.id,
+                            file_name=screenshot_path.name,
+                            object_path=str(screenshot_path),
+                            status='success',
+                        )
                     )
-                )
+                    task.success += 1
+                else:
+                    asset.screenshot_status = 'failed'
+                    source_meta = dict(asset.source_meta or {})
+                    source_meta['screenshot_error'] = '截图文件未生成'
+                    asset.source_meta = source_meta
+                    db.add(
+                        Screenshot(
+                            web_endpoint_id=asset.id,
+                            file_name=screenshot_path.name,
+                            object_path=str(screenshot_path),
+                            status='failed',
+                            error_detail='截图文件未生成',
+                        )
+                    )
+                    task.failed += 1
                 task.processed = index
-                task.success += 1
                 task.message = f'正在截图 {task.processed} / {task.total}'
 
             if task.status != 'cancelled':

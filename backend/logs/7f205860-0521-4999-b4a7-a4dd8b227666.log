@@ -1,0 +1,33 @@
+2026-04-21T16:21:08.131224 - INFO - Task created name=采集任务_0422_0020 sources=['quake']
+2026-04-22 00:21:09,450 - INFO - Task created job_id=7f205860-0521-4999-b4a7-a4dd8b227666 name=采集任务_0422_0020 sources=['quake']
+2026-04-22 00:21:09,455 - INFO - Task started
+2026-04-22 00:21:09,460 - INFO - Source start source=quake query=service:"http" AND country:"China"
+2026-04-22 00:21:09,466 - INFO - [quake] query=service:"http" AND country:"China" page_size=20 max_pages=1 limit=100
+2026-04-22 00:21:15,867 - INFO - [quake] request page=1 start=0
+2026-04-22 00:21:15,868 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'content-length': '70'}
+2026-04-22 00:21:20,493 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:21:20,496 - INFO - [quake] response page=1 items=20
+2026-04-22 00:21:20,504 - INFO - Source fetched source=quake assets=20
+2026-04-22 00:21:20,571 - INFO - [quake] save success row=1 key=url:https://36.*.*.*/ url=https://36.*.*.*/
+2026-04-22 00:21:20,617 - INFO - [quake] save success row=2 key=url:http://cm125-59-16-229.hkcable.com.hk:8443/ url=http://cm125-59-16-229.hkcable.com.hk:8443/
+2026-04-22 00:21:20,659 - INFO - [quake] save success row=3 key=url:http://ecs-116-204-49-136.compute.hwclouds-dns.com/ url=http://ecs-116-204-49-136.compute.hwclouds-dns.com/
+2026-04-22 00:21:20,698 - INFO - [quake] save success row=4 key=url:https://8.*.*.*/ url=https://8.*.*.*/
+2026-04-22 00:21:20,742 - INFO - [quake] save success row=5 key=url:http://123.*.*.*/ url=http://123.*.*.*/
+2026-04-22 00:21:20,776 - INFO - [quake] save success row=6 key=url:http://coklatpermen.shop/ url=http://coklatpermen.shop/
+2026-04-22 00:21:20,806 - INFO - [quake] save success row=7 key=url:https://a184-50-182-85.deploy.static.akamaitechnologies.com/ url=https://a184-50-182-85.deploy.static.akamaitechnologies.com/
+2026-04-22 00:21:20,839 - INFO - [quake] save duplicate row=8 key=url:https://a184-50-182-170.deploy.static.akamaitechnologies.com/ url=https://a184-50-182-170.deploy.static.akamaitechnologies.com/ fallback=http://a184-50-182-170.deploy.static.akamaitechnologies.com:443
+2026-04-22 00:21:20,883 - INFO - [quake] save success row=9 key=url:http://156.*.*.*/ url=http://156.*.*.*/
+2026-04-22 00:21:20,909 - INFO - [quake] save success row=10 key=url:http://ecs-1-92-249-250.compute.hwclouds-dns.com:9200/ url=http://ecs-1-92-249-250.compute.hwclouds-dns.com:9200/
+2026-04-22 00:21:20,929 - INFO - [quake] save duplicate row=11 key=url:http://ecs-1-92-249-109.compute.hwclouds-dns.com:9200/ url=http://ecs-1-92-249-109.compute.hwclouds-dns.com:9200/ fallback=http://ecs-1-92-249-109.compute.hwclouds-dns.com:9200
+2026-04-22 00:21:20,962 - INFO - [quake] save duplicate row=12 key=url:https://a184-50-182-31.deploy.static.akamaitechnologies.com/ url=https://a184-50-182-31.deploy.static.akamaitechnologies.com/ fallback=http://a184-50-182-31.deploy.static.akamaitechnologies.com:443
+2026-04-22 00:21:21,000 - INFO - [quake] save success row=13 key=url:https://ewpcb-circuits.com.tw/ url=https://ewpcb-circuits.com.tw/
+2026-04-22 00:21:21,013 - INFO - [quake] save duplicate row=14 key=url:http://ecs-1-92-249-45.compute.hwclouds-dns.com:9200/ url=http://ecs-1-92-249-45.compute.hwclouds-dns.com:9200/ fallback=http://ecs-1-92-249-45.compute.hwclouds-dns.com:9200
+2026-04-22 00:21:21,040 - INFO - [quake] save duplicate row=15 key=url:https://a184-50-182-52.deploy.static.akamaitechnologies.com/ url=https://a184-50-182-52.deploy.static.akamaitechnologies.com/ fallback=http://a184-50-182-52.deploy.static.akamaitechnologies.com:443
+2026-04-22 00:21:21,081 - INFO - [quake] save success row=16 key=url:http://183.*.*.*:5000/ url=http://183.*.*.*:5000/
+2026-04-22 00:21:21,104 - INFO - [quake] save success row=17 key=url:http://123.*.*.*:8008/ url=http://123.*.*.*:8008/
+2026-04-22 00:21:21,128 - INFO - [quake] save success row=18 key=url:http://47.*.*.*:2525/ url=http://47.*.*.*:2525/
+2026-04-22 00:21:21,139 - INFO - [quake] save duplicate row=19 key=url:http://47.*.*.*:2525/ url=http://47.*.*.*:2525/ fallback=http://47.*.*.*:2525
+2026-04-22 00:21:21,163 - INFO - [quake] save success row=20 key=url:http://113.*.*.*:2525/ url=http://113.*.*.*:2525/
+2026-04-22 00:21:21,186 - INFO - [quake] save summary success=14 duplicate=6 failed=0 total=20
+2026-04-22 00:21:21,195 - INFO - Source saved source=quake progress=100 success=14 duplicate=6 failed=0
+2026-04-22 00:21:21,210 - INFO - Task finished status=success success=14 duplicate=6 failed=0 total=20

@@ -1,0 +1,8 @@
+2026-04-20 01:32:41,821 - INFO - Task eb5db175-ac4b-4720-adfb-d5f52d0933b0 started
+2026-04-20 01:32:41,833 - INFO - Starting collection for quake with query: service:"http" AND country:"China"
+2026-04-20 01:32:52,014 - INFO - HTTP Request: POST https://quake.360.net/api/v3/search/quake_service "HTTP/1.1 200 OK"
+2026-04-20 01:32:55,398 - INFO - HTTP Request: POST https://quake.360.net/api/v3/search/quake_service "HTTP/1.1 200 OK"
+2026-04-20 01:32:59,043 - INFO - HTTP Request: POST https://quake.360.net/api/v3/search/quake_service "HTTP/1.1 200 OK"
+2026-04-20 01:33:03,167 - INFO - HTTP Request: POST https://quake.360.net/api/v3/search/quake_service "HTTP/1.1 200 OK"
+2026-04-20 01:33:06,690 - INFO - HTTP Request: POST https://quake.360.net/api/v3/search/quake_service "HTTP/1.1 200 OK"
+2026-04-20 01:33:06,695 - INFO - Collector quake returned 50 assets

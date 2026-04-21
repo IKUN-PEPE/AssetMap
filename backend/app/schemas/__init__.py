@@ -2,6 +2,7 @@ from app.schemas.asset import AssetRead
 from app.schemas.common import (
     LabelBatchRequest,
     ReportCreateRequest,
+    ReportRead,
     ScreenshotBatchRequest,
     SelectionCreateRequest,
 )
@@ -16,4 +17,5 @@ __all__ = [
     "LabelBatchRequest",
     "SelectionCreateRequest",
     "ReportCreateRequest",
+    "ReportRead",
 ]

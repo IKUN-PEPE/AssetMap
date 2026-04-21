@@ -1,0 +1,31 @@
+2026-04-21T16:45:54.180353 - INFO - Task created name=采集任务_0422_0045 sources=['zoomeye']
+2026-04-22 00:45:55,490 - INFO - Task created job_id=5cacf4e8-c201-4626-8784-d0463b37608a name=采集任务_0422_0045 sources=['zoomeye']
+2026-04-22 00:45:55,497 - INFO - Task started
+2026-04-22 00:45:55,503 - INFO - Source start source=zoomeye query=app:"nginx"
+2026-04-22 00:45:55,511 - INFO - [zoomeye] query=app:"nginx" page_size=20 max_pages=1 limit=100
+2026-04-22 00:46:01,576 - INFO - [zoomeye] request page=1
+2026-04-22 00:46:01,578 - INFO - [zoomeye] HTTP POST https://api.zoomeye.ai/v2/search headers={'host': 'api.zoomeye.ai', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'api-key': '4d7***8e', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'content-length': '48'}
+2026-04-22 00:46:03,612 - INFO - [zoomeye] HTTP POST https://api.zoomeye.ai/v2/search -> 401 
+2026-04-22 00:46:03,615 - ERROR - Collector zoomeye failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 1239, in run_collect_task
+    assets = run_collector_query(
+        collector,
+    ...<4 lines>...
+        job_logger=job_logger,
+    )
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 225, in run_collector_query
+    return run_coro_in_fresh_loop(collector.run(query_str, payload, config))
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 202, in run_coro_in_fresh_loop
+    return loop.run_until_complete(coro)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 188, in run
+    _raise_if_zoomeye_api_error(resp, data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 31, in _raise_if_zoomeye_api_error
+    raise RuntimeError(message or "ZoomEye 认证失败，请检查 API Key 是否正确")
+RuntimeError: login required, missing Authorization header
+2026-04-22 00:46:03,643 - INFO - Task finished status=failed success=0 duplicate=0 failed=0 total=0

@@ -1,0 +1,84 @@
+2026-04-20 22:47:18,725 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 668, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-20 22:47:18,761 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-20 22:47:18,764 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-20 22:51:37,538 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 668, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-20 22:51:37,946 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-20 22:51:37,975 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-20 23:14:39,413 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 668, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-20 23:14:39,439 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-20 23:14:39,441 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-20 23:14:39,443 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 668, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-20 23:49:53,001 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 711, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-20 23:49:53,023 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-20 23:49:53,024 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-20 23:49:53,027 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 711, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-21 00:04:29,700 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 742, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-21 00:04:29,726 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 00:04:29,745 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 00:04:29,748 - ERROR - Task failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 742, in run_collect_task
+    job_logger.info("Task created job_id=%s name=%s sources=%s", job.id, job.job_name, job.sources)
+                                                                         ^^^^^^^^^^^^
+AttributeError: 'types.SimpleNamespace' object has no attribute 'job_name'
+2026-04-21 00:11:37,840 - ERROR - Collector fofa failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 804, in run_collect_task
+    save_assets(db, job, assets, src_name, job_logger=job_logger)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: test_run_collect_task_keeps_cancelled_status_and_skips_post_process.<locals>.<lambda>() got an unexpected keyword argument 'job_logger'
+2026-04-21 00:11:55,502 - ERROR - Collector fofa failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 807, in run_collect_task
+    save_assets(db, job, assets, src_name, job_logger=job_logger)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: test_run_collect_task_keeps_cancelled_status_and_skips_post_process.<locals>.<lambda>() got an unexpected keyword argument 'job_logger'
+2026-04-21 00:16:32,442 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 00:16:32,466 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 13:01:45,834 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 13:01:45,836 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 15:36:53,480 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 15:36:53,505 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 15:39:05,144 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 15:39:05,148 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 16:48:18,272 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 16:48:18,274 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 16:49:04,226 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 16:49:04,229 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-21 16:49:59,905 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-21 16:49:59,908 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file

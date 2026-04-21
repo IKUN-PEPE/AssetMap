@@ -1,10 +1,14 @@
 import http from '@/api/http'
-import type { 
-  CollectJob, 
-  FofaCsvImportPayload, 
-  JobCreatePayload, 
-  JobCreateResult, 
-  TaskProgress 
+import type {
+  CollectJob,
+  CollectJobDetail,
+  CsvPreviewResponse,
+  JobCreatePayload,
+  JobCreateResult,
+  JobLogResponse,
+  JobResultPreviewResponse,
+  TaskProgress,
+  CollectJobStatus,
 } from '@/types'
 
 export async function listJobs() {
@@ -12,8 +16,25 @@ export async function listJobs() {
   return data
 }
 
-export async function getCollectJob(id: string) {
-  const { data } = await http.get<CollectJob>(`/api/v1/jobs/${id}`)
+export async function fetchJobDetails(id: string): Promise<CollectJobDetail> {
+  const { data } = await http.get<CollectJobDetail>(`/api/v1/jobs/${id}`)
+  return data
+}
+
+export async function fetchJobLogs(id: string): Promise<JobLogResponse> {
+  const { data } = await http.get<JobLogResponse>(`/api/v1/jobs/${id}/logs`)
+  return data
+}
+
+export async function fetchJobResults(id: string, skip = 0, limit = 50): Promise<JobResultPreviewResponse> {
+  const { data } = await http.get<JobResultPreviewResponse>(`/api/v1/jobs/${id}/results`, {
+    params: { skip, limit },
+  })
+  return data
+}
+
+export async function rerunJob(id: string): Promise<JobCreateResult> {
+  const { data } = await http.post<JobCreateResult>(`/api/v1/jobs/${id}/rerun`)
   return data
 }
 
@@ -30,7 +51,7 @@ export async function stopTask(id: string) {
 export async function getTaskStatus(id: string) {
   const { data } = await http.get<{
     id: string
-    status: string
+    status: CollectJobStatus
     progress: number
     success_count: number
     failed_count: number
@@ -44,11 +65,7 @@ export async function getTaskStatus(id: string) {
 }
 
 export async function previewCsv(formData: FormData) {
-  const { data } = await http.post<{
-    headers: string[]
-    rows: Array<Record<string, string>>
-    file_path: string
-  }>('/api/v1/jobs/preview', formData, {
+  const { data } = await http.post<CsvPreviewResponse>('/api/v1/jobs/preview', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -58,29 +75,6 @@ export async function previewCsv(formData: FormData) {
 
 export async function createCollectJob(payload: JobCreatePayload) {
   const { data } = await http.post<JobCreateResult>('/api/v1/jobs/collect', payload)
-  return data
-}
-
-export async function importFofaCsv(payload: FofaCsvImportPayload) {
-  const { data } = await http.post<JobCreateResult>('/api/v1/jobs/import-fofa-csv', payload)
-  return data
-}
-
-export async function uploadFofaCsv(formData: FormData) {
-  const { data } = await http.post<JobCreateResult>('/api/v1/jobs/upload-fofa-csv', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  return data
-}
-
-export async function uploadHunterCsv(formData: FormData) {
-  const { data } = await http.post<JobCreateResult>('/api/v1/jobs/upload-hunter-csv', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
   return data
 }
 

@@ -8,6 +8,7 @@ from app.models.support import (
     Screenshot,
     SelectionItem,
     SourceObservation,
+    SystemConfig,
 )
 
 __all__ = [
@@ -15,6 +16,7 @@ __all__ = [
     "Host",
     "Service",
     "WebEndpoint",
+    "SystemConfig",
     "SourceObservation",
     "Screenshot",
     "Label",

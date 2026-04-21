@@ -1,4 +1,6 @@
-from pydantic import BaseModel, Field
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ScreenshotBatchRequest(BaseModel):
@@ -31,3 +33,16 @@ class ReportCreateRequest(BaseModel):
     exclude_false_positive: bool = True
     exclude_confirmed: bool = False
     created_by: str = "system"
+
+
+class ReportRead(BaseModel):
+    id: str
+    report_name: str
+    status: str
+    created_at: datetime | None = None
+    finished_at: datetime | None = None
+    total_assets: int | None = None
+    excluded_assets: int | None = None
+    error_message: str | None = None
+
+    model_config = ConfigDict(from_attributes=True)

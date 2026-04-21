@@ -1,0 +1,20 @@
+2026-04-20 10:25:48,753 - INFO - Task 5c3822dd-d46a-408a-b443-683d8f1c1a7c started
+2026-04-20 10:25:48,770 - INFO - Starting collection for zoomeye with query: app:"nginx"
+2026-04-20 10:25:58,391 - INFO - HTTP Request: GET https://api.zoomeye.ai/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 "HTTP/1.1 401 Unauthorized"
+2026-04-20 10:25:58,616 - INFO - HTTP Request: GET https://api.zoomeye.org/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 "HTTP/1.1 402 Payment Required"
+2026-04-20 10:25:58,620 - ERROR - Collector zoomeye failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 257, in run_collect_task
+    assets = run_collector_query(collector, query_str, q_item, config)
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 45, in run_collector_query
+    return loop.run_until_complete(collector.run(query_str, query_payload, config))
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 130, in run
+    _raise_if_zoomeye_api_error(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 17, in _raise_if_zoomeye_api_error
+    raise RuntimeError("ZoomEye 查询额度不足，请稍后重试或充值账户积分")
+RuntimeError: ZoomEye 查询额度不足，请稍后重试或充值账户积分

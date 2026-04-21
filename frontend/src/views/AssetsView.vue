@@ -202,6 +202,7 @@
         <el-descriptions-item label="验证状态">
           {{ editingAsset.verified ? '已验证' : '未验证' }}
         </el-descriptions-item>
+        <el-descriptions-item label="验证失败原因">{{ editingAsset.verify_error || '-' }}</el-descriptions-item>
         <el-descriptions-item label="首次发现">{{ formatReportDate(editingAsset.first_seen_at) }}</el-descriptions-item>
         <el-descriptions-item label="最近发现">{{ formatReportDate(editingAsset.last_seen_at) }}</el-descriptions-item>
         <el-descriptions-item label="标签状态">{{ labelStatusText(editingAsset.label_status) }}</el-descriptions-item>

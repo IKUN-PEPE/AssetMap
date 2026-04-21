@@ -5,9 +5,24 @@ from collections import deque
 from datetime import datetime
 from threading import Lock
 
+TASK_LOGGER_PREFIXES = (
+    "app.tasks.",
+    "app.api.jobs",
+    "app.api.screenshots",
+    "app.api.assets",
+    "assetmap.screenshot",
+    "app.services.collectors.",
+)
+
 
 def _parse_timestamp(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def _classify_log_source(logger_name: str) -> str:
+    if any(logger_name.startswith(prefix) for prefix in TASK_LOGGER_PREFIXES):
+        return "task"
+    return "service"
 
 
 class RuntimeLogBuffer:
@@ -42,12 +57,11 @@ class RuntimeLogHandler(logging.Handler):
         self.buffer = buffer
 
     def emit(self, record: logging.LogRecord) -> None:
-        source = "task" if record.name.startswith("app.api.jobs") or record.name.startswith("assetmap.screenshot") else "service"
         self.buffer.append(
             {
                 "timestamp": datetime.now().astimezone().isoformat(),
                 "level": record.levelname.lower(),
-                "source": source,
+                "source": _classify_log_source(record.name),
                 "message": self.format(record),
             }
         )

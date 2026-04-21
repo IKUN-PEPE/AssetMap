@@ -9,7 +9,17 @@
       "Bash(npm:*)",
       "Bash(printf ignored:*)",
       "Bash(pytest:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:fofa.info)",
+      "WebFetch(domain:hunter.qianxin.com)",
+      "WebFetch(domain:www.zoomeye.ai)",
+      "WebFetch(domain:quake.360.net)",
+      "WebSearch",
+      "WebFetch(domain:en.fofa.info)",
+      "WebFetch(domain:www.qianxin.com)",
+      "Read(//mnt/c/Users/Administrator/VScode/AssetMap/backend/app/**)",
+      "Read(//mnt/c/Users/Administrator/VScode/AssetMap/backend/app/services/**)",
+      "Read(//mnt/c/Users/Administrator/VScode/AssetMap/frontend/src/**)"
     ]
   },
   "enabledPlugins": {

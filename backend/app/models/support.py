@@ -8,6 +8,17 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.db import Base
 
 
+class SystemConfig(Base):
+    __tablename__ = "system_configs"
+
+    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
+    config_key: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    config_value: Mapped[str] = mapped_column(Text, default="")
+    config_group: Mapped[str] = mapped_column(String(64), index=True, default="system")
+    is_sensitive: Mapped[bool] = mapped_column(Boolean, default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 class SourceObservation(Base):
     __tablename__ = "source_observations"
 

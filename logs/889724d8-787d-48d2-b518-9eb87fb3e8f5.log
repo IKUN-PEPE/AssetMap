@@ -1,0 +1,17 @@
+2026-04-20 09:45:22,201 - INFO - Task 889724d8-787d-48d2-b518-9eb87fb3e8f5 started
+2026-04-20 09:45:22,218 - INFO - Starting collection for zoomeye with query: app:"nginx"
+2026-04-20 09:45:32,916 - INFO - HTTP Request: GET https://api.zoomeye.ai/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 "HTTP/1.1 401 Unauthorized"
+2026-04-20 09:45:33,337 - INFO - HTTP Request: GET https://api.zoomeye.org/host/search?query=app%3A%22nginx%22&page=1&pagesize=20 "HTTP/1.1 402 Payment Required"
+2026-04-20 09:45:33,341 - ERROR - Collector zoomeye failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 257, in run_collect_task
+    assets = run_collector_query(collector, query_str, q_item, config)
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 45, in run_collector_query
+    return loop.run_until_complete(collector.run(query_str, query_payload, config))
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\zoomeye.py", line 126, in run
+    raise RuntimeError(data.get("message") or f"ZoomEye 查询失败: HTTP {resp.status_code}")
+RuntimeError: request invalid, validate usage and try again
