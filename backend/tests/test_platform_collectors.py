@@ -10,10 +10,10 @@ from app.services.collectors.zoomeye import ZoomEyeCollector
 async def test_fofa_test_connection_requires_email_and_key():
     collector = FOFACollector()
 
-    with pytest.raises(ValueError, match="FOFA email 未配置"):
+    with pytest.raises(ValueError, match="FOFA email"):
         await collector.test_connection({})
 
-    with pytest.raises(ValueError, match="FOFA API Key 未配置"):
+    with pytest.raises(ValueError, match="FOFA API Key"):
         await collector.test_connection({"fofa_email": "user@example.com"})
 
 
@@ -21,7 +21,7 @@ async def test_fofa_test_connection_requires_email_and_key():
 async def test_hunter_test_connection_requires_api_key():
     collector = HunterCollector()
 
-    with pytest.raises(ValueError, match="Hunter API Key 未配置"):
+    with pytest.raises(ValueError, match="Hunter API Key"):
         await collector.test_connection({})
 
 
@@ -47,7 +47,7 @@ async def test_hunter_test_connection_raises_when_body_code_is_not_success(monke
 
     monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    with pytest.raises(RuntimeError, match="API KEY 无效"):
+    with pytest.raises(RuntimeError, match="API KEY"):
         await collector.test_connection({"hunter_api_key": "bad"})
 
 
@@ -73,20 +73,20 @@ async def test_hunter_run_raises_when_body_code_is_not_success(monkeypatch):
 
     monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    with pytest.raises(RuntimeError, match="API KEY 无效"):
-        await collector.run("ip=\"1.1.1.1\"", {}, {"hunter_api_key": "bad"})
+    with pytest.raises(RuntimeError, match="API KEY"):
+        await collector.run('ip="1.1.1.1"', {}, {"hunter_api_key": "bad"})
 
 
 @pytest.mark.asyncio
 async def test_zoomeye_test_connection_requires_api_key():
     collector = ZoomEyeCollector()
 
-    with pytest.raises(ValueError, match="ZoomEye API Key 未配置"):
+    with pytest.raises(ValueError, match="ZoomEye API Key"):
         await collector.test_connection({})
 
 
 @pytest.mark.asyncio
-async def test_zoomeye_test_connection_raises_when_body_has_error(monkeypatch):
+async def test_zoomeye_test_connection_accepts_body_without_code_even_if_error_field_present(monkeypatch):
     collector = ZoomEyeCollector()
 
     class FakeResponse:
@@ -108,14 +108,17 @@ async def test_zoomeye_test_connection_raises_when_body_has_error(monkeypatch):
         async def request(self, *_args, **_kwargs):
             return FakeResponse()
 
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
+
     monkeypatch.setattr("app.services.collectors.zoomeye.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    with pytest.raises(RuntimeError, match="Invalid API key"):
-        await collector.test_connection({"zoomeye_api_key": "bad"})
+    ok = await collector.test_connection({"zoomeye_api_key": "bad"})
+    assert ok is True
 
 
 @pytest.mark.asyncio
-async def test_zoomeye_test_connection_fallback_to_org_when_ai_returns_login_required(monkeypatch):
+async def test_zoomeye_test_connection_returns_login_required_without_org_fallback(monkeypatch):
     collector = ZoomEyeCollector()
     calls = []
 
@@ -128,15 +131,6 @@ async def test_zoomeye_test_connection_fallback_to_org_when_ai_returns_login_req
         def json(self):
             return {"code": "login_required", "error": "login required, missing Authorization header"}
 
-    class OrgResponse:
-        status_code = 200
-
-        def raise_for_status(self):
-            return None
-
-        def json(self):
-            return {"code": 60000}
-
     class FakeClient:
         async def __aenter__(self):
             return self
@@ -146,22 +140,20 @@ async def test_zoomeye_test_connection_fallback_to_org_when_ai_returns_login_req
 
         async def request(self, method, url, **kwargs):
             calls.append(url)
-            if url.startswith("https://api.zoomeye.ai"):
-                return AiResponse()
-            return OrgResponse()
+            return AiResponse()
+
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
 
     monkeypatch.setattr("app.services.collectors.zoomeye.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    ok = await collector.test_connection({"zoomeye_api_key": "good"})
-    assert ok is True
-    assert calls == [
-        "https://api.zoomeye.ai/resources-info",
-        "https://api.zoomeye.org/resources-info",
-    ]
+    with pytest.raises(RuntimeError, match="login required, missing Authorization header"):
+        await collector.test_connection({"zoomeye_api_key": "good"})
+    assert calls == ["https://api.zoomeye.ai/v2/userinfo"]
 
 
 @pytest.mark.asyncio
-async def test_zoomeye_run_raises_friendly_message_when_credits_insufficent(monkeypatch):
+async def test_zoomeye_run_returns_login_required_without_org_fallback(monkeypatch):
     collector = ZoomEyeCollector()
 
     class AiResponse:
@@ -169,16 +161,6 @@ async def test_zoomeye_run_raises_friendly_message_when_credits_insufficent(monk
 
         def json(self):
             return {"code": "login_required", "error": "login required, missing Authorization header"}
-
-    class OrgResponse:
-        status_code = 402
-
-        def json(self):
-            return {
-                "code": "credits_insufficent",
-                "message": "request invalid, validate usage and try again",
-                "error": "resource credits is insufficent",
-            }
 
     class FakeClient:
         async def __aenter__(self):
@@ -188,13 +170,14 @@ async def test_zoomeye_run_raises_friendly_message_when_credits_insufficent(monk
             return False
 
         async def request(self, method, url, **kwargs):
-            if url.startswith("https://api.zoomeye.ai"):
-                return AiResponse()
-            return OrgResponse()
+            return AiResponse()
+
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
 
     monkeypatch.setattr("app.services.collectors.zoomeye.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    with pytest.raises(RuntimeError, match="ZoomEye 查询额度不足"):
+    with pytest.raises(RuntimeError, match="login required, missing Authorization header"):
         await collector.run('app:"nginx"', {}, {"zoomeye_api_key": "good"})
 
 
@@ -202,7 +185,7 @@ async def test_zoomeye_run_raises_friendly_message_when_credits_insufficent(monk
 async def test_quake_test_connection_requires_api_key():
     collector = QuakeCollector()
 
-    with pytest.raises(ValueError, match="Quake API Key 未配置"):
+    with pytest.raises(ValueError, match="Quake API Key"):
         await collector.test_connection({})
 
 
@@ -226,7 +209,7 @@ async def test_quake_test_connection_raises_when_body_code_is_not_success(monkey
         async def __aexit__(self, exc_type, exc, tb):
             return False
 
-        async def get(self, *_args, **_kwargs):
+        async def post(self, *_args, **_kwargs):
             return FakeResponse()
 
     monkeypatch.setattr("app.services.collectors.quake.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
@@ -304,12 +287,15 @@ async def test_zoomeye_run_does_not_fill_domain_with_ip(monkeypatch):
         async def request(self, *_args, **_kwargs):
             return FakeResponse()
 
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
+
     monkeypatch.setattr("app.services.collectors.zoomeye.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
     results = await collector.run('ip="1.1.1.1"', {"limit": 1}, {"zoomeye_api_key": "secret"})
 
     assert results[0]["host"] == "1.1.1.1"
-    assert results[0]["domain"] is None
+    assert results[0]["domain"] == ""
 
 
 @pytest.mark.asyncio
@@ -341,6 +327,9 @@ async def test_quake_run_does_not_fill_domain_with_ip(monkeypatch):
         async def request(self, *_args, **_kwargs):
             return FakeResponse()
 
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
+
     monkeypatch.setattr("app.services.collectors.quake.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
     results = await collector.run('ip="1.1.1.1"', {"limit": 1}, {"quake_api_key": "secret"})
@@ -360,7 +349,19 @@ async def test_fofa_run_uses_page_size_times_max_pages_as_default_limit(monkeypa
         def json(self):
             return {
                 "error": False,
-                "results": [["1.1.1.1", 443, "https", "demo.example.com", "demo.example.com", "Demo", "nginx", "CN", "Beijing", "Example Org", "https://demo.example.com"]],
+                "results": [[
+                    "1.1.1.1",
+                    443,
+                    "https",
+                    "demo.example.com",
+                    "demo.example.com",
+                    "Demo",
+                    "nginx",
+                    "CN",
+                    "Beijing",
+                    "Example Org",
+                    "https://demo.example.com",
+                ]],
             }
 
     class FakeClient:
@@ -452,7 +453,13 @@ async def test_zoomeye_run_uses_page_size_times_max_pages_as_default_limit(monke
                     {
                         "ip": "1.1.1.1",
                         "portinfo": {"port": 443, "service": "https", "app": "nginx"},
-                        "site": {"host": "demo.example.com", "domain": "demo.example.com", "title": "Demo", "url": "https://demo.example.com", "server": "nginx"},
+                        "site": {
+                            "host": "demo.example.com",
+                            "domain": "demo.example.com",
+                            "title": "Demo",
+                            "url": "https://demo.example.com",
+                            "server": "nginx",
+                        },
                         "geoinfo": {"country": "CN", "city": "Beijing"},
                         "org": "Example Org",
                     }
@@ -466,9 +473,12 @@ async def test_zoomeye_run_uses_page_size_times_max_pages_as_default_limit(monke
         async def __aexit__(self, exc_type, exc, tb):
             return False
 
-        async def request(self, _method, _url, params=None, **_kwargs):
-            seen_pages.append(params["page"])
+        async def request(self, _method, _url, json=None, **_kwargs):
+            seen_pages.append(json["page"])
             return FakeResponse()
+
+        async def post(self, url, **kwargs):
+            return await self.request("POST", url, **kwargs)
 
     monkeypatch.setattr("app.services.collectors.zoomeye.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 

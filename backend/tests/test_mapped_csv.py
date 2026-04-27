@@ -70,7 +70,7 @@ def test_parse_mapped_csv_counts_bad_rows_and_defaults_protocol():
             {"url": "url", "ip": "ip", "port": "port", "title": "title"},
         )
 
-        assert result.failed_rows == 2
+        assert result.failed_rows == 1
         assert result.records == [
             {
                 "source": "csv_import",
@@ -86,7 +86,22 @@ def test_parse_mapped_csv_counts_bad_rows_and_defaults_protocol():
                 "city": None,
                 "org": None,
                 "host": None,
-            }
+            },
+            {
+                "source": "csv_import",
+                "ip": "3.3.3.3",
+                "port": 8443,
+                "protocol": "http",
+                "domain": None,
+                "url": None,
+                "title": "Missing Url",
+                "status_code": None,
+                "observed_at": None,
+                "country": None,
+                "city": None,
+                "org": None,
+                "host": None,
+            },
         ]
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)

@@ -133,7 +133,7 @@ def test_get_screenshot_task_returns_progress():
 
 
 def test_start_screenshot_task_persists_actual_output_path(tmp_path):
-    assets = [SimpleNamespace(id='asset-1-very-long-uuid', normalized_url='https://example.com', domain='example.com', title='Example', screenshot_status='none')]
+    assets = [SimpleNamespace(id='asset-1-very-long-uuid', normalized_url='https://example.com', domain='example.com', title='Example', screenshot_status='none', source_meta={})]
     fake_db = FakeDB(assets)
     task = SimpleNamespace(
         task_id='shot-task-write',
@@ -147,6 +147,7 @@ def test_start_screenshot_task_persists_actual_output_path(tmp_path):
         cancel_requested=False,
     )
     actual_path = tmp_path / 'asset-1-very-long-uu_404 Not Found_https___example.com.png'
+    actual_path.write_bytes(b'fake image bytes')
 
     with patch('app.api.screenshots.SessionLocal', return_value=fake_db), patch('app.api.screenshots.settings.screenshot_output_dir', str(tmp_path)), patch('app.api.screenshots.settings.result_output_dir', str(tmp_path)), patch('app.api.screenshots.run_screenshot_job', return_value={'summary_text': 'ok', 'results': [{'status': 'success', 'screenshot_path': str(actual_path)}]}):
         screenshots_api.start_screenshot_task(task, ['asset-1-very-long-uuid'], False)

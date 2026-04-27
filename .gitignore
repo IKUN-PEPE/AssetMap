@@ -7,3 +7,33 @@ test.pyshots
 *.pdf
 *.md
 !docs/README.md
+# ===== Local Python / Pytest Cache =====
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest_tmp/
+.pytest_tmp_*/
+.pytest_tmp_full/
+.pt/
+.runtime/pytest/
+UsersAdministratorVScodeAssetMap.runtimepytestrun/
+UsersAdministratorVscodeAssetMap.runtimepytestrun/
+
+# ===== Python Virtual Env =====
+.venv/
+venv/
+env/
+
+# ===== IDE / Editor =====
+.vscode/
+.idea/
+
+# ===== Logs / Runtime Temp =====
+*.log
+logs/
+backend/.pytest_cache/
+backend/tmp_pytest/
+
+# ===== OS Cache =====
+.DS_Store
+Thumbs.db
