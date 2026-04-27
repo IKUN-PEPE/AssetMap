@@ -7,7 +7,7 @@
 
     <el-row :gutter="20" class="stat-row">
       <el-col :span="6" v-for="item in kpiList" :key="item.title">
-        <div class="kpi-card" :class="item.color">
+        <div class="kpi-card" :class="item.color" :role="item.to ? 'button' : undefined" :tabindex="item.to ? 0 : undefined" @click="handleKpiClick(item)" @keydown.enter.prevent="handleKpiClick(item)" @keydown.space.prevent="handleKpiClick(item)">
           <div class="kpi-icon">
             <el-icon><component :is="item.icon" /></el-icon>
           </div>
@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Monitor, Plus, Aim, Warning } from '@element-plus/icons-vue'
 import { fetchStatsDistribution, fetchStatsOverview, fetchStatsTrends } from '@/api/modules/statistics'
 import type {
@@ -87,16 +88,17 @@ use([
   GridComponent,
 ])
 
-const kpiData = ref<StatsOverview>({ total: 0, today: 0, rate: 78, critical: 0 })
+const router = useRouter()
+const kpiData = ref<StatsOverview>({ total: 0, month_new: 0, today: 0, rate: 78, critical: 0 })
 const sourceData = ref<StatsDistributionItem[]>([])
 const verifyData = ref<StatsDistributionItem[]>([])
 const trendData = ref<StatsTrendsResponse>({ dates: [], data: [] })
 
 const kpiList = computed(() => [
-  { title: '资产总额', value: kpiData.value.total, icon: Monitor, color: 'blue' },
-  { title: '今日新增', value: kpiData.value.today, icon: Plus, color: 'green', trend: '+5%' },
-  { title: '资产发现率', value: kpiData.value.rate + '%', icon: Aim, color: 'purple' },
-  { title: '风险资产', value: kpiData.value.critical, icon: Warning, color: 'red' },
+  { title: '资产总额', value: kpiData.value.total, icon: Monitor, color: 'blue', trend: undefined, to: undefined },
+  { title: '本月新增', value: kpiData.value.month_new, icon: Plus, color: 'green', trend: undefined, to: { name: 'assets', query: { month_new: 'true' } } },
+  { title: '资产发现率', value: kpiData.value.rate + '%', icon: Aim, color: 'purple', trend: undefined, to: undefined },
+  { title: '风险资产', value: kpiData.value.critical, icon: Warning, color: 'red', trend: undefined, to: undefined },
 ])
 
 const sourceOption = computed(() => ({
@@ -188,6 +190,11 @@ const trendOption = computed(() => ({
   }],
 }))
 
+function handleKpiClick(item: { to?: { name: string; query?: Record<string, string> } }) {
+  if (!item.to) return
+  void router.push(item.to)
+}
+
 onMounted(async () => {
   try {
     const [ov, dist, tr] = await Promise.all([
@@ -201,7 +208,7 @@ onMounted(async () => {
     trendData.value = tr
   } catch (e) {
     console.error('Stats loading failed', e)
-    kpiData.value = { total: 0, today: 0, rate: 0, critical: 0 }
+    kpiData.value = { total: 0, month_new: 0, today: 0, rate: 0, critical: 0 }
     sourceData.value = []
     verifyData.value = []
     trendData.value = { dates: [], data: [] }
@@ -246,5 +253,17 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.kpi-card[role="button"] {
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.kpi-card[role="button"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+}
+.kpi-card[role="button"]:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.8);
+  outline-offset: 2px;
 }
 </style>

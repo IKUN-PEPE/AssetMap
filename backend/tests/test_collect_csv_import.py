@@ -251,7 +251,7 @@ def test_save_assets_persists_observation_without_url(monkeypatch):
     observation = next(item for item in db.added if item.__class__ is collect.SourceObservation)
     assert observation.raw_payload['resolved_ip'] == '1.1.1.1'
     assert observation.raw_payload['resolved_host'] == 'demo.example.com'
-    assert observation.raw_payload['normalized_url'] == 'https://demo.example.com/'
+    assert observation.raw_payload['normalized_url'] == 'https://demo.example.com:443/'
     assert job.success_count == 1
     assert job.failed_count == 0
 
@@ -356,7 +356,8 @@ def test_save_assets_keeps_non_web_ip_port_as_observation_only(monkeypatch):
     )
 
     observation = next(item for item in db.added if item.__class__ is collect.SourceObservation)
-    assert observation.source_record_id == 'hunter:ip-port:1.1.1.1:22'
+    assert observation.source_record_id == 'hunter:tcp:ip-port:1.1.1.1:22'
+    assert observation.raw_payload['asset_identity_key'] == 'tcp:ip-port:1.1.1.1:22'
     assert observation.raw_payload['normalized_url'] is None
     assert not any(item.__class__ is collect.WebEndpoint for item in db.added)
     assert job.success_count == 1
@@ -385,9 +386,24 @@ def test_save_assets_keeps_non_http_service_as_observation_only(monkeypatch):
     )
 
     observation = next(item for item in db.added if item.__class__ is collect.SourceObservation)
-    assert observation.source_record_id == 'quake:ip-port:1.1.1.1:22'
+    assert observation.source_record_id == 'quake:ssh:ip-port:1.1.1.1:22'
+    assert observation.raw_payload['asset_identity_key'] == 'ssh:ip-port:1.1.1.1:22'
     assert observation.raw_payload['normalized_url'] is None
     assert not any(item.__class__ is collect.WebEndpoint for item in db.added)
+
+
+def test_non_url_observation_uses_protocol_ip_port_identity():
+    resolved = {
+        'normalized_url': None,
+        'protocol': 'ssh',
+        'ip': '8.8.8.8',
+        'host': None,
+        'domain': None,
+        'port': 22,
+    }
+
+    assert collect._build_asset_identity_key(resolved, 'quake') == 'ssh:ip-port:8.8.8.8:22'
+    assert collect._build_source_record_id('quake', resolved) == 'quake:ssh:ip-port:8.8.8.8:22'
 
 
 

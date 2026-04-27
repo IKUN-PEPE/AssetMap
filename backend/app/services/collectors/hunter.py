@@ -6,23 +6,66 @@ import httpx
 from app.services.collectors.base import BaseCollector
 
 
+USERINFO_PATH = "/openApi/userInfo"
 SEARCH_PATH = "/openApi/search"
 
 
-def _raise_if_hunter_api_error(resp: httpx.Response, data: dict) -> None:
-    code = data.get("code")
+def _coerce_code(data: dict) -> int | str | None:
+    code = data.get("code") if isinstance(data, dict) else None
     try:
         if isinstance(code, str) and code.isdigit():
-            code = int(code)
+            return int(code)
     except Exception:
         pass
+    return code
 
-    # Hunter 常见成功状态
+
+def _json_message(data: dict) -> str:
+    if not isinstance(data, dict):
+        return ""
+    return str(data.get("message") or data.get("msg") or data.get("error") or "").strip()
+
+
+def _hunter_http_error_message(resp: httpx.Response, data: dict) -> str:
+    message = _json_message(data)
+    if resp.status_code == 403:
+        return (
+            "Hunter 接口返回 403，权限不足。请检查 API Key 是否正确、账号是否开通 OpenAPI 权限、"
+            f"权益积分是否充足，以及是否配置了 IP 白名单。{f' Hunter 返回信息：{message}' if message else ''}"
+        )
+    if resp.status_code == 400:
+        return (
+            "Hunter 接口返回 400，请检查查询语法、base64url 编码、api-key、page/page_size 参数是否正确。"
+            f"{f' Hunter 返回信息：{message}' if message else ''}"
+        )
+    if resp.status_code == 401:
+        return message or "Hunter 认证失败，请检查 API Key 是否正确。"
+    if resp.status_code == 429:
+        return message or "Hunter 请求频率过高，请稍后重试。"
+    if resp.status_code >= 500:
+        return message or f"Hunter 服务异常：HTTP {resp.status_code}"
+    if resp.status_code >= 400:
+        return message or f"Hunter 查询失败：HTTP {resp.status_code}"
+    return message or "Hunter 返回异常"
+
+
+def _raise_if_hunter_api_error(resp: httpx.Response, data: dict) -> None:
+    code = _coerce_code(data)
     if code in (None, 0, 200):
         return
 
-    message = data.get("message") or data.get("msg") or f"Hunter API error: code={code}"
-    raise RuntimeError(str(message))
+    message = _json_message(data)
+    if code == 403:
+        raise RuntimeError(
+            "Hunter 接口返回 403，权限不足。请检查 API Key 是否正确、账号是否开通 OpenAPI 权限、"
+            f"权益积分是否充足，以及是否配置了 IP 白名单。{f' Hunter 返回信息：{message}' if message else ''}"
+        )
+    if code == 400:
+        raise RuntimeError(
+            "Hunter 接口返回 400，请检查查询语法、base64url 编码、api-key、page/page_size 参数是否正确。"
+            f"{f' Hunter 返回信息：{message}' if message else ''}"
+        )
+    raise RuntimeError(str(message or f"Hunter API error: code={code}"))
 
 
 class HunterCollector(BaseCollector):
@@ -36,8 +79,7 @@ class HunterCollector(BaseCollector):
 
     @staticmethod
     def _encode_query(query: str) -> str:
-        # 按你给的正确调用方式：标准 base64，不用 urlsafe_b64encode
-        return base64.b64encode(query.encode("utf-8")).decode("utf-8")
+        return base64.urlsafe_b64encode(query.encode("utf-8")).decode("ascii")
 
     @staticmethod
     def _extract_page_results(data: dict) -> List[dict]:
@@ -49,25 +91,6 @@ class HunterCollector(BaseCollector):
         arr = payload.get("arr") or []
         return arr if isinstance(arr, list) else []
 
-    @staticmethod
-    def _get_error_message(resp: httpx.Response, data: dict) -> str:
-        message = ""
-        if isinstance(data, dict):
-            message = str(data.get("message") or data.get("msg") or "").strip()
-
-        if resp.status_code == 401:
-            return message or "Hunter 认证失败，请检查 API Key 是否正确"
-        if resp.status_code == 403:
-            return message or "Hunter 权限不足，请检查账户权限或接口权限"
-        if resp.status_code == 429:
-            return message or "Hunter 请求频率过高，请稍后重试"
-        if resp.status_code >= 500:
-            return message or f"Hunter 服务异常：HTTP {resp.status_code}"
-        if resp.status_code >= 400:
-            return message or f"Hunter 查询失败：HTTP {resp.status_code}"
-
-        return message or "Hunter 返回异常"
-
     async def _request_json(
         self,
         client: httpx.AsyncClient,
@@ -77,22 +100,34 @@ class HunterCollector(BaseCollector):
         query: str,
         page: int,
         page_size: int,
+        is_web: int | None = None,
+        start_time: str | None = None,
+        end_time: str | None = None,
+        status_code: int | None = None,
+        fields: str | None = None,
     ) -> tuple[httpx.Response, dict]:
-        resp = await client.get(
-            f"{base_url}{SEARCH_PATH}",
-            params={
-                "api-key": api_key,
-                "search": self._encode_query(query),
-                "page": page,
-                "page_size": page_size,
-            },
-        )
+        params: dict[str, Any] = {
+            "api-key": api_key,
+            "search": self._encode_query(query),
+            "page": page,
+            "page_size": page_size,
+        }
+        if is_web is not None:
+            params["is_web"] = is_web
+        if start_time:
+            params["start_time"] = start_time
+        if end_time:
+            params["end_time"] = end_time
+        if status_code is not None:
+            params["status_code"] = status_code
+        if fields:
+            params["fields"] = fields
 
+        resp = await client.get(f"{base_url}{SEARCH_PATH}", params=params)
         try:
             data = resp.json() or {}
         except Exception:
             data = {}
-
         return resp, data
 
     async def test_connection(self, config: Dict[str, Any]) -> bool:
@@ -100,20 +135,35 @@ class HunterCollector(BaseCollector):
         base_url = self._get_base_url(config)
 
         async with httpx.AsyncClient(timeout=10.0) as client:
-            # 用最小查询做连通性验证
-            resp, data = await self._request_json(
-                client,
-                base_url=base_url,
-                api_key=api_key,
-                query='ip="1.1.1.1"',
-                page=1,
-                page_size=1,
+            resp = await client.get(
+                f"{base_url}{USERINFO_PATH}",
+                params={"api-key": api_key},
             )
+            try:
+                data = resp.json() or {}
+            except Exception:
+                data = {}
 
             if resp.status_code >= 400:
-                raise RuntimeError(self._get_error_message(resp, data))
+                raise RuntimeError(_hunter_http_error_message(resp, data))
 
-            _raise_if_hunter_api_error(resp, data)
+            code = _coerce_code(data)
+            payload = data.get("data") if isinstance(data, dict) else None
+            if code != 200 or not isinstance(payload, dict):
+                message = _json_message(data)
+                if code == 403:
+                    raise RuntimeError(
+                        "Hunter 接口返回 403，权限不足。请检查 API Key 是否正确、账号是否开通 OpenAPI 权限、"
+                        f"权益积分是否充足，以及是否配置了 IP 白名单。{f' Hunter 返回信息：{message}' if message else ''}"
+                    )
+                if code == 400:
+                    raise RuntimeError(
+                        "Hunter 接口返回 400，请检查查询语法、base64url 编码、api-key、page/page_size 参数是否正确。"
+                        f"{f' Hunter 返回信息：{message}' if message else ''}"
+                    )
+                raise RuntimeError(
+                    f"Hunter 用户信息接口校验失败：code={code}. {f'Hunter 返回信息：{message}' if message else ''}".strip()
+                )
             return True
 
     async def run(self, query: str, options: Dict[str, Any], config: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -123,6 +173,22 @@ class HunterCollector(BaseCollector):
         page_size = self.get_int_option(options, config, "page_size", "hunter_page_size", 10)
         max_pages = self.get_int_option(options, config, "max_pages", "hunter_max_pages", 10)
         limit = self.get_int_option(options, config, "limit", "hunter_limit", page_size * max_pages)
+
+        raw_is_web = options.get("is_web", config.get("hunter_is_web", 1))
+        try:
+            is_web = int(raw_is_web) if raw_is_web not in (None, "") else None
+        except (TypeError, ValueError):
+            is_web = 1
+
+        start_time = str(options.get("start_time", config.get("hunter_start_time", "")) or "").strip() or None
+        end_time = str(options.get("end_time", config.get("hunter_end_time", "")) or "").strip() or None
+        fields = str(options.get("fields", config.get("hunter_fields", "")) or "").strip() or None
+
+        raw_status_code = options.get("status_code", config.get("hunter_status_code"))
+        try:
+            hunter_status_code = int(raw_status_code) if raw_status_code not in (None, "") else None
+        except (TypeError, ValueError):
+            hunter_status_code = None
 
         results: List[Dict[str, Any]] = []
 
@@ -146,10 +212,15 @@ class HunterCollector(BaseCollector):
                     query=query,
                     page=page,
                     page_size=page_size,
+                    is_web=is_web,
+                    start_time=start_time,
+                    end_time=end_time,
+                    status_code=hunter_status_code,
+                    fields=fields,
                 )
 
                 if resp.status_code >= 400:
-                    raise RuntimeError(self._get_error_message(resp, data))
+                    raise RuntimeError(_hunter_http_error_message(resp, data))
 
                 _raise_if_hunter_api_error(resp, data)
 
@@ -161,15 +232,19 @@ class HunterCollector(BaseCollector):
 
                 for item in page_results:
                     raw_port = item.get("port")
-
-                    protocol = (
-                        item.get("protocol")
-                        or item.get("base_protocol")
-                        or ("https" if str(raw_port) == "443" else "http")
-                    )
-
+                    protocol = item.get("protocol") or item.get("base_protocol") or ("https" if str(raw_port) == "443" else "http")
                     domain = item.get("domain") or None
                     host = domain or item.get("ip")
+
+                    component = item.get("component")
+                    if isinstance(component, list):
+                        component_name = ", ".join(
+                            str(comp.get("name") or "").strip()
+                            for comp in component
+                            if isinstance(comp, dict) and str(comp.get("name") or "").strip()
+                        ) or None
+                    else:
+                        component_name = component
 
                     raw = {
                         "ip": item.get("ip"),
@@ -178,12 +253,12 @@ class HunterCollector(BaseCollector):
                         "host": host,
                         "domain": domain,
                         "title": item.get("web_title"),
-                        "server": item.get("component") or item.get("web_server") or item.get("os"),
+                        "status_code": item.get("status_code"),
+                        "server": component_name or item.get("header_server") or item.get("web_server") or item.get("os"),
                         "country": item.get("country"),
                         "city": item.get("city"),
-                        "company": item.get("company") or item.get("icp"),
-                        "url": item.get("url")
-                        or self.build_url(
+                        "company": item.get("company") or item.get("isp") or item.get("as_org") or item.get("icp"),
+                        "url": item.get("url") or self.build_url(
                             host=host,
                             ip=item.get("ip"),
                             port=raw_port,
@@ -192,7 +267,9 @@ class HunterCollector(BaseCollector):
                         "raw_data": item,
                     }
 
-                    results.append(self.normalize(raw))
+                    normalized = self.normalize(raw)
+                    normalized["status_code"] = item.get("status_code")
+                    results.append(normalized)
 
                     if len(results) >= limit:
                         self.log_info(options, "limit reached collected=%s", len(results))

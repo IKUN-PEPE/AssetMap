@@ -1,2 +1,2 @@
 ﻿seq,input,final_url,status,error,screenshot_path
-e7f80291-a846-4c0c-8681-c074fcd9ee6a,http://81.71.72.98:3000/,http://81.71.72.98:3000/,success,,C:\Users\Administrator\VScode\AssetMap\screenshots\e7f80291-a846-4c0c-8_深圳地铁大亨_http___81.71.72.98_3000_.png
+b6be2a2d-7c21-45e6-8173-12a4dcf370f2,http://www.likun.games/,http://www.likun.games/,failed,"ValueError: Page content too short (52 bytes), likely blocked by firewall or empty response",C:\Users\Administrator\VScode\AssetMap\screenshots\b6be2a2d-7c21-45e6-8_403 Forbidden_http___www.likun.games_.png

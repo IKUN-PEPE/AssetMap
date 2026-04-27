@@ -60,10 +60,17 @@ export interface SelectionItem {
   created_by: string
 }
 
+export type ReportStatus = 'pending' | 'running' | 'completed' | 'failed' | 'file_missing'
+
 export interface ReportRead {
   id: string
   report_name: string
-  status: string
+  status: ReportStatus
+  report_type?: string | null
+  object_path?: string | null
+  file_size?: number | null
+  file_missing?: boolean
+  download_url?: string | null
   created_at?: string | null
   finished_at?: string | null
   total_assets?: number
@@ -77,6 +84,10 @@ export interface ReportCreatePayload {
   selection_id?: string | null
   asset_ids?: string[]
   report_formats?: string[]
+  report_content?: string | null
+  file_name?: string | null
+  total_assets?: number
+  excluded_assets?: number
   exclude_false_positive?: boolean
   exclude_confirmed?: boolean
 }
@@ -88,6 +99,7 @@ export interface ReportCreateResult {
 
 export interface StatsOverview {
   total: number
+  month_new: number
   today: number
   rate: number
   critical: number

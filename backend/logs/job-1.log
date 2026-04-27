@@ -82,3 +82,65 @@ TypeError: test_run_collect_task_keeps_cancelled_status_and_skips_post_process.<
 2026-04-21 16:49:04,229 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
 2026-04-21 16:49:59,905 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
 2026-04-21 16:49:59,908 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 11:11:03,274 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 11:11:03,301 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 12:03:39,214 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 12:03:39,230 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 12:52:39,685 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 12:52:39,687 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 15:26:07,606 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 15:26:07,627 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 15:29:34,458 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 15:29:34,460 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-22 15:58:09,902 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-22 15:58:09,952 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-23 00:59:02,905 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-23 00:59:02,906 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-23 01:42:49,969 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-23 01:42:49,971 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-23 10:56:45,883 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-23 10:56:45,888 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-23 10:58:54,421 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-23 10:58:54,423 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-23 23:14:01,252 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-23 23:14:01,260 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-24 14:03:23,981 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-24 14:03:23,983 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-24 14:05:56,232 - WARNING - Task failed reason=no-valid-queries selected_sources=0
+2026-04-24 14:05:56,963 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-24 14:05:56,967 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-26 17:56:27,891 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 17:56:27,895 - ERROR - Post-process failed: module 'app.tasks.collect' has no attribute 'Screenshot'
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect_post_process.py", line 147, in run_auto_post_process_impl
+    db.query(Screenshot).filter(Screenshot.web_endpoint_id == asset.id).delete(synchronize_session=False)
+    ~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_collect_runtime.py", line 130, in query
+    if model is collect.Screenshot:
+                ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'app.tasks.collect' has no attribute 'Screenshot'
+2026-04-26 17:57:08,440 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 17:57:08,466 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-26 20:55:36,148 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 20:55:36,193 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-26 20:55:55,369 - WARNING - Task failed reason=no-valid-queries selected_sources=0
+2026-04-26 20:55:56,552 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 20:55:56,557 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-26 20:57:58,617 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 20:57:58,668 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-26 21:21:43,807 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-26 21:21:43,837 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 12:45:57,696 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 12:45:57,724 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 12:46:11,989 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 12:46:11,990 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 12:48:56,021 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 12:48:56,023 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 12:49:45,347 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 12:49:45,349 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 16:16:39,183 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 16:16:39,184 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 22:03:48,838 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 22:03:48,843 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-27 22:05:21,477 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-27 22:05:21,479 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file

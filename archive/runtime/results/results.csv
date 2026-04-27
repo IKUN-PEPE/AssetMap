@@ -1,7 +1,0 @@
-﻿seq,input,final_url,status,error,screenshot_path
-1,http://www.dhled.net,http://www.dhled.net,failed,"Page.goto: Timeout 15000ms exceeded.
-Call log:
-  - navigating to ""http://www.dhled.net/"", waiting until ""domcontentloaded""
-",C:\Users\Administrator\VScode\SecurityTesting\asset_mapping_screenshot_xlsx\screenshots\1_未命名_http___www.dhled.net.png
-2,http://www.szkljcsl.com,http://www.szkljcsl.com,skipped,,C:\Users\Administrator\VScode\SecurityTesting\asset_mapping_screenshot_xlsx\screenshots\2_未命名_http___www.szkljcsl.com.png
-3,http://www.szcmad.com,http://www.szcmad.com,skipped,,C:\Users\Administrator\VScode\SecurityTesting\asset_mapping_screenshot_xlsx\screenshots\3_航空杂志_南方航空杂志_深圳地铁广告_深圳电台广告_深圳电梯广告-深圳市创茗广告有限公司_http___www.szcmad.com.png

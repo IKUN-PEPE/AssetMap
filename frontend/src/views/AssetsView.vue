@@ -9,12 +9,7 @@
       <div class="toolbar-row">
         <el-input v-model="filters.q" placeholder="搜索 URL / 标题" style="width: 260px" clearable />
         <el-select v-model="filters.source" placeholder="按来源筛选" clearable style="width: 180px">
-          <el-option label="fofa" value="fofa" />
-          <el-option label="fofa_csv" value="fofa_csv" />
-          <el-option label="hunter" value="hunter" />
-          <el-option label="hunter_csv" value="hunter_csv" />
-          <el-option label="zoomeye" value="zoomeye" />
-          <el-option label="sample" value="sample" />
+          <el-option v-for="option in sourceFilterOptions" :key="option.value" :label="option.label" :value="option.value" />
         </el-select>
         <el-select v-model="filters.label_status" placeholder="按标签状态筛选" clearable style="width: 180px">
           <el-option label="未标记" value="none" />
@@ -26,6 +21,9 @@
           <el-option label="已截图" value="true" />
           <el-option label="失败" value="failed" />
         </el-select>
+        <el-button :type="filters.month_new ? 'success' : 'default'" plain @click="toggleMonthNew">
+          本月新增
+        </el-button>
         <el-button type="primary" @click="handleSearch">查询</el-button>
         <el-button @click="resetFilters">重置</el-button>
       </div>
@@ -216,21 +214,23 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { batchLabel, deleteAsset, fetchAssets, verifyAssets } from '@/api/modules/assets'
+import { createReport, downloadReport } from '@/api/modules/reports'
 import { cancelVerifyTask, fetchVerifyTask } from '@/api/modules/jobs'
-import type { AssetItem, TaskProgress } from '@/types'
+import type { AssetItem, ReportCreatePayload, TaskProgress } from '@/types'
 
 const CURRENT_TASK_STORAGE_KEY = 'assetmap.currentTask'
 
 const router = useRouter()
+const route = useRoute()
 const assets = ref<AssetItem[]>([])
 const selectedIds = ref<string[]>([])
 const loadState = ref('loading')
-const filters = ref({ q: '', source: '', label_status: '', screenshot_status: '' })
+const filters = ref({ q: '', source: '', label_status: '', screenshot_status: '', month_new: false })
 const currentTask = ref<TaskProgress | null>(null)
 const previewVisible = ref(false)
 const previewImageUrl = ref('')
@@ -241,6 +241,12 @@ let currentTaskTimer: number | undefined
 
 const currentPage = ref(1)
 const pageSize = ref(20)
+const sourceFilterOptions = [
+  { label: 'FOFA', value: 'fofa' },
+  { label: 'Hunter', value: 'hunter' },
+  { label: 'ZoomEye', value: 'zoomeye' },
+  { label: 'Quake', value: 'quake' },
+]
 
 const total = computed(() => assets.value.length)
 const paginatedAssets = computed(() => {
@@ -248,6 +254,27 @@ const paginatedAssets = computed(() => {
   const end = start + pageSize.value
   return assets.value.slice(start, end)
 })
+
+function syncFiltersFromRouteQuery() {
+  filters.value.month_new = route.query.month_new === 'true' || route.query.month_new === '1'
+}
+
+function buildAssetsRouteQuery() {
+  const query: Record<string, string> = {}
+  if (filters.value.month_new) {
+    query.month_new = 'true'
+  }
+  return query
+}
+
+watch(
+  () => route.query.month_new,
+  async () => {
+    syncFiltersFromRouteQuery()
+    currentPage.value = 1
+    await loadAssets()
+  },
+)
 
 function handleSizeChange(val: number) {
   pageSize.value = val
@@ -258,10 +285,21 @@ function handleCurrentChange(val: number) {
   currentPage.value = val
 }
 
+async function toggleMonthNew() {
+  filters.value.month_new = !filters.value.month_new
+  currentPage.value = 1
+  await router.replace({
+    name: 'assets',
+    query: buildAssetsRouteQuery(),
+  })
+}
+
 function handleSearch() {
   currentPage.value = 1
+  void router.replace({ name: 'assets', query: buildAssetsRouteQuery() })
   void loadAssets()
 }
+
 
 const isCurrentTaskRunning = computed(() => currentTask.value?.status === 'running' || currentTask.value?.status === 'pending')
 const currentTaskTitle = '批量验证并截图进度'
@@ -286,8 +324,16 @@ function sourceTagType(source?: string | null) {
       return 'success'
     case 'hunter':
       return 'warning'
+    case 'hunter_csv':
+      return 'warning'
     case 'zoomeye':
       return 'danger'
+    case 'zoomeye_csv':
+      return 'danger'
+    case 'quake':
+      return 'primary'
+    case 'quake_csv':
+      return 'primary'
     case 'sample':
       return 'info'
     default:
@@ -485,6 +531,7 @@ async function loadAssets() {
       label_status: filters.value.label_status || undefined,
       screenshot_status,
       has_screenshot,
+      month_new: filters.value.month_new || undefined,
     })
     assets.value = Array.isArray(data) ? data : []
     loadState.value = 'loaded'
@@ -503,8 +550,9 @@ async function loadAssets() {
 }
 
 onMounted(async () => {
-  await loadAssets()
+  syncFiltersFromRouteQuery()
   await restoreCurrentTask()
+  await loadAssets()
 })
 
 onBeforeUnmount(() => {
@@ -512,7 +560,8 @@ onBeforeUnmount(() => {
 })
 
 function resetFilters() {
-  filters.value = { q: '', source: '', label_status: '', screenshot_status: '' }
+  filters.value = { q: '', source: '', label_status: '', screenshot_status: '', month_new: false }
+  void router.replace({ name: 'assets', query: buildAssetsRouteQuery() })
   currentPage.value = 1
   void loadAssets()
 }
@@ -598,13 +647,13 @@ async function removeSelectedAssets() {
   }
 }
 
-function handleExport(command: 'csv' | 'md') {
+async function handleExport(command: 'csv' | 'md') {
   if (selectedIds.value.length === 0) return
   if (command === 'csv') {
-    exportCsv()
+    await exportCsv()
     return
   }
-  exportMd()
+  await exportMd()
 }
 
 function getSelectedAssets() {
@@ -623,8 +672,11 @@ function escapeCsvCell(value?: string | null) {
   return `"${String(value || '').replace(/"/g, '""')}"`
 }
 
-function downloadFile(content: string, filename: string, mimeType: string) {
-  const blob = new Blob([content], { type: mimeType })
+function getDisplayTime(item: AssetItem) {
+  return formatReportDate(item.first_seen_at || item.last_seen_at)
+}
+
+function saveBlobFile(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -635,11 +687,18 @@ function downloadFile(content: string, filename: string, mimeType: string) {
   URL.revokeObjectURL(url)
 }
 
-function getDisplayTime(item: AssetItem) {
-  return formatReportDate(item.first_seen_at || item.last_seen_at)
+async function persistReportAndDownload(payload: ReportCreatePayload, fallbackFileName: string) {
+  const report = await createReport(payload)
+  if (report.status !== 'completed') {
+    throw new Error(report.error_message || `report status: ${report.status}`)
+  }
+
+  const blob = await downloadReport(report.id)
+  const fileName = payload.file_name || report.report_name || fallbackFileName
+  saveBlobFile(blob, fileName)
 }
 
-function exportCsv() {
+async function exportCsvManaged() {
   const selectedList = getSelectedAssets()
   const headers = ['URL', '标题', '来源', '截图', '发现时间']
   const csvContent = [
@@ -654,11 +713,29 @@ function exportCsv() {
   ].join('\n')
 
   const dateText = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-  downloadFile(`\uFEFF${csvContent}`, `${dateText}_资产导出.csv`, 'text/csv;charset=utf-8')
-  ElMessage.success(`已导出 ${selectedList.length} 条 CSV 记录`)
+  const fileName = `${dateText}_资产导出.csv`
+
+  try {
+    await persistReportAndDownload(
+      {
+        report_name: `${dateText}_资产导出`,
+        scope_type: 'manual',
+        asset_ids: selectedList.map((item) => item.id),
+        report_formats: ['csv'],
+        report_content: `\uFEFF${csvContent}`,
+        file_name: fileName,
+        total_assets: selectedList.length,
+        excluded_assets: 0,
+      },
+      fileName,
+    )
+    ElMessage.success(`已导出 ${selectedList.length} 条 CSV 记录，并写入报告中心`)
+  } catch (error: any) {
+    ElMessage.error(error?.message || 'CSV 导出失败')
+  }
 }
 
-function exportMd() {
+async function exportMdManaged() {
   const selectedList = getSelectedAssets()
   const grouped = new Map<string, AssetItem[]>()
 
@@ -674,24 +751,24 @@ function exportMd() {
 
   const dateText = new Date().toISOString().slice(0, 10)
   const sections = Array.from(grouped.entries()).map(([groupName, items], index) => {
-    const urlLines = items.map((item) => `- URL：${item.normalized_url}`).join('\n')
+    const urlLines = items.map((item) => `- URL: ${item.normalized_url}`).join('\n')
     const screenshotLines = items
       .filter((item) => item.screenshot_url)
-      .map((item) => `- 页面截图：\n\n  ![${groupName}](${buildScreenshotUrl(item.screenshot_url)})`)
+      .map((item) => `- 页面截图:\n\n  ![${groupName}](${buildScreenshotUrl(item.screenshot_url)})`)
       .join('\n\n')
 
     return [
       `### 1.${index + 1} ${groupName}`,
       '',
-      `发现疑似关键词“${groupName}”的网站：`,
+      `发现疑似关联关键词“${groupName}”的站点：`,
       '',
       urlLines,
       '',
       '截图：',
       '',
-      screenshotLines || '  *(截图文件未在当前列表中，如有需要可按同名规则补充)*',
+      screenshotLines || '  *(当前资产列表没有可用截图)*',
       '',
-      ...items.map((item) => `- 来源：${item.source || '-'} | 发现时间：${getDisplayTime(item)}`),
+      ...items.map((item) => `- 来源: ${item.source || '-'} | 发现时间: ${getDisplayTime(item)}`),
       '',
       '---',
     ].join('\n')
@@ -704,14 +781,40 @@ function exportMd() {
     '',
     '---',
     '',
-    '## 1、网站资产',
+    '## 1. 网站资产',
     '',
     ...sections,
     '',
   ].join('\n')
 
-  downloadFile(mdContent, `${dateText.replace(/-/g, '')}_资产报告.md`, 'text/markdown;charset=utf-8')
-  ElMessage.success(`已导出 ${selectedList.length} 条 MD 报告记录`)
+  const fileName = `${dateText.replace(/-/g, '')}_资产报告.md`
+
+  try {
+    await persistReportAndDownload(
+      {
+        report_name: `${dateText}_资产报告`,
+        scope_type: 'manual',
+        asset_ids: selectedList.map((item) => item.id),
+        report_formats: ['md'],
+        report_content: mdContent,
+        file_name: fileName,
+        total_assets: selectedList.length,
+        excluded_assets: 0,
+      },
+      fileName,
+    )
+    ElMessage.success(`已导出 ${selectedList.length} 条 MD 报告，并写入报告中心`)
+  } catch (error: any) {
+    ElMessage.error(error?.message || 'MD 报告导出失败')
+  }
+}
+
+async function exportCsv() {
+  await exportCsvManaged()
+}
+
+async function exportMd() {
+  await exportMdManaged()
 }
 </script>
 

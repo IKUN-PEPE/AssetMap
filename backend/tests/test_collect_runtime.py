@@ -245,6 +245,61 @@ def test_run_collect_task_keeps_cancelled_status_and_skips_post_process(monkeypa
     assert launched == []
 
 
+def test_run_collect_task_marks_partial_success_when_any_source_fails(monkeypatch):
+    job = SimpleNamespace(
+        id="job-partial",
+        status="pending",
+        started_at=None,
+        finished_at=None,
+        progress=0,
+        error_message=None,
+        success_count=0,
+        failed_count=0,
+        duplicate_count=0,
+        total_count=0,
+        sources=["fofa", "hunter"],
+        query_payload={
+            "queries": [
+                {"source": "fofa", "query": 'body="ok"'},
+                {"source": "hunter", "query": 'body="boom"'},
+            ]
+        },
+        dedup_strategy="skip",
+        auto_verify=False,
+    )
+    db = FakeDb(job)
+
+    class InlineCollector:
+        def __init__(self, source: str):
+            self.source = source
+
+        async def run(self, query_str, query_payload, config):
+            if self.source == "hunter":
+                raise RuntimeError("upstream failed")
+            return [{"url": "https://example.com", "ip": "1.1.1.1", "port": 443}]
+
+    monkeypatch.setattr(collect, "SessionLocal", lambda: db)
+    monkeypatch.setattr(collect, "get_collector", lambda source: InlineCollector(source))
+    monkeypatch.setattr(
+        collect.SystemConfigService,
+        "get_decrypted_configs",
+        lambda db, source: {"token": "secret"},
+    )
+    monkeypatch.setattr(
+        collect,
+        "save_assets",
+        lambda db, job, assets, source_name: setattr(job, "success_count", int(getattr(job, "success_count", 0)) + len(assets)),
+    )
+
+    collect.run_collect_task.call_local("job-partial")
+
+    assert job.status == "partial_success"
+    assert job.success_count == 1
+    assert job.failed_count == 1
+    assert job.total_count == 2
+    assert "hunter failed: upstream failed" in job.error_message
+
+
 def test_run_auto_post_process_returns_immediately_for_cancelled_job(monkeypatch):
     db = CancelledPostProcessDb(SimpleNamespace(id="job-1", status="cancelled"))
     monkeypatch.setattr(collect, "SessionLocal", lambda: db)
@@ -333,7 +388,7 @@ def test_collect_job_asset_ids_can_match_by_observation_source_record_id():
     observation = SimpleNamespace(source_record_id=source_record_id, raw_payload={}, created_at=None)
     asset = SimpleNamespace(
         id="asset-1",
-        normalized_url="https://example.com/",
+        normalized_url="https://example.com",
         domain="example.com",
         source_meta={"host": "example.com", "source_record_id": source_record_id},
         host=None,
@@ -346,10 +401,10 @@ def test_collect_job_asset_ids_can_match_by_observation_source_record_id():
 
 
 def test_collect_job_asset_ids_uses_narrowed_asset_lookup_query():
-    observation = SimpleNamespace(raw_payload={"normalized_url": "https://example.com/"}, created_at=None)
+    observation = SimpleNamespace(raw_payload={"normalized_url": "https://example.com"}, created_at=None)
     asset = SimpleNamespace(
         id="asset-1",
-        normalized_url="https://example.com/",
+        normalized_url="https://example.com",
         domain="example.com",
         source_meta={"host": "example.com"},
         host=None,
@@ -372,7 +427,7 @@ def test_collect_job_asset_ids_can_resolve_assets_without_raw_payload_ids():
     )
     asset = SimpleNamespace(
         id="asset-1",
-        normalized_url="https://example.com/",
+        normalized_url="https://example.com",
         domain=None,
         source_meta={"host": "example.com", "ip": "1.1.1.1", "port": 443, "asset_identity_key": "host-port:example.com:443"},
         host=None,

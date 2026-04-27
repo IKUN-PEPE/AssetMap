@@ -7,6 +7,7 @@ interface FetchAssetsParams {
   label_status?: string;
   screenshot_status?: string;
   has_screenshot?: boolean;
+  month_new?: boolean;
 }
 
 export function fetchAssets(params: FetchAssetsParams): Promise<AssetItem[]> {

@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import and_, func
@@ -10,6 +10,27 @@ from app.models import WebEndpoint
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+UTC8 = timezone(timedelta(hours=8))
+
+
+def get_month_bounds_utc8(reference: datetime | None = None) -> tuple[datetime, datetime]:
+    current = reference or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    else:
+        current = current.astimezone(timezone.utc)
+
+    local = current.astimezone(UTC8)
+    month_start_local = datetime(local.year, local.month, 1, tzinfo=UTC8)
+    if local.month == 12:
+        next_month_local = datetime(local.year + 1, 1, 1, tzinfo=UTC8)
+    else:
+        next_month_local = datetime(local.year, local.month + 1, 1, tzinfo=UTC8)
+
+    return (
+        month_start_local.astimezone(timezone.utc).replace(tzinfo=None),
+        next_month_local.astimezone(timezone.utc).replace(tzinfo=None),
+    )
 
 
 def distribution_source_expr():
@@ -19,6 +40,15 @@ def distribution_source_expr():
 @router.get("/overview")
 def get_overview(db: Session = Depends(get_db)):
     total_assets = db.query(WebEndpoint).count()
+    month_start, month_end = get_month_bounds_utc8()
+    month_new = (
+        db.query(WebEndpoint)
+        .filter(
+            WebEndpoint.first_seen_at >= month_start,
+            WebEndpoint.first_seen_at < month_end,
+        )
+        .count()
+    )
 
     today_start = datetime.now() - timedelta(days=1)
     today_count = (
@@ -31,6 +61,7 @@ def get_overview(db: Session = Depends(get_db)):
 
     return {
         "total": total_assets,
+        "month_new": month_new,
         "today": today_count,
         "rate": 78,
         "critical": high_risk,

@@ -1,3 +1,5 @@
+import base64
+
 import pytest
 
 from app.services.collectors.fofa import FOFACollector
@@ -26,14 +28,63 @@ async def test_hunter_test_connection_requires_api_key():
 
 
 @pytest.mark.asyncio
-async def test_hunter_test_connection_raises_when_body_code_is_not_success(monkeypatch):
+async def test_hunter_test_connection_uses_userinfo_endpoint(monkeypatch):
+    collector = HunterCollector()
+    captured = {}
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {
+                "code": 200,
+                "message": "success",
+                "data": {
+                    "type": "个人账号",
+                    "rest_equity_point": 1000,
+                    "rest_free_point": 499,
+                    "rest_export_quota": -1,
+                    "day_free_point": 500,
+                    "day_export_quota": -1,
+                    "once_export_quota": 10000,
+                    "personal_info": {
+                        "username": "大牛",
+                        "phone": "13700001111",
+                        "is_charge": True,
+                    },
+                },
+            }
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def get(self, url, **kwargs):
+            captured["url"] = url
+            captured["params"] = kwargs.get("params")
+            return FakeResponse()
+
+    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
+
+    ok = await collector.test_connection({"hunter_api_key": "good"})
+
+    assert ok is True
+    assert captured["url"] == "https://hunter.qianxin.com/openApi/userInfo"
+    assert captured["params"] == {"api-key": "good"}
+
+
+@pytest.mark.asyncio
+async def test_hunter_test_connection_raises_when_userinfo_body_code_is_not_success(monkeypatch):
     collector = HunterCollector()
 
     class FakeResponse:
         status_code = 200
 
         def json(self):
-            return {"code": 401, "message": "API KEY 无效"}
+            return {"code": 400, "message": "请求失败", "data": None}
 
     class FakeClient:
         async def __aenter__(self):
@@ -47,7 +98,33 @@ async def test_hunter_test_connection_raises_when_body_code_is_not_success(monke
 
     monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
 
-    with pytest.raises(RuntimeError, match="API KEY"):
+    with pytest.raises(RuntimeError, match="Hunter.*400.*请求失败"):
+        await collector.test_connection({"hunter_api_key": "bad"})
+
+
+@pytest.mark.asyncio
+async def test_hunter_test_connection_raises_friendly_message_for_403(monkeypatch):
+    collector = HunterCollector()
+
+    class FakeResponse:
+        status_code = 403
+
+        def json(self):
+            return {"code": 403, "message": "权限不足", "data": None}
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def get(self, *_args, **_kwargs):
+            return FakeResponse()
+
+    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
+
+    with pytest.raises(RuntimeError, match="Hunter 接口返回 403"):
         await collector.test_connection({"hunter_api_key": "bad"})
 
 
@@ -75,6 +152,164 @@ async def test_hunter_run_raises_when_body_code_is_not_success(monkeypatch):
 
     with pytest.raises(RuntimeError, match="API KEY"):
         await collector.run('ip="1.1.1.1"', {}, {"hunter_api_key": "bad"})
+
+
+@pytest.mark.asyncio
+async def test_hunter_run_does_not_fill_domain_with_ip(monkeypatch):
+    collector = HunterCollector()
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {
+                "code": 200,
+                "data": {
+                    "arr": [
+                        {
+                            "ip": "1.1.1.1",
+                            "port": 22,
+                            "protocol": "ssh",
+                            "domain": None,
+                            "url": None,
+                        }
+                    ]
+                },
+            }
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def get(self, *_args, **_kwargs):
+            return FakeResponse()
+
+    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
+
+    results = await collector.run('ip="1.1.1.1"', {"limit": 1}, {"hunter_api_key": "secret"})
+
+    assert results[0]["host"] == "1.1.1.1"
+    assert results[0]["domain"] is None
+
+
+@pytest.mark.asyncio
+async def test_hunter_run_uses_base64url_encoded_search_and_expected_params(monkeypatch):
+    collector = HunterCollector()
+    captured = {}
+    query = 'title="北京"'
+    expected = base64.urlsafe_b64encode(query.encode("utf-8")).decode("ascii")
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {"code": 200, "message": "success", "data": {"arr": []}}
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def get(self, url, **kwargs):
+            captured["url"] = url
+            captured["params"] = kwargs.get("params")
+            return FakeResponse()
+
+    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
+
+    results = await collector.run(query, {"page_size": 5}, {"hunter_api_key": "secret"})
+
+    assert results == []
+    assert captured["url"] == "https://hunter.qianxin.com/openApi/search"
+    assert captured["params"]["api-key"] == "secret"
+    assert captured["params"]["search"] == expected
+    assert captured["params"]["page"] == 1
+    assert captured["params"]["page_size"] == 5
+    assert captured["params"]["is_web"] == 1
+
+
+@pytest.mark.asyncio
+async def test_hunter_run_parses_search_results_from_arr(monkeypatch):
+    collector = HunterCollector()
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return {
+                "code": 200,
+                "message": "success",
+                "data": {
+                    "account_type": "个人账号",
+                    "total": 1,
+                    "arr": [
+                        {
+                            "ip": "127.0.0.1",
+                            "port": 443,
+                            "domain": "abc.qianxin.com",
+                            "url": "https://abc.qianxin.com",
+                            "web_title": "欢迎登录",
+                            "protocol": "https",
+                            "base_protocol": "tcp",
+                            "status_code": 200,
+                            "country": "中国",
+                            "province": "山东省",
+                            "city": "济南市",
+                            "isp": "中国电信",
+                            "as_org": "Chinanet",
+                            "component": [{"name": "Nginx", "version": "1.20.2"}],
+                            "updated_at": "2025-01-01",
+                            "header_server": "nginx",
+                        }
+                    ],
+                    "consume_quota": "消耗积分：1",
+                    "rest_quota": "今日剩余积分：499",
+                    "syntax_prompt": "",
+                },
+            }
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def get(self, *_args, **_kwargs):
+            return FakeResponse()
+
+    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
+
+    results = await collector.run(
+        'web.title="后台管理"',
+        {"max_pages": 1, "limit": 1},
+        {"hunter_api_key": "secret"},
+    )
+
+    assert len(results) == 1
+    assert results[0]["title"] == "欢迎登录"
+    assert results[0]["url"] == "https://abc.qianxin.com"
+    assert results[0]["ip"] == "127.0.0.1"
+    assert results[0]["port"] == 443
+    assert results[0]["domain"] == "abc.qianxin.com"
+    assert results[0]["status_code"] == 200
+    assert results[0]["source"] == "hunter"
+
+
+@pytest.mark.asyncio
+async def test_fofa_test_connection_requires_email_and_key():
+    collector = FOFACollector()
+
+    with pytest.raises(ValueError, match="FOFA email"):
+        await collector.test_connection({})
+
+    with pytest.raises(ValueError, match="FOFA API Key"):
+        await collector.test_connection({"fofa_email": "user@example.com"})
 
 
 @pytest.mark.asyncio
@@ -216,47 +451,6 @@ async def test_quake_test_connection_raises_when_body_code_is_not_success(monkey
 
     with pytest.raises(RuntimeError, match="Invalid token"):
         await collector.test_connection({"quake_api_key": "bad"})
-
-
-@pytest.mark.asyncio
-async def test_hunter_run_does_not_fill_domain_with_ip(monkeypatch):
-    collector = HunterCollector()
-
-    class FakeResponse:
-        status_code = 200
-
-        def json(self):
-            return {
-                "code": 200,
-                "data": {
-                    "arr": [
-                        {
-                            "ip": "1.1.1.1",
-                            "port": 22,
-                            "protocol": "ssh",
-                            "domain": None,
-                            "url": None,
-                        }
-                    ]
-                },
-            }
-
-    class FakeClient:
-        async def __aenter__(self):
-            return self
-
-        async def __aexit__(self, exc_type, exc, tb):
-            return False
-
-        async def get(self, *_args, **_kwargs):
-            return FakeResponse()
-
-    monkeypatch.setattr("app.services.collectors.hunter.httpx.AsyncClient", lambda *args, **kwargs: FakeClient())
-
-    results = await collector.run('ip="1.1.1.1"', {"limit": 1}, {"hunter_api_key": "secret"})
-
-    assert results[0]["host"] == "1.1.1.1"
-    assert results[0]["domain"] is None
 
 
 @pytest.mark.asyncio

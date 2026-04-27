@@ -105,8 +105,6 @@ def test_system_list_endpoint_can_reveal_sensitive_values(monkeypatch):
     assert response.json()[0]["config_value"] == "real-secret"
 
 
-
-
 def test_test_connection_endpoint_merges_masked_values(monkeypatch):
     captured = {}
 
@@ -136,6 +134,24 @@ def test_test_connection_endpoint_merges_masked_values(monkeypatch):
     assert response.status_code == 200
     assert response.json() == {"success": True, "platform": "hunter"}
     assert captured == {"hunter_api_key": "real-secret", "hunter_username": "new-user"}
+
+
+def test_init_endpoint_returns_success_message(monkeypatch):
+    called = {"value": False}
+
+    def fake_init_defaults(_db):
+        called["value"] = True
+
+    monkeypatch.setattr(system_api.SystemConfigService, "init_defaults", fake_init_defaults)
+    app.dependency_overrides[system_api.get_db] = lambda: object()
+    try:
+        response = client.post("/api/v1/system/init")
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    assert response.json() == {"message": "Default configs initialized"}
+    assert called["value"] is True
 
 
 def test_init_defaults_only_inserts_missing_rows():

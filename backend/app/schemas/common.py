@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -30,6 +31,10 @@ class ReportCreateRequest(BaseModel):
     selection_id: str | None = None
     asset_ids: list[str] = Field(default_factory=list)
     report_formats: list[str] = Field(default_factory=lambda: ["html"])
+    report_content: str | None = None
+    file_name: str | None = None
+    total_assets: int | None = None
+    excluded_assets: int | None = None
     exclude_false_positive: bool = True
     exclude_confirmed: bool = False
     created_by: str = "system"
@@ -38,7 +43,12 @@ class ReportCreateRequest(BaseModel):
 class ReportRead(BaseModel):
     id: str
     report_name: str
-    status: str
+    status: Literal["pending", "running", "completed", "failed", "file_missing"]
+    report_type: str | None = None
+    object_path: str | None = None
+    file_size: int | None = None
+    file_missing: bool = False
+    download_url: str | None = None
     created_at: datetime | None = None
     finished_at: datetime | None = None
     total_assets: int | None = None

@@ -96,8 +96,21 @@
             <el-tag :type="getLogStateTagType(logState)" size="small">{{ formatLogState(logState) }}</el-tag>
             <span class="muted">{{ getLogStateDescription(logState) }}</span>
           </div>
+          <el-alert
+            v-if="logStateHint"
+            :title="logStateHint"
+            :type="getLogStateAlertType(logState)"
+            :closable="false"
+            show-icon
+            class="log-state-alert"
+          />
+
           <pre v-if="shouldShowLogContent" ref="logBoxRef" class="log-box">{{ logs }}</pre>
-          <el-empty v-else :description="getLogStateDescription(logState)" />
+          <el-empty v-else-if="logState === 'not_started'" description="任务尚未开始执行，暂无日志。" />
+          <el-empty v-else-if="logState === 'running'" description="任务正在运行，但当前还没有新的日志内容。" />
+          <el-empty v-else-if="logState === 'log_not_found'" description="任务已执行，但日志文件尚未生成。" />
+          <el-empty v-else-if="logState === 'log_empty'" description="日志文件已创建，但内容为空。" />
+          <el-empty v-else description="暂无日志" />
         </el-tab-pane>
 
         <el-tab-pane :label="`结果预览 (${resultsTotal})`" name="results">
@@ -178,6 +191,19 @@ const logBoxRef = ref<HTMLElement | null>(null)
 const logState = ref<JobLogResponse['log_state']>('not_started')
 
 const taskDetails = ref<JobTaskDetails | null>(null)
+const shouldShowLogContent = computed(() => Boolean(logs.value))
+const logStateHint = computed(() => {
+  if (logState.value === 'running' && !logs.value) {
+    return '任务已开始，正在等待首批日志写入。'
+  }
+  if (logState.value === 'log_not_found') {
+    return '后端还没有生成日志文件，适合先查看任务结果和后处理状态。'
+  }
+  if (logState.value === 'log_empty') {
+    return '日志文件已经存在，但当前没有可读内容。'
+  }
+  return ''
+})
 const queryText = computed(() => {
   const queries = job.value?.query_payload?.queries
   if (!Array.isArray(queries) || queries.length === 0) {
@@ -197,7 +223,6 @@ const payloadText = computed(() => {
     return 'N/A'
   }
 })
-const shouldShowLogContent = computed(() => ['finished', 'log_ready', 'running'].includes(logState.value) && Boolean(logs.value))
 
 watch(
   () => [props.jobId, props.visible] as const,
@@ -213,6 +238,13 @@ watch(
   },
 )
 
+async function loadJobResults(id: string) {
+  const resultData = await fetchJobResults(id, (currentPage.value - 1) * resultsLimit.value, resultsLimit.value)
+  results.value = resultData.items || []
+  resultsTotal.value = resultData.total || 0
+  return resultData
+}
+
 async function loadAllDetails(id: string) {
   loading.value = true
   activeTab.value = 'info'
@@ -220,15 +252,13 @@ async function loadAllDetails(id: string) {
     const [details, logData, resultData] = await Promise.all([
       fetchJobDetails(id),
       fetchJobLogs(id),
-      fetchJobResults(id, (currentPage.value - 1) * resultsLimit.value, resultsLimit.value),
+      loadJobResults(id),
     ])
 
     job.value = details
     logState.value = logData.log_state
     logs.value = logData.content || ''
-    results.value = resultData.items || []
-    resultsTotal.value = resultData.total || 0
-    taskDetails.value = details.task_details || logData.task_details || resultData.task_details || null
+    taskDetails.value = resultData.task_details || logData.task_details || details.task_details || null
   } catch (error: any) {
     ElMessage.error(error?.response?.data?.detail ?? error?.message ?? '加载任务详情失败')
     emit('update:visible', false)
@@ -272,8 +302,15 @@ async function handleRerun() {
 
 async function handlePageChange(page: number) {
   currentPage.value = page
-  if (props.jobId) {
-    await loadAllDetails(props.jobId)
+  if (!props.jobId) return
+  try {
+    loading.value = true
+    const resultData = await loadJobResults(props.jobId)
+    taskDetails.value = resultData.task_details || taskDetails.value
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail ?? error?.message ?? '加载结果预览失败')
+  } finally {
+    loading.value = false
   }
 }
 
@@ -334,6 +371,18 @@ function getLogStateDescription(state?: string) {
     log_ready: '日志已可查看。',
   }
   return map[state || 'not_started'] || '暂无日志状态说明。'
+}
+
+function getLogStateAlertType(state?: string) {
+  const map: Record<string, 'info' | 'warning' | 'success'> = {
+    not_started: 'info',
+    running: 'info',
+    log_not_found: 'warning',
+    log_empty: 'warning',
+    finished: 'success',
+    log_ready: 'success',
+  }
+  return map[state || 'not_started'] || 'info'
 }
 
 function formatScreenshotStatus(status?: string) {
@@ -406,9 +455,10 @@ function formatSources(sources: CollectJobDetail['sources'] | undefined): string
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  min-height: 48px;
 }
-.muted {
+.log-state-alert {
+  margin-bottom: 12px;
   color: var(--el-text-color-secondary);
   font-size: 12px;
 }

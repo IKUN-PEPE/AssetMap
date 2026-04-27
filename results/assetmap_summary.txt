@@ -1,6 +1,6 @@
 Total: 1
-Success: 1 (100.00%)
-Failed: 0 (0.00%)
+Success: 0 (0.00%)
+Failed: 1 (100.00%)
 Skipped: 0 (0.00%)
 Failure reasons:
-- none
+- other: 1

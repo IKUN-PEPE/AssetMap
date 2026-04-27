@@ -1,42 +1,49 @@
-import json
+import os
+
 import requests
 
-token = "ae3f6314-c2e1-4724-a800-5f2ebb9eb5f6"
+ZOOMEYE_API_KEY_ENV = "ZOOMEYE_API_KEY"
 
-headers = {
-    "X-QuakeToken": token,
-    "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0"
-}
 
-payload = {
-    "query": 'app:"nginx"',
-    "start": 0,
-    "size": 10
-}
+def get_api_key() -> str:
+    api_key = os.getenv(ZOOMEYE_API_KEY_ENV, "").strip()
+    if not api_key:
+        raise RuntimeError(f"缺少环境变量 {ZOOMEYE_API_KEY_ENV}，请先配置 ZoomEye API Key")
+    return api_key
 
-url = "https://quake.360.net/api/v3/search/quake_service"
+def search(query='app:"nginx"'):
+    url = "https://api.zoomeye.org/host/search"
+    headers = {
+        "API-KEY": get_api_key(),
+        "User-Agent": "Mozilla/5.0"
+    }
+    params = {
+        "query": query,
+        "page": 1
+    }
 
-try:
-    resp = requests.post(
-        url,
-        headers=headers,
-        json=payload,
-        timeout=30
-    )
-
-    print("HTTP状态码:", resp.status_code)
-    print("响应头:", dict(resp.headers))
-    print("响应正文:")
-    print(resp.text)
-
-    # 如果返回的是 JSON，再格式化输出
     try:
-        data = resp.json()
-        print("JSON格式化结果:")
-        print(json.dumps(data, ensure_ascii=False, indent=2))
-    except Exception:
-        pass
+        r = requests.get(url, headers=headers, params=params, timeout=20)
+        print("状态码:", r.status_code)
+        print("响应内容前500字符:")
+        print(r.text[:500])
 
-except requests.exceptions.RequestException as e:
-    print("请求失败:", e)
+        data = r.json()
+        matches = data.get("matches", [])
+
+        for i, item in enumerate(matches[:5], 1):
+            ip = item.get("ip")
+            if isinstance(ip, list):
+                ip = ip[0]
+
+            portinfo = item.get("portinfo", {}) or {}
+            port = portinfo.get("port")
+            title = portinfo.get("title")
+
+            print(f"[{i}] IP: {ip}  端口: {port}  标题: {title}")
+
+    except Exception as e:
+        print("请求失败:", repr(e))
+
+if __name__ == "__main__":
+    search()

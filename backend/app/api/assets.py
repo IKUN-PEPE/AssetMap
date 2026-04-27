@@ -1,10 +1,11 @@
 import asyncio
 import logging
+from datetime import datetime, timedelta, timezone
 from pathlib import Path, PurePosixPath
 from types import SimpleNamespace
 from uuid import uuid4
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from playwright.async_api import async_playwright
 from pydantic import BaseModel
 from sqlalchemy import and_, or_
@@ -21,6 +22,40 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 SCREENSHOT_DIR = Path(settings.screenshot_output_dir).resolve()
 VERIFY_TASKS: dict[str, SimpleNamespace] = {}
+UTC8 = timezone(timedelta(hours=8))
+SOURCE_FILTER_GROUPS: dict[str, tuple[str, ...]] = {
+    "fofa": ("fofa", "fofa_csv"),
+    "hunter": ("hunter", "hunter_csv"),
+    "zoomeye": ("zoomeye", "zoomeye_csv"),
+    "quake": ("quake", "quake_csv"),
+}
+
+
+def expand_source_filter_values(source: str) -> tuple[str, ...]:
+    normalized = str(source or "").strip().lower()
+    if not normalized:
+        return ()
+    return SOURCE_FILTER_GROUPS.get(normalized, (normalized,))
+
+
+def get_month_bounds_utc8(reference: datetime | None = None) -> tuple[datetime, datetime]:
+    current = reference or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=timezone.utc)
+    else:
+        current = current.astimezone(timezone.utc)
+
+    local = current.astimezone(UTC8)
+    month_start_local = datetime(local.year, local.month, 1, tzinfo=UTC8)
+    if local.month == 12:
+        next_month_local = datetime(local.year + 1, 1, 1, tzinfo=UTC8)
+    else:
+        next_month_local = datetime(local.year, local.month + 1, 1, tzinfo=UTC8)
+
+    return (
+        month_start_local.astimezone(timezone.utc).replace(tzinfo=None),
+        next_month_local.astimezone(timezone.utc).replace(tzinfo=None),
+    )
 
 
 class VerifyBatchRequest(BaseModel):
@@ -214,7 +249,16 @@ def serialize_asset(asset: WebEndpoint) -> dict:
 
 
 @router.get("")
-def list_assets(db: Session = Depends(get_db), domain: str | None = None, label_status: str | None = None, screenshot_status: str | None = None, has_screenshot: bool | None = None, source: str | None = None, q: str | None = None):
+def list_assets(
+    db: Session = Depends(get_db),
+    domain: str | None = None,
+    label_status: str | None = None,
+    screenshot_status: str | None = None,
+    has_screenshot: bool | None = None,
+    source: str | None = None,
+    q: str | None = None,
+    month_new: bool = Query(False),
+):
     query = db.query(WebEndpoint).options(selectinload(WebEndpoint.screenshots))
     if domain:
         query = query.filter(WebEndpoint.domain == domain)
@@ -228,7 +272,16 @@ def list_assets(db: Session = Depends(get_db), domain: str | None = None, label_
         else:
             query = query.filter(~WebEndpoint.screenshots.any())
     if source:
-        query = query.filter(WebEndpoint.source_meta["source"].astext == source)
+        source_values = expand_source_filter_values(source)
+        query = query.filter(
+            or_(*[WebEndpoint.source_meta["source"].astext == item for item in source_values])
+        )
+    if month_new:
+        month_start, month_end = get_month_bounds_utc8()
+        query = query.filter(
+            WebEndpoint.first_seen_at >= month_start,
+            WebEndpoint.first_seen_at < month_end,
+        )
     if q:
         like_value = f"%{q}%"
         query = query.filter(or_(WebEndpoint.normalized_url.ilike(like_value), WebEndpoint.domain.ilike(like_value), WebEndpoint.title.ilike(like_value)))

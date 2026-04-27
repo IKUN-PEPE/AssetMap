@@ -187,7 +187,7 @@
             </el-form-item>
 
             <div class="section-title mt-4">字段映射</div>
-            <div class="mapping-note">至少映射一个身份字段：URL / IP / 域名 / 主机名。</div>
+            <div class="mapping-note">至少映射一个可识别身份：URL / 域名 / 主机名 / IP，或 IP + 端口。</div>
             <div class="mapping-grid">
               <div v-for="field in csvFieldConfigs" :key="field.key" class="mapping-item">
                 <label class="mapping-label">
@@ -309,6 +309,13 @@ const csvFieldConfigs: CsvFieldConfig[] = [
 ]
 
 const csvIdentityFieldKeys: CsvFieldKey[] = ['url', 'ip', 'domain', 'host']
+
+function hasCsvIdentityMapping() {
+  const hasStandaloneIdentityField = csvIdentityFieldKeys.some((field) => Boolean(csvFieldMapping[field]))
+  const hasIpWithPort = Boolean(csvFieldMapping.ip) && Boolean(csvFieldMapping.port)
+
+  return hasStandaloneIdentityField || hasIpWithPort
+}
 
 const createForm = reactive({
   job_name: '',
@@ -498,9 +505,8 @@ function validateCsvMapping() {
     return true
   }
 
-  const hasIdentityField = csvIdentityFieldKeys.some((field) => Boolean(csvFieldMapping[field]))
-  if (!hasIdentityField) {
-    ElMessage.error('至少映射一个身份字段：URL、IP、域名、主机名')
+  if (!hasCsvIdentityMapping()) {
+    ElMessage.error('至少映射一个可识别身份：URL、域名、主机名、IP，或 IP + 端口')
     return false
   }
   return true
