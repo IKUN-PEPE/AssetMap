@@ -3,6 +3,7 @@ from app.models.job import CollectJob
 from app.models.support import (
     Label,
     LabelAuditLog,
+    JobPendingAsset,
     Report,
     SavedSelection,
     Screenshot,
@@ -21,6 +22,7 @@ __all__ = [
     "Screenshot",
     "Label",
     "LabelAuditLog",
+    "JobPendingAsset",
     "SavedSelection",
     "SelectionItem",
     "Report",

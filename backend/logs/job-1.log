@@ -144,3 +144,35 @@ AttributeError: module 'app.tasks.collect' has no attribute 'Screenshot'
 2026-04-27 22:03:48,843 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
 2026-04-27 22:05:21,477 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
 2026-04-27 22:05:21,479 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:47:49,488 - ERROR - Collector fofa failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 444, in run_collect_task
+    stored_count = _store_pending_assets(
+        db,
+    ...<3 lines>...
+        replace_existing=False,
+    )
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 236, in _store_pending_assets
+    db.add(
+    ^^^^^^
+AttributeError: 'FakeDb' object has no attribute 'add'
+2026-04-28 00:47:50,116 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:47:50,135 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:49:33,891 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:49:33,906 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:50:17,607 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:50:17,638 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:51:41,793 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:51:41,796 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:54:13,185 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:54:13,187 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:56:02,214 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:56:02,215 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:57:27,338 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:57:27,339 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 00:57:42,508 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 00:57:42,511 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 01:02:59,780 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 01:02:59,781 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file
+2026-04-28 01:03:00,072 - WARNING - Verify failed asset_id=asset-2 url=https://bad.example.com reason=请求超时
+2026-04-28 01:03:00,074 - WARNING - Screenshot failed asset_id=asset-2 reason=missing-file

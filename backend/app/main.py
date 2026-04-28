@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api.router import api_router
 from app.core.config import settings
-from app.services.logs.runtime_buffer import runtime_log_handler
+from app.services.logs.runtime_buffer import runtime_log_handler, service_log_handler
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +18,8 @@ runtime_log_handler.setFormatter(logging.Formatter("%(message)s"))
 root_logger = logging.getLogger()
 if runtime_log_handler not in root_logger.handlers:
     root_logger.addHandler(runtime_log_handler)
+if service_log_handler not in root_logger.handlers:
+    root_logger.addHandler(service_log_handler)
 
 app = FastAPI(title=settings.app_name, debug=settings.debug)
 app.add_middleware(
@@ -39,6 +41,8 @@ app.mount(
     name="screenshots",
 )
 app.include_router(api_router, prefix=settings.api_prefix)
+
+logging.getLogger("assetmap.service").info("AssetMap backend service started")
 
 
 @app.get("/health")

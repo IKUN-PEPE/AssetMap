@@ -229,8 +229,8 @@ def test_run_collect_task_keeps_cancelled_status_and_skips_post_process(monkeypa
     )
     monkeypatch.setattr(
         collect,
-        "save_assets",
-        lambda db, job, assets, source_name: setattr(job, "status", "cancelled"),
+        "_store_pending_assets",
+        lambda db, job, assets, source_name, replace_existing=False: setattr(job, "status", "cancelled") or len(assets),
     )
     monkeypatch.setattr(
         collect,
@@ -287,13 +287,13 @@ def test_run_collect_task_marks_partial_success_when_any_source_fails(monkeypatc
     )
     monkeypatch.setattr(
         collect,
-        "save_assets",
-        lambda db, job, assets, source_name: setattr(job, "success_count", int(getattr(job, "success_count", 0)) + len(assets)),
+        "_store_pending_assets",
+        lambda db, job, assets, source_name, replace_existing=False: len(assets),
     )
 
     collect.run_collect_task.call_local("job-partial")
 
-    assert job.status == "partial_success"
+    assert job.status == "pending_import"
     assert job.success_count == 1
     assert job.failed_count == 1
     assert job.total_count == 2

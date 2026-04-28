@@ -137,20 +137,22 @@ def test_process_csv_import_job_updates_counts_and_reuses_save_assets(monkeypatc
         ),
     )
 
-    def fake_save_assets(fake_db, fake_job, assets, source_name):
+    def fake_store_pending_assets(fake_db, fake_job, assets, source_name, replace_existing=False):
         seen["assets"] = assets
         seen["source_name"] = source_name
-        fake_job.success_count += 1
+        return len(assets)
 
-    monkeypatch.setattr(collect, "save_assets", fake_save_assets)
+    monkeypatch.setattr(collect, "_store_pending_assets", fake_store_pending_assets)
 
     collect.process_csv_import_job(db, job)
 
     assert seen["source_name"] == "csv_import"
     assert seen["assets"][0]["raw_data"]["status_code"] == 200
+    assert job.success_count == 1
     assert job.total_count == 2
     assert job.failed_count == 1
     assert job.progress == 100
+    assert job.status == "pending_import"
 
 
 
@@ -178,15 +180,17 @@ def test_process_csv_import_job_treats_auto_source_type_as_csv_import(monkeypatc
         ),
     )
 
-    def fake_save_assets(fake_db, fake_job, assets, source_name):
+    def fake_store_pending_assets(fake_db, fake_job, assets, source_name, replace_existing=False):
         seen["source_name"] = source_name
-        fake_job.success_count += 1
+        return len(assets)
 
-    monkeypatch.setattr(collect, "save_assets", fake_save_assets)
+    monkeypatch.setattr(collect, "_store_pending_assets", fake_store_pending_assets)
 
     collect.process_csv_import_job(db, job)
 
     assert seen["source_name"] == "csv_import"
+    assert job.success_count == 1
+    assert job.status == "pending_import"
 
 
 def test_process_csv_import_job_requires_file_path():
@@ -428,12 +432,14 @@ def test_process_vendor_csv_import_job_routes_vendor_rows_through_csv_import(mon
         lambda _file_path: [{'url': 'https://example.com', 'raw_data': {}}],
     )
 
-    def fake_save_assets(fake_db, fake_job, assets, source_name):
+    def fake_store_pending_assets(fake_db, fake_job, assets, source_name, replace_existing=False):
         seen['source_name'] = source_name
-        fake_job.success_count += len(assets)
+        return len(assets)
 
-    monkeypatch.setattr(collect, 'save_assets', fake_save_assets)
+    monkeypatch.setattr(collect, '_store_pending_assets', fake_store_pending_assets)
 
     collect.process_csv_import_job(db, job)
 
     assert seen['source_name'] == 'csv_import'
+    assert job.success_count == 1
+    assert job.status == 'pending_import'

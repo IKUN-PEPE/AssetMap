@@ -5,7 +5,11 @@ import type {
   CsvPreviewResponse,
   JobCreatePayload,
   JobCreateResult,
+  JobBatchOperationResponse,
+  JobConfirmImportResponse,
+  JobDiscardImportResponse,
   JobLogResponse,
+  JobPendingAssetListResponse,
   JobResultPreviewResponse,
   TaskProgress,
   CollectJobStatus,
@@ -33,8 +37,25 @@ export async function fetchJobResults(id: string, skip = 0, limit = 50): Promise
   return data
 }
 
+export async function fetchPendingJobAssets(id: string, skip = 0, limit = 50): Promise<JobPendingAssetListResponse> {
+  const { data } = await http.get<JobPendingAssetListResponse>(`/api/v1/jobs/${id}/pending-assets`, {
+    params: { skip, limit },
+  })
+  return data
+}
+
 export async function rerunJob(id: string): Promise<JobCreateResult> {
   const { data } = await http.post<JobCreateResult>(`/api/v1/jobs/${id}/rerun`)
+  return data
+}
+
+export async function confirmJobImport(id: string, payload: { ids?: string[]; import_all: boolean }) {
+  const { data } = await http.post<JobConfirmImportResponse>(`/api/v1/jobs/${id}/confirm-import`, payload)
+  return data
+}
+
+export async function discardJobImport(id: string) {
+  const { data } = await http.post<JobDiscardImportResponse>(`/api/v1/jobs/${id}/discard-import`)
   return data
 }
 
@@ -75,6 +96,21 @@ export async function previewCsv(formData: FormData) {
 
 export async function createCollectJob(payload: JobCreatePayload) {
   const { data } = await http.post<JobCreateResult>('/api/v1/jobs/collect', payload)
+  return data
+}
+
+export async function batchDeleteJobs(ids: string[]) {
+  const { data } = await http.post<JobBatchOperationResponse>('/api/v1/jobs/batch-delete', { ids })
+  return data
+}
+
+export async function batchRerunJobs(ids: string[]) {
+  const { data } = await http.post<JobBatchOperationResponse>('/api/v1/jobs/batch-rerun', { ids })
+  return data
+}
+
+export async function batchStartJobs(ids: string[]) {
+  const { data } = await http.post<JobBatchOperationResponse>('/api/v1/jobs/batch-start', { ids })
   return data
 }
 

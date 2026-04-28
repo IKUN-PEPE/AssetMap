@@ -1,2 +1,5 @@
 ﻿seq,input,final_url,status,error,screenshot_path
-b6be2a2d-7c21-45e6-8173-12a4dcf370f2,http://www.likun.games/,http://www.likun.games/,failed,"ValueError: Page content too short (52 bytes), likely blocked by firewall or empty response",C:\Users\Administrator\VScode\AssetMap\screenshots\b6be2a2d-7c21-45e6-8_403 Forbidden_http___www.likun.games_.png
+a9d73caa-0cca-4202-b27c-04716675d7c3,https://8.135.53.57:8598/,https://8.135.53.57:8598/,failed,"TimeoutError: Page.goto: Timeout 15000ms exceeded.
+Call log:
+  - navigating to ""https://8.135.53.57:8598/"", waiting until ""load""
+",C:\Users\Administrator\VScode\AssetMap\screenshots\a9d73caa-0cca-4202-b_企讯达管理后台_https___8.135.53.57_8598_.png

@@ -1,26 +1,35 @@
 import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Any, List
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, inspect, or_
 from sqlalchemy.orm import Session
 
 from app.api.assets import serialize_asset
 from app.core.config import BASE_DIR
 from app.core.db import get_db
 from app.core.huey import run_in_process
-from app.models import CollectJob, Host, Service, SourceObservation, WebEndpoint
+from app.models import CollectJob, Host, JobPendingAsset, Service, SourceObservation, WebEndpoint
 from app.schemas.job import (
+    JobBatchIdsRequest,
+    JobBatchOperationResponse,
     CollectJobCreate,
     CollectJobDetail,
     CollectJobRead,
+    JobConfirmImportRequest,
+    JobConfirmImportResponse,
+    JobDiscardImportResponse,
     JobLogResponse,
+    JobPendingAssetListResponse,
+    JobPendingAssetRead,
     JobResultPreviewResponse,
     JobTaskDetails,
 )
 from app.services.collectors.preview import get_csv_preview
 from app.services.normalizer.service import normalize_url
+from app.tasks.collect_persistence import save_assets
 from app.tasks.sample_import import import_sample_assets
 
 router = APIRouter()
@@ -30,6 +39,20 @@ UPLOAD_DIR = BASE_DIR / "tmp_uploads"
 LOGS_DIR = BASE_DIR / "logs"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def ensure_job_pending_assets_schema(db: Session) -> None:
+    bind = getattr(db, "bind", None)
+    if bind is None:
+        return
+    inspector = inspect(bind)
+    try:
+        tables = set(inspector.get_table_names())
+    except Exception:
+        return
+    if "job_pending_assets" in tables:
+        return
+    JobPendingAsset.__table__.create(bind=bind, checkfirst=True)
 
 
 def construct_command_line(job: CollectJob) -> str:
@@ -59,6 +82,44 @@ def _get_log_content(job_id: str) -> tuple[str, bool]:
     if not log_file.exists():
         return "", False
     return log_file.read_text(encoding="utf-8", errors="replace"), True
+
+
+def _serialize_pending_asset(item: JobPendingAsset) -> dict[str, Any]:
+    mapped = dict(getattr(item, "mapped_data", {}) or {})
+    return {
+        "id": item.id,
+        "source": item.source,
+        "normalized_url": mapped.get("url") or mapped.get("normalized_url"),
+        "url": mapped.get("url"),
+        "domain": mapped.get("domain"),
+        "ip": mapped.get("ip"),
+        "port": mapped.get("port"),
+        "title": mapped.get("title"),
+        "status_code": mapped.get("status_code"),
+        "protocol": mapped.get("protocol"),
+        "country": mapped.get("country"),
+        "city": mapped.get("city"),
+        "org": mapped.get("org"),
+        "status": item.status,
+        "created_at": item.created_at,
+    }
+
+
+def _pending_assets_query(db: Session, job_id: str):
+    ensure_job_pending_assets_schema(db)
+    return db.query(JobPendingAsset).filter(JobPendingAsset.job_id == job_id)
+
+
+def _job_can_delete(job: CollectJob) -> bool:
+    return job.status in {"success", "failed", "cancelled", "partial_success", "pending_import", "imported", "discarded"}
+
+
+def _job_can_rerun(job: CollectJob) -> bool:
+    return job.status in {"success", "failed", "cancelled", "partial_success", "imported", "discarded"}
+
+
+def _job_can_start(job: CollectJob) -> bool:
+    return job.status in {"pending"}
 
 
 def _stage_state(*, enabled: bool, started: bool, finished: bool, success_count: int, failed_count: int) -> str:
@@ -837,6 +898,102 @@ def get_job_results(
     }
 
 
+@router.get("/{job_id}/pending-assets", response_model=JobPendingAssetListResponse)
+def get_job_pending_assets(
+    job_id: str,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    db: Session = Depends(get_db),
+):
+    _get_job_or_404(db, job_id)
+    query = _pending_assets_query(db, job_id).order_by(desc(JobPendingAsset.created_at))
+    items = query.offset(skip).limit(limit).all()
+    total = query.count()
+    return {
+        "job_id": job_id,
+        "items": [_serialize_pending_asset(item) for item in items],
+        "total": total,
+        "skip": skip,
+        "limit": limit,
+    }
+
+
+@router.post("/{job_id}/confirm-import", response_model=JobConfirmImportResponse)
+def confirm_job_import(job_id: str, payload: JobConfirmImportRequest, db: Session = Depends(get_db)):
+    job = _get_job_or_404(db, job_id)
+    ensure_job_pending_assets_schema(db)
+    if job.status != "pending_import":
+        raise HTTPException(status_code=400, detail="Job is not waiting for import confirmation")
+
+    query = _pending_assets_query(db, job_id).filter(JobPendingAsset.status == "pending")
+    pending_items = query.all()
+    if not pending_items:
+        raise HTTPException(status_code=400, detail="No pending assets to import")
+
+    if payload.import_all:
+        target_items = pending_items
+    else:
+        if not payload.ids:
+            raise HTTPException(status_code=400, detail="ids is required when import_all is false")
+        target_ids = set(payload.ids)
+        target_items = [item for item in pending_items if item.id in target_ids]
+        if not target_items:
+            raise HTTPException(status_code=400, detail="No matching pending assets to import")
+
+    job.success_count = 0
+    job.duplicate_count = 0
+    job.failed_count = 0
+    job.total_count = 0
+
+    grouped_records: dict[str, list[dict[str, Any]]] = {}
+    for item in target_items:
+        mapped = dict(item.mapped_data or {})
+        if "raw_data" not in mapped or mapped.get("raw_data") is None:
+            mapped["raw_data"] = dict(item.raw_data or {})
+        grouped_records.setdefault(item.source, []).append(mapped)
+
+    for source_name, records in grouped_records.items():
+        save_assets(db, job, records, source_name)
+
+    for item in target_items:
+        item.status = "imported"
+        item.imported_at = datetime.utcnow()
+
+    remaining_pending = _pending_assets_query(db, job_id).filter(JobPendingAsset.status == "pending").count()
+    job.status = "imported" if remaining_pending == 0 else "pending_import"
+    db.commit()
+
+    if bool(getattr(job, "auto_verify", False)) and job.status == "imported":
+        from app.tasks.collect import run_auto_post_process
+        run_in_process(run_auto_post_process, job.id, delay=2)
+
+    return {
+        "job_id": job_id,
+        "total": len(target_items),
+        "success": int(job.success_count or 0),
+        "duplicate": int(job.duplicate_count or 0),
+        "failed": int(job.failed_count or 0),
+        "status": job.status,
+    }
+
+
+@router.post("/{job_id}/discard-import", response_model=JobDiscardImportResponse)
+def discard_job_import(job_id: str, db: Session = Depends(get_db)):
+    job = _get_job_or_404(db, job_id)
+    ensure_job_pending_assets_schema(db)
+    if job.status != "pending_import":
+        raise HTTPException(status_code=400, detail="Job is not waiting for import confirmation")
+
+    pending_items = _pending_assets_query(db, job_id).filter(JobPendingAsset.status == "pending").all()
+    discarded = 0
+    for item in pending_items:
+        item.status = "discarded"
+        discarded += 1
+    job.status = "discarded"
+    db.commit()
+    return {"job_id": job_id, "discarded": discarded, "status": job.status}
+
+
 @router.post("/preview")
 async def preview_csv(file: UploadFile = File(...)):
     logger.info("Preview CSV start filename=%s", file.filename)
@@ -917,6 +1074,100 @@ def rerun_job(job_id: str, db: Session = Depends(get_db)):
         auto_verify=original_job.auto_verify,
     )
     return create_collect_job(new_job_payload, db)
+
+
+@router.post("/batch-delete", response_model=JobBatchOperationResponse)
+def batch_delete_jobs(payload: JobBatchIdsRequest, db: Session = Depends(get_db)):
+    ensure_job_pending_assets_schema(db)
+    if not payload.ids:
+        raise HTTPException(status_code=400, detail="ids is required")
+    if len(payload.ids) > 100:
+        raise HTTPException(status_code=400, detail="ids exceeds limit")
+
+    items = []
+    success = 0
+    failed = 0
+    for job_id in payload.ids:
+        job = db.get(CollectJob, job_id)
+        if not job:
+            items.append({"id": job_id, "ok": False, "error": "Job not found"})
+            failed += 1
+            continue
+        if not _job_can_delete(job):
+            items.append({"id": job_id, "ok": False, "error": f"Job status {job.status} cannot be deleted"})
+            failed += 1
+            continue
+        _pending_assets_query(db, job_id).delete(synchronize_session=False)
+        db.delete(job)
+        success += 1
+        items.append({"id": job_id, "ok": True})
+    db.commit()
+    return {"total": len(payload.ids), "success": success, "failed": failed, "items": items}
+
+
+@router.post("/batch-rerun", response_model=JobBatchOperationResponse)
+def batch_rerun_jobs(payload: JobBatchIdsRequest, db: Session = Depends(get_db)):
+    if not payload.ids:
+        raise HTTPException(status_code=400, detail="ids is required")
+    if len(payload.ids) > 100:
+        raise HTTPException(status_code=400, detail="ids exceeds limit")
+
+    items = []
+    success = 0
+    failed = 0
+    for job_id in payload.ids:
+        job = db.get(CollectJob, job_id)
+        if not job:
+            items.append({"id": job_id, "ok": False, "error": "Job not found"})
+            failed += 1
+            continue
+        if not _job_can_rerun(job):
+            items.append({"id": job_id, "ok": False, "error": f"Job status {job.status} cannot be rerun"})
+            failed += 1
+            continue
+        new_job = create_collect_job(
+            CollectJobCreate(
+                job_name=f"{job.job_name} (Rerun)",
+                sources=job.sources,
+                queries=(job.query_payload or {}).get("queries", []),
+                file_path=(job.query_payload or {}).get("file_path"),
+                source_type=(job.query_payload or {}).get("source_type"),
+                created_by="rerun",
+                dedup_strategy=job.dedup_strategy,
+                field_mapping=job.field_mapping,
+                auto_verify=job.auto_verify,
+            ),
+            db,
+        )
+        success += 1
+        items.append({"id": job_id, "ok": True, "new_job_id": new_job["job_id"]})
+    return {"total": len(payload.ids), "success": success, "failed": failed, "items": items}
+
+
+@router.post("/batch-start", response_model=JobBatchOperationResponse)
+def batch_start_jobs(payload: JobBatchIdsRequest, db: Session = Depends(get_db)):
+    if not payload.ids:
+        raise HTTPException(status_code=400, detail="ids is required")
+    if len(payload.ids) > 100:
+        raise HTTPException(status_code=400, detail="ids exceeds limit")
+
+    items = []
+    success = 0
+    failed = 0
+    for job_id in payload.ids:
+        job = db.get(CollectJob, job_id)
+        if not job:
+            items.append({"id": job_id, "ok": False, "error": "Job not found"})
+            failed += 1
+            continue
+        if not _job_can_start(job):
+            items.append({"id": job_id, "ok": False, "error": f"Job status {job.status} cannot be started"})
+            failed += 1
+            continue
+        start_task(job_id, db)
+        success += 1
+        items.append({"id": job_id, "ok": True})
+    return {"total": len(payload.ids), "success": success, "failed": failed, "items": items}
 
 
 @router.post("/{job_id}/start")

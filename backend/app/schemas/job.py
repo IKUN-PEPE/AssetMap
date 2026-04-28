@@ -41,6 +41,15 @@ class FofaCsvImportRequest(BaseModel):
     created_by: str = "system"
 
 
+class JobBatchIdsRequest(BaseModel):
+    ids: list[str]
+
+
+class JobConfirmImportRequest(BaseModel):
+    ids: list[str] = Field(default_factory=list)
+    import_all: bool = False
+
+
 class JobTaskStage(BaseModel):
     state: Literal["disabled", "pending", "running", "success", "failed", "partial_failed"]
     started: bool
@@ -51,7 +60,7 @@ class JobTaskStage(BaseModel):
 
 
 class JobCollectionDetails(BaseModel):
-    status: Literal["pending", "running", "success", "failed", "cancelled", "partial_success"]
+    status: Literal["pending", "running", "success", "failed", "cancelled", "partial_success", "pending_import", "imported", "discarded"]
     progress: int
     observation_count: int
     result_asset_count: int
@@ -72,7 +81,7 @@ class JobTaskDetails(BaseModel):
 class CollectJobRead(BaseModel):
     id: str
     job_name: str
-    status: Literal["pending", "running", "success", "failed", "cancelled", "partial_success"]
+    status: Literal["pending", "running", "success", "failed", "cancelled", "partial_success", "pending_import", "imported", "discarded"]
     sources: dict | list
     query_payload: dict
     progress: int
@@ -95,6 +104,63 @@ class CollectJobDetail(CollectJobRead):
     duration: float | None = None
     command_line: str | None = None
     task_details: JobTaskDetails | None = None
+
+
+class JobPendingAssetRead(BaseModel):
+    id: str
+    source: str
+    normalized_url: str | None = None
+    url: str | None = None
+    domain: str | None = None
+    ip: str | None = None
+    port: int | None = None
+    title: str | None = None
+    status_code: int | None = None
+    protocol: str | None = None
+    country: str | None = None
+    city: str | None = None
+    org: str | None = None
+    status: Literal["pending", "imported", "discarded"]
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class JobPendingAssetListResponse(BaseModel):
+    job_id: str
+    items: list[JobPendingAssetRead]
+    total: int
+    skip: int
+    limit: int
+
+
+class JobBatchOperationItem(BaseModel):
+    id: str
+    ok: bool
+    new_job_id: str | None = None
+    error: str | None = None
+
+
+class JobBatchOperationResponse(BaseModel):
+    total: int
+    success: int
+    failed: int
+    items: list[JobBatchOperationItem]
+
+
+class JobConfirmImportResponse(BaseModel):
+    job_id: str
+    total: int
+    success: int
+    duplicate: int
+    failed: int
+    status: str
+
+
+class JobDiscardImportResponse(BaseModel):
+    job_id: str
+    discarded: int
+    status: str
 
 
 class JobLogResponse(BaseModel):

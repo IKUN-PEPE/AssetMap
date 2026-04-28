@@ -22,6 +22,9 @@ export type CollectJobStatus =
   | 'failed'
   | 'cancelled'
   | 'partial_success'
+  | 'pending_import'
+  | 'imported'
+  | 'discarded'
 
 export interface SystemConfigItem {
   id: string
@@ -225,6 +228,61 @@ export interface JobResultPreviewResponse {
   skip: number
   limit: number
   task_details?: JobTaskDetails
+}
+
+export interface JobPendingAssetItem {
+  id: string
+  source: string
+  normalized_url?: string | null
+  url?: string | null
+  domain?: string | null
+  ip?: string | null
+  port?: number | null
+  title?: string | null
+  status_code?: number | null
+  protocol?: string | null
+  country?: string | null
+  city?: string | null
+  org?: string | null
+  status: 'pending' | 'imported' | 'discarded'
+  created_at: string
+}
+
+export interface JobPendingAssetListResponse {
+  job_id: string
+  items: JobPendingAssetItem[]
+  total: number
+  skip: number
+  limit: number
+}
+
+export interface JobBatchOperationItem {
+  id: string
+  ok: boolean
+  new_job_id?: string | null
+  error?: string | null
+}
+
+export interface JobBatchOperationResponse {
+  total: number
+  success: number
+  failed: number
+  items: JobBatchOperationItem[]
+}
+
+export interface JobConfirmImportResponse {
+  job_id: string
+  total: number
+  success: number
+  duplicate: number
+  failed: number
+  status: string
+}
+
+export interface JobDiscardImportResponse {
+  job_id: string
+  discarded: number
+  status: string
 }
 
 export interface VerifyAssetsResult {

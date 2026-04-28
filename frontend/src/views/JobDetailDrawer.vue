@@ -109,12 +109,22 @@
           <el-empty v-else-if="logState === 'not_started'" description="任务尚未开始执行，暂无日志。" />
           <el-empty v-else-if="logState === 'running'" description="任务正在运行，但当前还没有新的日志内容。" />
           <el-empty v-else-if="logState === 'log_not_found'" description="任务已执行，但日志文件尚未生成。" />
-          <el-empty v-else-if="logState === 'log_empty'" description="日志文件已创建，但内容为空。" />
+          <el-empty v-else-if="logState === 'log_empty'" description="日志文件已经存在，但内容为空。" />
           <el-empty v-else description="暂无日志" />
         </el-tab-pane>
 
-        <el-tab-pane :label="`结果预览 (${resultsTotal})`" name="results">
-          <el-table :data="results" stripe height="100%">
+        <el-tab-pane :label="`${isPendingImportJob ? '待确认结果' : '结果预览'} (${resultsTotal})`" name="results">
+          <div v-if="isPendingImportJob" class="section-toolbar">
+            <span class="muted">已选择 {{ selectedPendingIds.length }} 项</span>
+            <div class="toolbar-actions">
+              <el-button size="small" type="primary" :disabled="selectedPendingIds.length === 0" @click="handleImportSelected">确认导入已选</el-button>
+              <el-button size="small" type="success" :disabled="resultsTotal === 0" @click="handleImportAll">确认导入全部</el-button>
+              <el-button size="small" type="danger" plain :disabled="resultsTotal === 0" @click="handleDiscardAll">丢弃全部</el-button>
+            </div>
+          </div>
+
+          <el-table :data="results" stripe height="100%" @selection-change="onPendingSelectionChange">
+            <el-table-column v-if="isPendingImportJob" type="selection" width="55" reserve-selection />
             <el-table-column prop="source" label="来源" width="110" show-overflow-tooltip />
             <el-table-column prop="normalized_url" label="URL" min-width="220" show-overflow-tooltip />
             <el-table-column prop="domain" label="Domain" min-width="150" show-overflow-tooltip />
@@ -122,29 +132,29 @@
             <el-table-column prop="port" label="端口" width="90" />
             <el-table-column prop="title" label="标题" min-width="160" show-overflow-tooltip />
             <el-table-column prop="status_code" label="状态码" width="90" />
-            <el-table-column label="后处理" width="120">
+            <el-table-column v-if="!isPendingImportJob" label="后处理" width="120">
               <template #default="scope">
                 <el-tag :type="getResultPostProcessTagType(scope.row)" size="small">
                   {{ getResultPostProcessLabel(scope.row) }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="验证" width="120">
+            <el-table-column v-if="!isPendingImportJob" label="验证" width="120">
               <template #default="scope">
                 <el-tag :type="scope.row.verified ? 'success' : 'warning'" size="small">
                   {{ scope.row.verified ? '已验证' : '未验证' }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="截图" width="120">
+            <el-table-column v-if="!isPendingImportJob" label="截图" width="120">
               <template #default="scope">
                 <el-tag :type="scope.row.screenshot_status === 'success' ? 'success' : scope.row.screenshot_status === 'failed' ? 'danger' : 'info'" size="small">
                   {{ formatScreenshotStatus(scope.row.screenshot_status) }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="verify_error" label="验证失败原因" min-width="180" show-overflow-tooltip />
-            <el-table-column prop="screenshot_error" label="截图失败原因" min-width="180" show-overflow-tooltip />
+            <el-table-column v-if="!isPendingImportJob" prop="verify_error" label="验证失败原因" min-width="180" show-overflow-tooltip />
+            <el-table-column v-if="!isPendingImportJob" prop="screenshot_error" label="截图失败原因" min-width="180" show-overflow-tooltip />
           </el-table>
           <div class="pagination-row" v-if="resultsTotal > resultsLimit">
             <el-pagination
@@ -163,7 +173,7 @@
     <template #footer>
       <div class="drawer-footer">
         <el-button @click="$emit('update:visible', false)">关闭</el-button>
-        <el-button type="primary" @click="handleRerun">重新执行</el-button>
+        <el-button v-if="job && canRerun(job.status)" type="primary" @click="handleRerun">重新执行</el-button>
       </div>
     </template>
   </el-drawer>
@@ -171,9 +181,23 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
-import { fetchJobDetails, fetchJobLogs, fetchJobResults, rerunJob } from '@/api/modules/jobs'
-import type { CollectJobDetail, JobTaskDetails, JobResultPreviewItem, JobLogResponse } from '@/types'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import {
+  confirmJobImport,
+  discardJobImport,
+  fetchJobDetails,
+  fetchJobLogs,
+  fetchJobResults,
+  fetchPendingJobAssets,
+  rerunJob,
+} from '@/api/modules/jobs'
+import type {
+  CollectJobDetail,
+  JobLogResponse,
+  JobPendingAssetItem,
+  JobTaskDetails,
+  JobResultPreviewItem,
+} from '@/types'
 import dayjs from 'dayjs'
 
 const props = defineProps<{ visible: boolean; jobId: string | null }>()
@@ -182,41 +206,31 @@ const emit = defineEmits(['update:visible', 'rerun'])
 const loading = ref(false)
 const job = ref<CollectJobDetail | null>(null)
 const logs = ref('')
-const results = ref<JobResultPreviewItem[]>([])
+const results = ref<Array<JobResultPreviewItem | JobPendingAssetItem>>([])
 const resultsTotal = ref(0)
 const resultsLimit = ref(20)
 const currentPage = ref(1)
 const activeTab = ref('info')
 const logBoxRef = ref<HTMLElement | null>(null)
 const logState = ref<JobLogResponse['log_state']>('not_started')
-
 const taskDetails = ref<JobTaskDetails | null>(null)
+const selectedPendingIds = ref<string[]>([])
+
+const isPendingImportJob = computed(() => job.value?.status === 'pending_import')
 const shouldShowLogContent = computed(() => Boolean(logs.value))
 const logStateHint = computed(() => {
-  if (logState.value === 'running' && !logs.value) {
-    return '任务已开始，正在等待首批日志写入。'
-  }
-  if (logState.value === 'log_not_found') {
-    return '后端还没有生成日志文件，适合先查看任务结果和后处理状态。'
-  }
-  if (logState.value === 'log_empty') {
-    return '日志文件已经存在，但当前没有可读内容。'
-  }
+  if (logState.value === 'running' && !logs.value) return '任务已开始，正在等待首批日志写入。'
+  if (logState.value === 'log_not_found') return '后端还没有生成日志文件，适合先查看任务结果和后处理状态。'
+  if (logState.value === 'log_empty') return '日志文件已经存在，但当前没有可读内容。'
   return ''
 })
 const queryText = computed(() => {
   const queries = job.value?.query_payload?.queries
-  if (!Array.isArray(queries) || queries.length === 0) {
-    return 'N/A'
-  }
-  return queries
-    .map((q) => `[${String(q.source || 'unknown')}] ${String(q.query || '')}`)
-    .join('\n')
+  if (!Array.isArray(queries) || queries.length === 0) return 'N/A'
+  return queries.map((q) => `[${String(q.source || 'unknown')}] ${String(q.query || '')}`).join('\n')
 })
 const payloadText = computed(() => {
-  if (!job.value?.query_payload) {
-    return 'N/A'
-  }
+  if (!job.value?.query_payload) return 'N/A'
   try {
     return JSON.stringify(job.value.query_payload, null, 2)
   } catch {
@@ -229,45 +243,50 @@ watch(
   ([jobId, visible], [prevJobId, prevVisible]) => {
     if (jobId && visible && (jobId !== prevJobId || !prevVisible)) {
       currentPage.value = 1
-      loadAllDetails(jobId)
+      void loadAllDetails(jobId)
       return
     }
-    if (!visible) {
-      onDrawerClosed()
-    }
+    if (!visible) onDrawerClosed()
   },
 )
 
 async function loadJobResults(id: string) {
-  const resultData = await fetchJobResults(id, (currentPage.value - 1) * resultsLimit.value, resultsLimit.value)
-  results.value = resultData.items || []
-  resultsTotal.value = resultData.total || 0
-  return resultData
+  if (isPendingImportJob.value) {
+    const data = await fetchPendingJobAssets(id, (currentPage.value - 1) * resultsLimit.value, resultsLimit.value)
+    results.value = data.items || []
+    resultsTotal.value = data.total || 0
+    return data
+  }
+  const data = await fetchJobResults(id, (currentPage.value - 1) * resultsLimit.value, resultsLimit.value)
+  results.value = data.items || []
+  resultsTotal.value = data.total || 0
+  return data
 }
 
 async function loadAllDetails(id: string) {
   loading.value = true
   activeTab.value = 'info'
+  selectedPendingIds.value = []
   try {
-    const [details, logData, resultData] = await Promise.all([
+    const [details, logData] = await Promise.all([
       fetchJobDetails(id),
       fetchJobLogs(id),
-      loadJobResults(id),
     ])
-
     job.value = details
     logState.value = logData.log_state
     logs.value = logData.content || ''
-    taskDetails.value = resultData.task_details || logData.task_details || details.task_details || null
+    taskDetails.value = logData.task_details || details.task_details || null
+    const resultData = await loadJobResults(id)
+    if (!isPendingImportJob.value && 'task_details' in resultData) {
+      taskDetails.value = resultData.task_details || taskDetails.value
+    }
   } catch (error: any) {
     ElMessage.error(error?.response?.data?.detail ?? error?.message ?? '加载任务详情失败')
     emit('update:visible', false)
   } finally {
     loading.value = false
     setTimeout(() => {
-      if (logBoxRef.value) {
-        logBoxRef.value.scrollTop = logBoxRef.value.scrollHeight
-      }
+      if (logBoxRef.value) logBoxRef.value.scrollTop = logBoxRef.value.scrollHeight
     }, 100)
   }
 }
@@ -286,6 +305,7 @@ function onDrawerClosed() {
   activeTab.value = 'info'
   taskDetails.value = null
   logState.value = 'not_started'
+  selectedPendingIds.value = []
 }
 
 async function handleRerun() {
@@ -306,21 +326,62 @@ async function handlePageChange(page: number) {
   try {
     loading.value = true
     const resultData = await loadJobResults(props.jobId)
-    taskDetails.value = resultData.task_details || taskDetails.value
+    if (!isPendingImportJob.value && 'task_details' in resultData) {
+      taskDetails.value = resultData.task_details || taskDetails.value
+    }
   } catch (error: any) {
-    ElMessage.error(error?.response?.data?.detail ?? error?.message ?? '加载结果预览失败')
+    ElMessage.error(error?.response?.data?.detail ?? error?.message ?? '加载结果失败')
   } finally {
     loading.value = false
   }
 }
 
+function onPendingSelectionChange(rows: Array<JobPendingAssetItem>) {
+  selectedPendingIds.value = rows.map((item) => item.id)
+}
+
+async function handleImportAll() {
+  if (!props.jobId) return
+  await ElMessageBox.confirm('确认导入当前任务的全部待确认结果吗？', '确认导入', { type: 'warning' })
+  const result = await confirmJobImport(props.jobId, { import_all: true })
+  ElMessage.success(`导入完成：成功 ${result.success}，重复 ${result.duplicate}，失败 ${result.failed}`)
+  emit('rerun')
+  await reloadCurrent()
+}
+
+async function handleImportSelected() {
+  if (!props.jobId || selectedPendingIds.value.length === 0) return
+  await ElMessageBox.confirm(`确认导入已选 ${selectedPendingIds.value.length} 项结果吗？`, '确认导入', { type: 'warning' })
+  const result = await confirmJobImport(props.jobId, { import_all: false, ids: [...selectedPendingIds.value] })
+  ElMessage.success(`导入完成：成功 ${result.success}，重复 ${result.duplicate}，失败 ${result.failed}`)
+  emit('rerun')
+  await reloadCurrent()
+}
+
+async function handleDiscardAll() {
+  if (!props.jobId) return
+  await ElMessageBox.confirm('确认丢弃当前任务全部待确认结果吗？该操作不可撤销。', '确认丢弃', { type: 'warning' })
+  const result = await discardJobImport(props.jobId)
+  ElMessage.success(`已丢弃 ${result.discarded} 条待确认结果`)
+  emit('rerun')
+  await reloadCurrent()
+}
+
+function canRerun(status?: string) {
+  return ['success', 'failed', 'cancelled', 'partial_success', 'imported', 'discarded'].includes(status || '')
+}
+
 function getStatusType(status?: string) {
   const map: Record<string, string> = {
+    pending: 'info',
     running: 'primary',
     success: 'success',
     partial_success: 'warning',
     failed: 'danger',
     cancelled: 'warning',
+    pending_import: 'warning',
+    imported: 'success',
+    discarded: 'info',
   }
   return map[status || ''] ?? 'info'
 }
@@ -333,6 +394,9 @@ function getStatusLabel(status?: string) {
     partial_success: '部分成功',
     failed: '失败',
     cancelled: '已取消',
+    pending_import: '待确认导入',
+    imported: '已导入',
+    discarded: '已丢弃',
   }
   return (map[status || ''] ?? status) || '-'
 }
@@ -366,7 +430,7 @@ function getLogStateDescription(state?: string) {
     not_started: '任务尚未开始执行，暂无日志。',
     running: '任务正在执行，日志会持续追加。',
     log_not_found: '任务已执行，但日志文件尚未生成。',
-    log_empty: '日志文件已创建，但内容为空。',
+    log_empty: '日志文件已经创建，但内容为空。',
     finished: '任务已结束，可查看完整日志。',
     log_ready: '日志已可查看。',
   }
@@ -450,6 +514,11 @@ function formatSources(sources: CollectJobDetail['sources'] | undefined): string
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .log-state-panel {
   display: flex;

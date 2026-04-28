@@ -32,12 +32,25 @@
       </div>
     </div>
 
+    <el-card v-if="visibleJobs.length > 0" class="mb-5">
+      <div class="toolbar-row">
+        <el-checkbox :model-value="allVisibleSelected" @change="toggleSelectVisible">
+          全选当前列表
+        </el-checkbox>
+        <span class="muted">已选择 {{ selectedJobIds.length }} 项</span>
+        <el-button type="danger" plain :disabled="selectedJobIds.length === 0" @click="handleBatchDelete">批量删除</el-button>
+        <el-button type="warning" plain :disabled="selectedJobIds.length === 0" @click="handleBatchRerun">批量重启</el-button>
+        <el-button type="primary" plain :disabled="selectedJobIds.length === 0" @click="handleBatchStart">批量开始</el-button>
+      </div>
+    </el-card>
+
     <el-empty v-if="visibleJobs.length === 0" :description="emptyDescription" />
 
     <el-row v-else :gutter="20">
       <el-col v-for="job in visibleJobs" :key="job.id" :xs="24" :sm="12" :lg="8" class="mb-5">
         <div class="job-card" :class="{ 'is-running': isJobRunning(job.status) }">
           <div class="job-card-header">
+            <el-checkbox :model-value="selectedJobIds.includes(job.id)" @change="toggleSelectedJob(job.id)" />
             <div class="job-info">
               <h3 class="job-name text-truncate" :title="job.job_name">{{ job.job_name }}</h3>
               <div class="job-meta">
@@ -72,7 +85,7 @@
             <div class="counts-grid">
               <div class="count-item">
                 <div class="count-value">{{ job.success_count }}</div>
-                <div class="count-label">成功</div>
+                <div class="count-label">{{ job.status === 'pending_import' ? '待确认' : '成功' }}</div>
               </div>
               <div class="count-item">
                 <div class="count-value text-warning">{{ job.duplicate_count }}</div>
@@ -96,13 +109,13 @@
               </span>
             </div>
             <div class="footer-actions">
-              <el-button v-if="!isJobRunning(job.status)" type="primary" link size="small" @click="handleStart(job.id)">
-                开始
+              <el-button v-if="canStart(job.status)" type="primary" link size="small" @click="handleStart(job.id)">开始</el-button>
+              <el-button v-else-if="isJobRunning(job.status)" type="danger" link size="small" @click="handleStop(job.id)">停止</el-button>
+              <el-button v-if="canRerun(job.status)" type="warning" link size="small" @click="handleRerun(job.id)">重启</el-button>
+              <el-button v-if="canDelete(job.status)" type="danger" link size="small" @click="handleDelete(job.id)">删除</el-button>
+              <el-button type="primary" link size="small" @click="viewDetails(job)">
+                {{ job.status === 'pending_import' ? '查看结果' : '详情' }}
               </el-button>
-              <el-button v-else type="danger" link size="small" @click="handleStop(job.id)">
-                停止
-              </el-button>
-              <el-button type="primary" link size="small" @click="viewDetails(job)">详情</el-button>
             </div>
           </div>
         </div>
@@ -149,12 +162,7 @@
               <el-tag size="small">{{ formatSourceLabel(src) }}</el-tag>
               <span class="example">{{ getExample(src) }}</span>
             </div>
-            <el-input
-              v-model="createForm.queries[src]"
-              type="textarea"
-              :rows="2"
-              :placeholder="getPlaceholder(src)"
-            />
+            <el-input v-model="createForm.queries[src]" type="textarea" :rows="2" :placeholder="getPlaceholder(src)" />
           </div>
         </template>
 
@@ -213,7 +221,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="自动验证">
-              <el-checkbox v-model="createForm.auto_verify">采集完成后自动触发验证与截图</el-checkbox>
+              <el-checkbox v-model="createForm.auto_verify">确认导入后自动触发验证与截图</el-checkbox>
             </el-form-item>
           </el-col>
         </el-row>
@@ -221,15 +229,12 @@
 
       <template #footer>
         <el-button @click="showCreateDialog = false">取消</el-button>
-
         <template v-if="createMode === 'online'">
           <el-button type="primary" round @click="submitCreate" :loading="submitting">立即创建并开始</el-button>
         </template>
-
         <template v-else-if="createStep === 1">
           <el-button type="primary" round @click="goToCsvMapping" :loading="previewLoading">下一步：字段映射</el-button>
         </template>
-
         <template v-else>
           <el-button @click="createStep = 1">上一步</el-button>
           <el-button type="primary" round @click="submitCreate" :loading="submitting">完成创建并开始</el-button>
@@ -243,13 +248,17 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Refresh, UploadFilled } from '@element-plus/icons-vue'
 import {
+  batchDeleteJobs,
+  batchRerunJobs,
+  batchStartJobs,
   createCollectJob,
   getTaskStatus,
   listJobs,
   previewCsv,
+  rerunJob,
   startTask,
   stopTask,
 } from '@/api/modules/jobs'
@@ -258,23 +267,12 @@ import dayjs from 'dayjs'
 import JobDetailDrawer from './JobDetailDrawer.vue'
 
 type CreateMode = 'online' | 'csv'
-type CsvFieldKey =
-  | 'url'
-  | 'ip'
-  | 'port'
-  | 'title'
-  | 'protocol'
-  | 'domain'
-  | 'status_code'
-  | 'org'
-  | 'country'
-  | 'city'
-  | 'host'
-
+type CsvFieldKey = 'url' | 'ip' | 'port' | 'title' | 'protocol' | 'domain' | 'status_code' | 'org' | 'country' | 'city' | 'host'
 type CsvSourceType = 'auto' | 'fofa' | 'hunter' | 'zoomeye' | 'quake'
 type CsvFieldConfig = { key: CsvFieldKey; label: string; identity?: boolean }
 
 const jobs = ref<CollectJob[]>([])
+const selectedJobIds = ref<string[]>([])
 const taskListView = ref<'active' | 'completed'>('active')
 const submitting = ref(false)
 const previewLoading = ref(false)
@@ -309,23 +307,10 @@ const csvFieldConfigs: CsvFieldConfig[] = [
 ]
 
 const csvIdentityFieldKeys: CsvFieldKey[] = ['url', 'ip', 'domain', 'host']
-
-function hasCsvIdentityMapping() {
-  const hasStandaloneIdentityField = csvIdentityFieldKeys.some((field) => Boolean(csvFieldMapping[field]))
-  const hasIpWithPort = Boolean(csvFieldMapping.ip) && Boolean(csvFieldMapping.port)
-
-  return hasStandaloneIdentityField || hasIpWithPort
-}
-
 const createForm = reactive({
   job_name: '',
   selectedSources: ['fofa'] as string[],
-  queries: {
-    fofa: '',
-    hunter: '',
-    zoomeye: '',
-    quake: '',
-  } as Record<string, string>,
+  queries: { fofa: '', hunter: '', zoomeye: '', quake: '' } as Record<string, string>,
   page_size: 20,
   max_pages: 5,
   limit: 100,
@@ -333,68 +318,58 @@ const createForm = reactive({
   dedup_strategy: 'skip',
   auto_verify: false,
 })
-
-const csvPreview = ref<CsvPreviewResponse>({
-  headers: [],
-  rows: [],
-  file_path: '',
-  detected_source_type: null,
-})
-
+const csvPreview = ref<CsvPreviewResponse>({ headers: [], rows: [], file_path: '', detected_source_type: null })
 const csvFieldMapping = reactive<Record<CsvFieldKey, string>>({
-  url: '',
-  ip: '',
-  port: '',
-  title: '',
-  protocol: '',
-  domain: '',
-  status_code: '',
-  org: '',
-  country: '',
-  city: '',
-  host: '',
+  url: '', ip: '', port: '', title: '', protocol: '', domain: '', status_code: '', org: '', country: '', city: '', host: '',
 })
-
 let timer: number | null = null
 
-const activeStatuses: CollectJob['status'][] = ['pending', 'running']
-const completedStatuses: CollectJob['status'][] = ['success', 'partial_success', 'failed', 'cancelled']
+const activeStatuses: CollectJob['status'][] = ['pending', 'running', 'pending_import']
+const completedStatuses: CollectJob['status'][] = ['success', 'partial_success', 'failed', 'cancelled', 'imported', 'discarded']
+const runningCount = computed(() => jobs.value.filter((job) => ['running', 'pending_import'].includes(job.status)).length)
+const completedCount = computed(() => jobs.value.filter((job) => completedStatuses.includes(job.status)).length)
+const visibleJobs = computed(() => jobs.value.filter((job) => taskListView.value === 'completed' ? completedStatuses.includes(job.status) : activeStatuses.includes(job.status)))
+const allVisibleSelected = computed(() => visibleJobs.value.length > 0 && visibleJobs.value.every((job) => selectedJobIds.value.includes(job.id)))
+const emptyDescription = computed(() => taskListView.value === 'completed' ? '暂无已结束任务' : '暂无运行中或待处理任务')
 
-const runningCount = computed(() =>
-  jobs.value.filter((job) => activeStatuses.includes(job.status)).length,
-)
-const completedCount = computed(() =>
-  jobs.value.filter((job) => completedStatuses.includes(job.status)).length,
-)
-const visibleJobs = computed(() =>
-  jobs.value.filter((job) =>
-    taskListView.value === 'completed'
-      ? completedStatuses.includes(job.status)
-      : activeStatuses.includes(job.status),
-  ),
-)
-const emptyDescription = computed(() =>
-  taskListView.value === 'completed' ? '暂无已结束任务' : '暂无运行中或待处理任务',
-)
+function hasCsvIdentityMapping() {
+  const hasStandaloneIdentityField = csvIdentityFieldKeys.some((field) => Boolean(csvFieldMapping[field]))
+  const hasIpWithPort = Boolean(csvFieldMapping.ip) && Boolean(csvFieldMapping.port)
+  return hasStandaloneIdentityField || hasIpWithPort
+}
 
-watch(
-  () => [...createForm.selectedSources],
-  (sources) => {
-    for (const source of sources) {
-      if (!(source in createForm.queries)) {
-        createForm.queries[source] = ''
-      }
-    }
-  },
-  { immediate: true },
-)
+watch(() => [...createForm.selectedSources], (sources) => {
+  for (const source of sources) {
+    if (!(source in createForm.queries)) createForm.queries[source] = ''
+  }
+}, { immediate: true })
 
 async function fetchJobs() {
   try {
     jobs.value = await listJobs()
+    selectedJobIds.value = selectedJobIds.value.filter((id) => jobs.value.some((job) => job.id === id))
   } catch (error) {
     console.error('Fetch jobs failed:', error)
   }
+}
+
+function toggleSelectedJob(id: string) {
+  if (selectedJobIds.value.includes(id)) {
+    selectedJobIds.value = selectedJobIds.value.filter((item) => item !== id)
+  } else {
+    selectedJobIds.value = [...selectedJobIds.value, id]
+  }
+}
+
+function toggleSelectVisible() {
+  if (allVisibleSelected.value) {
+    const visibleIds = new Set(visibleJobs.value.map((job) => job.id))
+    selectedJobIds.value = selectedJobIds.value.filter((id) => !visibleIds.has(id))
+    return
+  }
+  const merged = new Set(selectedJobIds.value)
+  visibleJobs.value.forEach((job) => merged.add(job.id))
+  selectedJobIds.value = Array.from(merged)
 }
 
 function resetCreateDialogState() {
@@ -402,15 +377,8 @@ function resetCreateDialogState() {
   createStep.value = 1
   csvSourceType.value = 'auto'
   selectedCsvFile.value = null
-  csvPreview.value = {
-    headers: [],
-    rows: [],
-    file_path: '',
-    detected_source_type: null,
-  }
-  for (const field of csvFieldConfigs) {
-    csvFieldMapping[field.key] = ''
-  }
+  csvPreview.value = { headers: [], rows: [], file_path: '', detected_source_type: null }
+  for (const field of csvFieldConfigs) csvFieldMapping[field.key] = ''
   createForm.job_name = `采集任务_${dayjs().format('MMDD_HHmm')}`
   createForm.selectedSources = ['fofa']
   createForm.queries = { fofa: '', hunter: '', zoomeye: '', quake: '' }
@@ -420,9 +388,7 @@ function resetCreateDialogState() {
   createForm.timeout = 30
   createForm.dedup_strategy = 'skip'
   createForm.auto_verify = false
-  if (csvInputRef.value) {
-    csvInputRef.value.value = ''
-  }
+  if (csvInputRef.value) csvInputRef.value.value = ''
 }
 
 function openCreateDialog() {
@@ -438,7 +404,6 @@ function handleCreateModeChange(mode: CreateMode | string | number) {
     csvPreview.value = { headers: [], rows: [], file_path: '', detected_source_type: null }
     return
   }
-
   createMode.value = 'csv'
   createStep.value = 1
 }
@@ -454,19 +419,18 @@ function onCsvFileChange(event: Event) {
 
 function autoMatchCsvFields(headers: string[]) {
   const rules: Record<CsvFieldKey, string[]> = {
-    url: ['url', 'link', '链接', 'http_load_url', 'site'],
-    ip: ['ip', 'host_ip', 'ip地址'],
-    port: ['port', 'svc_port', '端口', 'portinfo.port'],
-    title: ['title', 'site_title', '标题'],
+    url: ['url', 'link', 'http_load_url', 'site'],
+    ip: ['ip', 'host_ip'],
+    port: ['port', 'svc_port', 'portinfo.port'],
+    title: ['title', 'site_title'],
     protocol: ['protocol', 'proto', 'scheme', 'service', 'service.app'],
-    domain: ['domain', 'host', '域名'],
-    status_code: ['status_code', 'status', 'code', '网站状态码'],
-    org: ['org', 'organization', 'company', '备案单位'],
-    country: ['country', '国家'],
-    city: ['city', '市区'],
-    host: ['host', 'web资产'],
+    domain: ['domain', 'host'],
+    status_code: ['status_code', 'status', 'code'],
+    org: ['org', 'organization', 'company'],
+    country: ['country'],
+    city: ['city'],
+    host: ['host', 'web'],
   }
-
   for (const field of csvFieldConfigs) {
     const match = headers.find((header) => {
       const normalizedHeader = header.toLowerCase()
@@ -481,7 +445,6 @@ async function goToCsvMapping() {
     ElMessage.error('请先选择 CSV 文件')
     return
   }
-
   previewLoading.value = true
   try {
     const formData = new FormData()
@@ -501,10 +464,7 @@ async function goToCsvMapping() {
 }
 
 function validateCsvMapping() {
-  if (csvSourceType.value !== 'auto') {
-    return true
-  }
-
+  if (csvSourceType.value !== 'auto') return true
   if (!hasCsvIdentityMapping()) {
     ElMessage.error('至少映射一个可识别身份：URL、域名、主机名、IP，或 IP + 端口')
     return false
@@ -517,27 +477,14 @@ function validateOnlineQueries() {
     ElMessage.warning('请至少选择一个采集来源')
     return false
   }
-
   const emptySources = createForm.selectedSources.filter((source) => {
     const query = createForm.queries[source]
     return typeof query !== 'string' || query.trim().length === 0
   })
-
   if (emptySources.length > 0) {
     ElMessage.error(`已选择采集源但查询条件为空：${emptySources.map(formatSourceLabel).join('、')}`)
     return false
   }
-
-  const hasAnyValidQuery = createForm.selectedSources.some((source) => {
-    const query = createForm.queries[source]
-    return typeof query === 'string' && query.trim().length > 0
-  })
-
-  if (!hasAnyValidQuery) {
-    ElMessage.error('未提供有效查询条件，无法创建采集任务')
-    return false
-  }
-
   return true
 }
 
@@ -549,14 +496,8 @@ async function submitCreate() {
         ElMessage.error('请先完成 CSV 预览')
         return
       }
-      if (!validateCsvMapping()) {
-        return
-      }
-
-      const fieldMapping = Object.fromEntries(
-        Object.entries(csvFieldMapping).filter(([, value]) => Boolean(value)),
-      )
-
+      if (!validateCsvMapping()) return
+      const fieldMapping = Object.fromEntries(Object.entries(csvFieldMapping).filter(([, value]) => Boolean(value)))
       const res = await createCollectJob({
         job_name: createForm.job_name,
         sources: ['csv_import'],
@@ -574,10 +515,7 @@ async function submitCreate() {
       return
     }
 
-    if (!validateOnlineQueries()) {
-      return
-    }
-
+    if (!validateOnlineQueries()) return
     const queries = createForm.selectedSources.map((source) => ({
       source,
       query: (createForm.queries[source] ?? '').trim(),
@@ -586,7 +524,6 @@ async function submitCreate() {
       limit: createForm.limit,
       timeout: createForm.timeout,
     }))
-
     const res = await createCollectJob({
       job_name: createForm.job_name,
       sources: [...createForm.selectedSources],
@@ -628,6 +565,18 @@ async function refreshJob(id: string) {
   }
 }
 
+function canStart(status: string) {
+  return status === 'pending'
+}
+
+function canDelete(status: string) {
+  return ['success', 'failed', 'cancelled', 'partial_success', 'pending_import', 'imported', 'discarded'].includes(status)
+}
+
+function canRerun(status: string) {
+  return ['success', 'failed', 'cancelled', 'partial_success', 'imported', 'discarded'].includes(status)
+}
+
 async function handleStart(id: string) {
   try {
     await startTask(id)
@@ -648,13 +597,55 @@ async function handleStop(id: string) {
   }
 }
 
+async function handleDelete(id: string) {
+  await ElMessageBox.confirm('确认删除这项任务吗？', '确认删除', { type: 'warning' })
+  const result = await batchDeleteJobs([id])
+  if (result.success > 0) ElMessage.success('任务已删除')
+  if (result.failed > 0) ElMessage.error(result.items.find((item) => !item.ok)?.error || '删除失败')
+  await fetchJobs()
+}
+
+async function handleRerun(id: string) {
+  try {
+    await rerunJob(id)
+    ElMessage.success('已创建新的重跑任务')
+    await fetchJobs()
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail ?? error.message ?? '重启任务失败')
+  }
+}
+
+async function handleBatchDelete() {
+  await ElMessageBox.confirm(`确认批量删除已选 ${selectedJobIds.value.length} 项任务吗？`, '确认删除', { type: 'warning' })
+  const result = await batchDeleteJobs([...selectedJobIds.value])
+  ElMessage.success(`批量删除完成：成功 ${result.success}，失败 ${result.failed}`)
+  selectedJobIds.value = []
+  await fetchJobs()
+}
+
+async function handleBatchRerun() {
+  await ElMessageBox.confirm(`确认批量重启已选 ${selectedJobIds.value.length} 项任务吗？`, '确认重启', { type: 'warning' })
+  const result = await batchRerunJobs([...selectedJobIds.value])
+  ElMessage.success(`批量重启完成：成功 ${result.success}，失败 ${result.failed}`)
+  selectedJobIds.value = []
+  await fetchJobs()
+}
+
+async function handleBatchStart() {
+  await ElMessageBox.confirm(`确认批量开始已选 ${selectedJobIds.value.length} 项任务吗？`, '确认开始', { type: 'warning' })
+  const result = await batchStartJobs([...selectedJobIds.value])
+  ElMessage.success(`批量开始完成：成功 ${result.success}，失败 ${result.failed}`)
+  selectedJobIds.value = []
+  await fetchJobs()
+}
+
 function viewDetails(job: CollectJob) {
   selectedJobId.value = job.id
   isDrawerVisible.value = true
 }
 
 function onJobRerun() {
-  fetchJobs()
+  void fetchJobs()
 }
 
 function isJobRunning(status: CollectJob['status']) {
@@ -702,6 +693,9 @@ function getStatusType(status: string) {
     partial_success: 'warning',
     failed: 'danger',
     cancelled: 'warning',
+    pending_import: 'warning',
+    imported: 'success',
+    discarded: 'info',
   }
   return map[status] ?? 'info'
 }
@@ -714,13 +708,16 @@ function getStatusLabel(status: string) {
     partial_success: '部分成功',
     failed: '失败',
     cancelled: '已取消',
+    pending_import: '待确认导入',
+    imported: '已导入',
+    discarded: '已丢弃',
   }
   return map[status] ?? status
 }
 
 function getProgressStatus(status: string) {
-  if (status === 'success') return 'success'
-  if (status === 'partial_success') return 'warning'
+  if (status === 'success' || status === 'imported') return 'success'
+  if (status === 'partial_success' || status === 'pending_import') return 'warning'
   if (status === 'failed') return 'exception'
   return ''
 }
@@ -730,14 +727,14 @@ function formatTime(time?: string) {
 }
 
 onMounted(() => {
-  fetchJobs()
-  timer = window.setInterval(fetchJobs, 3000)
+  void fetchJobs()
+  timer = window.setInterval(() => {
+    void fetchJobs()
+  }, 3000)
 })
 
 onUnmounted(() => {
-  if (timer) {
-    clearInterval(timer)
-  }
+  if (timer) clearInterval(timer)
 })
 </script>
 
@@ -763,6 +760,18 @@ onUnmounted(() => {
   margin-top: 12px;
 }
 
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.muted {
+  color: var(--app-text-dim);
+  font-size: 13px;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -778,17 +787,8 @@ onUnmounted(() => {
   box-shadow: var(--app-shadow);
 }
 
-.stats-label {
-  color: var(--app-text-dim);
-  font-size: 13px;
-}
-
-.stats-value {
-  margin-top: 8px;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--app-text-main);
-}
+.stats-label { color: var(--app-text-dim); font-size: 13px; }
+.stats-value { margin-top: 8px; font-size: 28px; font-weight: 700; color: var(--app-text-main); }
 
 .job-card {
   display: flex;
@@ -802,55 +802,24 @@ onUnmounted(() => {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.job-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--app-shadow-lg);
-}
-
-.job-card.is-running {
-  border-color: var(--el-color-primary-light-5);
-}
+.job-card:hover { transform: translateY(-2px); box-shadow: var(--app-shadow-lg); }
+.job-card.is-running { border-color: var(--el-color-primary-light-5); }
 
 .job-card-header,
 .job-card-footer,
 .progress-info,
 .box-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
-.job-card-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
-.job-name {
-  margin: 0 0 10px;
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--app-text-main);
-}
-
-.job-meta,
-.footer-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.progress-section {
-  margin-bottom: 16px;
-}
-
-.progress-info {
-  margin-bottom: 8px;
-  font-size: 13px;
-  color: var(--app-text-dim);
-}
+.job-card-content { display: flex; flex: 1; flex-direction: column; }
+.job-name { margin: 0 0 10px; font-size: 17px; font-weight: 700; color: var(--app-text-main); }
+.job-meta, .footer-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.progress-section { margin-bottom: 16px; }
+.progress-info { margin-bottom: 8px; font-size: 13px; color: var(--app-text-dim); }
 
 .counts-grid {
   display: grid;
@@ -866,42 +835,11 @@ onUnmounted(() => {
   border: 1px solid var(--app-border);
 }
 
-.count-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--app-text-main);
-}
-
-.count-label,
-.time,
-.example,
-.section-title,
-.mapping-label,
-.upload-hint {
-  color: var(--app-text-dim);
-}
-
-.count-label {
-  margin-top: 6px;
-  font-size: 12px;
-}
-
-.job-card-footer {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--app-border);
-}
-
-.footer-left {
-  flex: 1;
-  min-width: 0;
-}
-
-.time {
-  display: inline-block;
-  max-width: 100%;
-  font-size: 12px;
-}
+.count-value { font-size: 20px; font-weight: 700; color: var(--app-text-main); }
+.count-label { margin-top: 6px; font-size: 12px; color: var(--app-text-dim); }
+.job-card-footer { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--app-border); }
+.footer-left { flex: 1; min-width: 0; }
+.time { display: inline-block; max-width: 100%; font-size: 12px; color: var(--app-text-dim); }
 
 .query-input-box,
 .csv-upload-box,
@@ -911,16 +849,8 @@ onUnmounted(() => {
   background: var(--app-card-bg);
 }
 
-.query-input-box {
-  padding: 14px;
-}
-
-.example,
-.section-title,
-.mapping-label {
-  font-size: 13px;
-}
-
+.query-input-box { padding: 14px; }
+.example, .section-title, .mapping-label { font-size: 13px; color: var(--app-text-dim); }
 .csv-upload-box {
   display: flex;
   flex-direction: column;
@@ -931,91 +861,23 @@ onUnmounted(() => {
   cursor: pointer;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
-
-.csv-upload-box:hover {
-  border-color: var(--el-color-primary);
-  transform: translateY(-1px);
-}
-
-.upload-icon {
-  font-size: 32px;
-  color: var(--el-color-primary);
-}
-
-.upload-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--app-text-main);
-}
-
-.mapping-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.mapping-item {
-  padding: 14px;
-}
-
-.mapping-label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.identity-hint {
-  margin-left: 6px;
-  color: var(--el-color-primary);
-  font-size: 12px;
-}
-
-.mapping-note {
-  margin-bottom: 12px;
-  color: var(--app-text-dim);
-  font-size: 12px;
-}
-
-.required-mark {
-  color: var(--el-color-danger);
-}
-
-.preview-table {
-  margin-bottom: 16px;
-}
-
-.hidden-input {
-  display: none;
-}
-
-.text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.text-primary {
-  color: var(--el-color-primary);
-}
-
-.text-success {
-  color: var(--el-color-success);
-}
-
-.text-warning {
-  color: var(--el-color-warning);
-}
-
-.text-danger {
-  color: var(--el-color-danger);
-}
-
-.mr-1 {
-  margin-right: 4px;
-}
-
-.mb-5 {
-  margin-bottom: 20px;
-}
+.csv-upload-box:hover { border-color: var(--el-color-primary); transform: translateY(-1px); }
+.upload-icon { font-size: 32px; color: var(--el-color-primary); }
+.upload-title { font-size: 16px; font-weight: 600; color: var(--app-text-main); }
+.mapping-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.mapping-item { padding: 14px; }
+.mapping-label { display: block; margin-bottom: 8px; }
+.identity-hint { margin-left: 6px; color: var(--el-color-primary); font-size: 12px; }
+.mapping-note { margin-bottom: 12px; color: var(--app-text-dim); font-size: 12px; }
+.preview-table { margin-bottom: 16px; }
+.hidden-input { display: none; }
+.text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.text-primary { color: var(--el-color-primary); }
+.text-success { color: var(--el-color-success); }
+.text-warning { color: var(--el-color-warning); }
+.text-danger { color: var(--el-color-danger); }
+.mr-1 { margin-right: 4px; }
+.mb-5 { margin-bottom: 20px; }
 
 @media (max-width: 1200px) {
   .stats-grid,
@@ -1040,4 +902,3 @@ onUnmounted(() => {
   }
 }
 </style>
-

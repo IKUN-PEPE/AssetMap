@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.core.db import SessionLocal
 from app.core.huey import huey, run_in_process
-from app.models import CollectJob, SourceObservation, WebEndpoint
+from app.models import CollectJob, JobPendingAsset, SourceObservation, WebEndpoint
 from app.models.support import Screenshot
 from app.services.collectors import get_collector
 from app.services.collectors.fofa_csv import parse_fofa_csv
@@ -213,6 +213,39 @@ def _prepare_import_records(records: list[dict]) -> list[dict]:
     return prepared
 
 
+def _store_pending_assets(
+    db: Session,
+    job: CollectJob,
+    records: list[dict[str, Any]],
+    source_name: str,
+    *,
+    replace_existing: bool = False,
+) -> int:
+    bind = getattr(db, "bind", None)
+    if bind is not None:
+        JobPendingAsset.__table__.create(bind=bind, checkfirst=True)
+    if replace_existing:
+        db.query(JobPendingAsset).filter(JobPendingAsset.job_id == job.id).delete(synchronize_session=False)
+
+    stored = 0
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        raw_data = dict(record.get("raw_data") or record)
+        mapped_data = dict(record)
+        db.add(
+            JobPendingAsset(
+                job_id=job.id,
+                source=source_name,
+                raw_data=raw_data,
+                mapped_data=mapped_data,
+                status="pending",
+            )
+        )
+        stored += 1
+    return stored
+
+
 def _count_csv_rows(file_path: str | Path) -> int:
     path = Path(file_path)
     try:
@@ -253,27 +286,28 @@ def process_csv_import_job(db: Session, job: CollectJob, *, job_logger: JobLogge
             source_type or "auto",
         )
 
-    _save_assets_bridge(db, job, records, save_source, job_logger)
+    stored_count = _store_pending_assets(db, job, records, save_source, replace_existing=True)
 
-    job.failed_count = int(getattr(job, "failed_count", 0) or 0) + failed_rows
-
+    job.success_count = stored_count
+    job.duplicate_count = 0
+    job.failed_count = failed_rows
     total_rows = _count_csv_rows(file_path)
     if total_rows <= 0:
-        total_rows = len(records) + failed_rows
-    computed_total = max(total_rows, int(job.success_count) + int(job.duplicate_count) + int(job.failed_count))
-    job.total_count = computed_total
+        total_rows = stored_count + failed_rows
+    job.total_count = max(total_rows, stored_count + failed_rows)
     job.progress = 100
+    job.status = "pending_import" if stored_count > 0 else "failed"
     db.commit()
 
     logger_ref.info(
-        "CSV import finished parser=%s source=%s total=%s success=%s duplicate=%s failed=%s parser_failed=%s",
+        "CSV import finished parser=%s source=%s total=%s pending=%s failed=%s parser_failed=%s waiting_confirm=%s",
         parser_name,
         save_source,
         job.total_count,
-        int(job.success_count),
-        int(job.duplicate_count),
+        stored_count,
         int(job.failed_count),
         failed_rows,
+        job.status == "pending_import",
     )
 
 
@@ -407,16 +441,22 @@ def run_collect_task(job_id: str):
                         job_logger.info("Task cancelled after source fetch source=%s", src_name)
                         return
 
-                    _save_assets_bridge(db, job, assets, src_name, job_logger)
-                    job.total_count = int(job.success_count) + int(job.failed_count) + int(job.duplicate_count)
+                    stored_count = _store_pending_assets(
+                        db,
+                        job,
+                        _prepare_import_records(assets),
+                        src_name,
+                        replace_existing=False,
+                    )
+                    job.success_count = int(getattr(job, "success_count", 0) or 0) + stored_count
+                    job.total_count = int(job.success_count) + int(job.failed_count)
                     job.progress = int(index / total_queries * 100)
                     db.commit()
                     job_logger.info(
-                        "Source saved source=%s progress=%s success=%s duplicate=%s failed=%s",
+                        "Source staged source=%s progress=%s pending=%s failed=%s",
                         src_name,
                         job.progress,
                         job.success_count,
-                        job.duplicate_count,
                         job.failed_count,
                     )
 
@@ -439,7 +479,10 @@ def run_collect_task(job_id: str):
             if not job.error_message:
                 job.error_message = " | ".join(source_errors)
 
-        job.status = _determine_job_status(job, source_errors, executed_queries=executed_queries)
+        if int(getattr(job, "success_count", 0) or 0) > 0:
+            job.status = "pending_import"
+        else:
+            job.status = _determine_job_status(job, source_errors, executed_queries=executed_queries)
         job.progress = 100
         job.finished_at = _utcnow_naive()
         job.total_count = int(job.success_count) + int(job.failed_count) + int(job.duplicate_count)
@@ -447,7 +490,7 @@ def run_collect_task(job_id: str):
         db.commit()
 
         job_logger.info(
-            "Task finished status=%s success=%s duplicate=%s failed=%s total=%s",
+            "Task finished status=%s pending=%s duplicate=%s failed=%s total=%s",
             job.status,
             job.success_count,
             job.duplicate_count,

@@ -34,6 +34,19 @@ class SourceObservation(Base):
     collect_job = relationship("CollectJob", back_populates="observations")
 
 
+class JobPendingAsset(Base):
+    __tablename__ = "job_pending_assets"
+
+    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
+    job_id: Mapped[str] = mapped_column(UUID(as_uuid=False), ForeignKey("collect_jobs.id"), index=True)
+    source: Mapped[str] = mapped_column(String(32), index=True)
+    raw_data: Mapped[dict] = mapped_column(JSONB)
+    mapped_data: Mapped[dict] = mapped_column(JSONB)
+    status: Mapped[str] = mapped_column(String(32), index=True, default="pending")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+    imported_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
 class Screenshot(Base):
     __tablename__ = "screenshots"
 

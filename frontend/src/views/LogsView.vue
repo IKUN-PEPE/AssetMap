@@ -63,7 +63,7 @@ const emptyText = computed(() => {
 })
 
 function formatTimestamp(value: string) {
-  return new Date(value).toLocaleTimeString('zh-CN', { hour12: false })
+  return new Date(value).toLocaleString('zh-CN', { hour12: false })
 }
 
 function handleScroll() {
@@ -89,7 +89,7 @@ async function refreshLogs(reset = false) {
     })
     logs.value = reset ? response.items : [...logs.value, ...response.items].slice(-500)
     nextSince.value = response.next_since || nextSince.value
-    lastUpdatedAt.value = new Date().toLocaleTimeString('zh-CN', { hour12: false })
+    lastUpdatedAt.value = new Date().toLocaleString('zh-CN', { hour12: false })
     errorText.value = ''
     await nextTick()
     scrollToBottom()
