@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -18,8 +18,8 @@ class CollectJob(Base, TimestampMixin):
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
     job_name: Mapped[str] = mapped_column(String(128))
-    sources: Mapped[dict] = mapped_column(JSONB)
-    query_payload: Mapped[dict] = mapped_column(JSONB)
+    sources: Mapped[dict] = mapped_column(JSON)
+    query_payload: Mapped[dict] = mapped_column(JSON)
     status: Mapped[str] = mapped_column(String(32), default="pending")
     progress: Mapped[int] = mapped_column(Integer, default=0)
     success_count: Mapped[int] = mapped_column(Integer, default=0)
@@ -27,7 +27,7 @@ class CollectJob(Base, TimestampMixin):
     duplicate_count: Mapped[int] = mapped_column(Integer, default=0)
     total_count: Mapped[int] = mapped_column(Integer, default=0)
     dedup_strategy: Mapped[str] = mapped_column(String(32), default="skip")
-    field_mapping: Mapped[dict] = mapped_column(JSONB, default=dict)
+    field_mapping: Mapped[dict] = mapped_column(JSON, default=dict)
     auto_verify: Mapped[bool] = mapped_column(Boolean, default=False)
     created_by: Mapped[str] = mapped_column(String(64), default="system")
     started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)

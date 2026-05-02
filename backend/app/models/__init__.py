@@ -1,4 +1,5 @@
 from app.models.asset import Host, Service, WebEndpoint
+from app.models.exposure_search import ExposureSearchResult, ExposureSearchTask
 from app.models.job import CollectJob
 from app.models.support import (
     Label,
@@ -26,4 +27,6 @@ __all__ = [
     "SavedSelection",
     "SelectionItem",
     "Report",
+    "ExposureSearchTask",
+    "ExposureSearchResult",
 ]

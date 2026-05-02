@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -61,7 +61,7 @@ class WebEndpoint(Base):
     verified: Mapped[bool] = mapped_column(Boolean, default=False)
     first_seen_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     last_seen_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    source_meta: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    source_meta: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     service: Mapped[Service | None] = relationship(back_populates="web_endpoints")
     screenshots: Mapped[list["Screenshot"]] = relationship(back_populates="web_endpoint")
