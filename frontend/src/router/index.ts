@@ -9,6 +9,7 @@ const SelectionsView = () => import('@/views/SelectionsView.vue')
 const ReportsView = () => import('@/views/ReportsView.vue')
 const SystemView = () => import('@/views/SystemView.vue')
 const LogsView = () => import('@/views/LogsView.vue')
+const ExposureSearchView = () => import('@/views/ExposureSearchView.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -19,6 +20,7 @@ const router = createRouter({
       children: [
         { path: '', name: 'dashboard', component: DashboardView },
         { path: 'jobs', name: 'jobs', component: JobsView },
+        { path: 'exposure-search', name: 'exposure-search', component: ExposureSearchView },
         { path: 'assets', name: 'assets', component: AssetsView },
         { path: 'assets/:id', name: 'asset-detail', component: AssetDetailView, props: true },
         { path: 'selections', name: 'selections', component: SelectionsView },

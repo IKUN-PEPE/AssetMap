@@ -12,6 +12,7 @@
       >
         <el-menu-item index="/">仪表盘</el-menu-item>
         <el-menu-item index="/jobs">采集任务</el-menu-item>
+        <el-menu-item index="/exposure-search">暴露面搜索</el-menu-item>
         <el-menu-item index="/assets">资产列表</el-menu-item>
         <el-menu-item index="/selections">选择集</el-menu-item>
         <el-menu-item index="/reports">报告中心</el-menu-item>
