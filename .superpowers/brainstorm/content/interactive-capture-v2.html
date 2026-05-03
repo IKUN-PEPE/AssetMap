@@ -1,0 +1,91 @@
+<div class="mockup">
+  <div class="mockup-header">方案 1：Playwright 脚本注入 - 交互预览 (v2)</div>
+  <div class="mockup-body" style="height: 450px; position: relative; background: #f0f2f5; overflow: hidden; border: 1px solid #dcdfe6; border-radius: 4px;">
+    
+    <!-- 注入的工具栏 -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 45px; background: #2c3e50; color: #fff; display: flex; align-items: center; padding: 0 20px; justify-content: space-between; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+      <div style="display: flex; align-items: center;">
+        <strong style="color: #409eff; font-size: 16px; margin-right: 20px;">AssetMap Discovery</strong>
+        <span style="font-size: 12px; background: #67c23a; color: white; padding: 3px 12px; border-radius: 20px; font-weight: bold;">正在采集线索</span>
+      </div>
+      <div style="font-size: 14px; font-weight: 500;">
+        已记录线索: <span id="count" style="color: #e6a23c; font-size: 18px; margin-left: 5px;">0</span>
+      </div>
+    </div>
+
+    <!-- 模拟搜索结果内容区 -->
+    <div style="padding: 65px 25px 25px 25px; font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif; overflow-y: auto; height: 100%;">
+      <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <p style="font-size: 12px; color: #909399; margin-bottom: 10px;">提示：鼠标悬停链接会出现蓝色高亮，点击即可记录到 AssetMap</p>
+        
+        <div class="search-item" style="margin-bottom: 25px; padding: 12px; border: 2px dashed transparent; border-radius: 6px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#409eff'; this.style.backgroundColor='#f0f7ff'" onmouseout="this.style.borderColor='transparent'; this.style.backgroundColor='transparent'" onclick="showToast('深圳地铁核心资产.pdf')">
+          <h3 style="color: #2c3e50; margin: 0 0 8px 0; font-size: 18px; text-decoration: underline;">深圳地铁核心资产分布清单 (2025版).pdf</h3>
+          <div style="color: #67c23a; font-size: 13px; margin-bottom: 8px;">https://internal.szmc.net/docs/assets_v5.pdf</div>
+          <p style="color: #606266; font-size: 14px; margin: 0; line-height: 1.5;">预览：本文件包含全线网 16 条线路的控制中心、变电所及关键服务器的物理位置与网络拓扑结构...</p>
+        </div>
+
+        <div class="search-item" style="margin-bottom: 25px; padding: 12px; border: 2px dashed transparent; border-radius: 6px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#409eff'; this.style.backgroundColor='#f0f7ff'" onmouseout="this.style.borderColor='transparent'; this.style.backgroundColor='transparent'" onclick="showToast('szmc-dev/web-admin')">
+          <h3 style="color: #2c3e50; margin: 0 0 8px 0; font-size: 18px; text-decoration: underline;">GitHub - szmc-dev/web-admin: 深圳地铁后台管理系统前端源码</h3>
+          <div style="color: #67c23a; font-size: 13px; margin-bottom: 8px;">https://github.com/szmc-dev/web-admin/blob/main/config/dev.env</div>
+          <p style="color: #606266; font-size: 14px; margin: 0; line-height: 1.5;">代码线索：在 dev.env 中发现硬编码的数据库连接字符串和测试账号信息...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模拟 Toast 通知 (右上角) -->
+    <div id="toast" style="position: absolute; top: 60px; right: 20px; width: 280px; background: white; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: none; z-index: 2000; overflow: hidden; border: 1px solid #ebeef5; animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);">
+      <div style="background: #f0f9eb; color: #67c23a; padding: 10px 15px; font-weight: bold; border-bottom: 1px solid #e1f3d8; display: flex; align-items: center;">
+        <span style="font-size: 18px; margin-right: 8px;">✔</span> 记录成功
+      </div>
+      <div id="toast-msg" style="padding: 12px 15px; font-size: 13px; color: #606266; line-height: 1.4;">
+        已将该线索保存至“待确认结果”列表。
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let count = 0;
+function showToast(name) {
+  count++;
+  document.getElementById('count').innerText = count;
+  const toast = document.getElementById('toast');
+  const msg = document.getElementById('toast-msg');
+  msg.innerHTML = '已保存线索：<br><strong>' + name + '</strong>';
+  toast.style.display = 'block';
+  
+  // 3秒后自动消失
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(50px)';
+    toast.style.transition = 'all 0.5s';
+    setTimeout(() => {
+      toast.style.display = 'none';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(0)';
+      toast.style.transition = 'none';
+    }, 500);
+  }, 3000);
+}
+</script>
+
+<style>
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.search-item:hover {
+  box-shadow: 0 4px 12px rgba(64,158,255,0.15);
+}
+</style>
+
+<div class="options">
+  <div class="option" data-choice="confirm-design-v2" onclick="toggleSelect(this)">
+    <div class="letter">OK</div>
+    <div class="content">
+      <h3>方案确认</h3>
+      <p>设计看起来很棒，请开始输出设计方案。</p>
+    </div>
+  </div>
+</div>

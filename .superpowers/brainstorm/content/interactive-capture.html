@@ -1,0 +1,68 @@
+<div class="mockup">
+  <div class="mockup-header">方案 1：Playwright 脚本注入 - 交互预览</div>
+  <div class="mockup-body" style="height: 400px; position: relative; background: #f0f2f5; overflow: hidden;">
+    
+    <!-- 注入的工具栏 -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 40px; background: #333; color: #fff; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+      <div style="display: flex; align-items: center;">
+        <strong style="color: #409eff; margin-right: 15px;">AssetMap Capture</strong>
+        <span style="font-size: 12px; background: #67c23a; padding: 2px 8px; border-radius: 10px;">采集模式已开启</span>
+      </div>
+      <div style="font-size: 13px;">已记录线索: <span id="count">0</span></div>
+    </div>
+
+    <!-- 模拟搜索结果 -->
+    <div style="padding: 60px 20px 20px 20px; font-family: sans-serif;">
+      <div class="search-item" style="margin-bottom: 20px; padding: 10px; border: 1px dashed transparent; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.border='1px dashed #409eff'; this.style.background='#ecf5ff'" onmouseout="this.style.border='1px dashed transparent'; this.style.background='transparent'" onclick="showToast('深圳地铁2024资产清单.xlsx')">
+        <h3 style="color: #1a0dab; margin: 0 0 5px 0; font-size: 18px; text-decoration: underline;">深圳地铁2024资产清单.xlsx</h3>
+        <div style="color: #006621; font-size: 14px;">https://www.szmc.net/internal/assets_2024.xlsx</div>
+        <p style="color: #444; font-size: 13px; margin: 5px 0 0 0;">该文档包含深圳地铁核心系统资产、IP分配及管理员联系方式...</p>
+      </div>
+
+      <div class="search-item" style="margin-bottom: 20px; padding: 10px; border: 1px dashed transparent; cursor: pointer;" onmouseover="this.style.border='1px dashed #409eff'; this.style.background='#ecf5ff'" onmouseout="this.style.border='1px dashed transparent'; this.style.background='transparent'" onclick="showToast('深铁OA系统登录插件')">
+        <h3 style="color: #1a0dab; margin: 0 0 5px 0; font-size: 18px; text-decoration: underline;">深铁OA系统登录插件 - GitHub</h3>
+        <div style="color: #006621; font-size: 14px;">https://github.com/szmc-dev/oa-plugin</div>
+        <p style="color: #444; font-size: 13px; margin: 5px 0 0 0;">szmc-dev repo: 包含 OA 系统的单点登录逻辑及测试凭据...</p>
+      </div>
+    </div>
+
+    <!-- 模拟 Toast 通知 -->
+    <div id="toast" style="position: absolute; top: 50px; right: 20px; background: #fff; border-left: 5px solid #67c23a; padding: 12px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 2000; border-radius: 4px; animation: slideIn 0.3s ease-out;">
+      <div style="font-weight: bold; color: #333; margin-bottom: 4px;">✔ 记录成功</div>
+      <div id="toast-msg" style="font-size: 13px; color: #666;">已保存线索: 深圳地铁...</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let count = 0;
+function showToast(name) {
+  count++;
+  document.getElementById('count').innerText = count;
+  const toast = document.getElementById('toast');
+  const msg = document.getElementById('toast-msg');
+  msg.innerText = '已保存线索: ' + name;
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3000);
+}
+</script>
+
+<style>
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+</style>
+
+<div class="options">
+  <div class="option" data-choice="confirm-design" onclick="toggleSelect(this)">
+    <div class="letter">OK</div>
+    <div class="content">
+      <h3>方案确认</h3>
+      <p>就按这个“注入工具栏 + 点击高亮 + Toast”的交互模式开发。</p>
+    </div>
+  </div>
+</div>

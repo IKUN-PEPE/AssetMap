@@ -1,0 +1,9 @@
+1. Playwright 抓搜索引擎页面可能不稳定，选择器、验证码、风控都要兜底。
+2. BackgroundTasks 跑 Playwright 长任务，容易阻塞/失控，需要并发限制、超时、状态回写。
+3. “确认导入资产库”必须严格复用 save_assets / dedup，不能直接 insert WebEndpoint。
+4. GitHub / 网盘 / 文档类链接不一定适合导入 WebEndpoint，应该优先作为线索/证据。
+5. 测试只提到 test_exposure_search.py 通过，不够；需要补 API、导入、Provider Mock、风控、前端构建、后端全量。
+6. 数据模型新增表，必须确认 migration / init_db / SQLite 测试环境 / PostgreSQL 兼容性。
+7. 可以为了 Playwright 方便而绕验证码、绕登录、自动下载文件。
+
+ 搜索引擎得结果要记录啊 ，比如搜索深圳地铁 pdf 文件，可以让用户自己选择记录 ，或者 playWright前台打开的手动点击记录  现在是能打开搜索了 有playwirght 了 但是 没有结果记录！ 项目不要直接写代码 反问我规划一下！ 

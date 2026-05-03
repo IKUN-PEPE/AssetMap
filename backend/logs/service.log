@@ -1,0 +1,977 @@
+2026-04-28T15:28:56Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T15:28:56Z - INFO - assetmap.service - service log probe
+2026-04-28T15:28:56Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T15:28:56Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=10 "HTTP/1.1 200 OK"
+2026-04-28T15:31:10Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T15:31:10Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=5 "HTTP/1.1 200 OK"
+2026-04-28T15:50:53Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T08:33:43Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T08:33:43Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=5 "HTTP/1.1 200 OK"
+2026-04-28T08:33:43Z - INFO - assetmap.service - AssetMap backend service started
+2026-04-28T08:33:43Z - INFO - assetmap.service - service log probe after utc formatter
+2026-04-28T16:41:05Z - INFO - httpx - HTTP Request: GET https://fofa.info/api/v1/info/my?email=2747722593%40qq.com&key=36b8242d459b3753912b8c62cc220831 "HTTP/1.1 200 OK"
+2026-05-02T16:12:49Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: exposure_search_tasks
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
+    yield db
+  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
+[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('0e414b32c0414a6b9899306bb3f5ab4c', '深圳地铁测试', '["\\u6df1\\u5733\\u5730\\u94c1"]', '["\\u540e\\u53f0"]', '[]', '[]', '["bing"]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:49.286817', None, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
+2026-05-02T16:12:49Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception terminating connection <sqlite3.Connection object at 0x000001D8C7675F30>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: exposure_search_tasks
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
+    yield db
+  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
+[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('0e414b32c0414a6b9899306bb3f5ab4c', '深圳地铁测试', '["\\u6df1\\u5733\\u5730\\u94c1"]', '["\\u540e\\u53f0"]', '[]', '[]', '["bing"]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:49.286817', None, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 373, in _close_connection
+    self._dialect.do_terminate(connection)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 718, in do_terminate
+    self.do_close(dbapi_connection)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 721, in do_close
+    dbapi_connection.close()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
+2026-05-02T16:12:50Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: exposure_search_tasks
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
+    yield db
+  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
+[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('d4161e21eb3048ed903645bb7246f965', 'Task 1', '[]', '[]', '[]', '[]', '[]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:50.591668', None, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
+2026-05-02T16:12:50Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception terminating connection <sqlite3.Connection object at 0x000001D8C8E1E200>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: exposure_search_tasks
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
+    yield db
+  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
+[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('d4161e21eb3048ed903645bb7246f965', 'Task 1', '[]', '[]', '[]', '[]', '[]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:50.591668', None, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 373, in _close_connection
+    self._dialect.do_terminate(connection)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 718, in do_terminate
+    self.do_close(dbapi_connection)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 721, in do_close
+    dbapi_connection.close()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
+2026-05-02T16:13:51Z - ERROR - app.api.exposure_search - Failed to import assets: (sqlite3.IntegrityError) NOT NULL constraint failed: collect_jobs.sources
+[SQL: INSERT INTO collect_jobs (id, job_name, status, progress, success_count, failed_count, duplicate_count, total_count, dedup_strategy, field_mapping, auto_verify, created_by, started_at, finished_at, error_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('85c11286d7fe4e2b85c2207d45f6fd82', 'Exposure Import: Task Import', 'completed', 0, 0, 0, 0, 0, 'overwrite', '{}', 0, 'system', '2026-05-02 16:13:51.968480', '2026-05-02 16:13:51.968485', None, '2026-05-02 16:13:51.968473', '2026-05-02 16:13:51.971209')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: collect_jobs.sources
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 140, in confirm_import
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1048, in _emit_insert_statements
+    result = connection.execute(
+        statement, multiparams, execution_options=execution_options
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: collect_jobs.sources
+[SQL: INSERT INTO collect_jobs (id, job_name, status, progress, success_count, failed_count, duplicate_count, total_count, dedup_strategy, field_mapping, auto_verify, created_by, started_at, finished_at, error_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('85c11286d7fe4e2b85c2207d45f6fd82', 'Exposure Import: Task Import', 'completed', 0, 0, 0, 0, 0, 'overwrite', '{}', 0, 'system', '2026-05-02 16:13:51.968480', '2026-05-02 16:13:51.968485', None, '2026-05-02 16:13:51.968473', '2026-05-02 16:13:51.971209')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-05-02T16:29:18Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:30:38Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:31:44Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:32:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:35:43Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:37:32Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
+2026-05-02T16:38:06Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-02T16:53:46Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-03T01:45:46Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
+2026-05-03T01:45:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:45:51Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:45:54Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:45:56Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:46:26Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" filetype:pdf: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype%3Apdf&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-03T01:46:29Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:46:32Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:46:35Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:46:39Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:46:41Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:46:44Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:46:46Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:46:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:46:51Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:46:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
+2026-05-03T01:46:55Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:46:58Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:47:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:47:07Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:47:10Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:47:13Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:47:14Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:47:17Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:47:19Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
+2026-05-03T01:47:21Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:47:25Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:47:30Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:47:32Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:47:35Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:51:52Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-03T01:52:26Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-03T01:54:19Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:54:19Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
+2026-05-03T01:54:42Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:54:44Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:54:47Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
+2026-05-03T01:54:47Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:54:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:54:48Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
+2026-05-03T01:54:49Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:54:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:54:54Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:54:57Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:54:59Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:55:26Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:55:27Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:55:30Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:55:32Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:55:35Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:55:37Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:55:40Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:55:42Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:55:44Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
+2026-05-03T01:55:45Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:55:47Z - WARNING - app.services.exposure_search - Provider baidu timed out for query "深圳地铁" filetype:csv
+2026-05-03T01:55:48Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:55:50Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:55:50Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
+2026-05-03T01:55:50Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:55:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:55:54Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
+2026-05-03T01:55:57Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:55:59Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:56:06Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:09Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:11Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:14Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:56:15Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:18Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:20Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:23Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:24Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:27Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:29Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:33Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:56:33Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:36Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:39Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:41Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:56:42Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:45Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:46Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:47Z - WARNING - app.services.exposure_search - Provider github timed out for query "深圳地铁" filetype:csv
+2026-05-03T01:56:48Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:48Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
+2026-05-03T01:56:51Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:52Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:56:55Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:56:57Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:56:59Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:57:00Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:57:03Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:57:33Z - WARNING - app.services.exposure_search - Provider google failed for query "深圳地铁" "深圳地铁": Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://www.google.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&start=0", waiting until "domcontentloaded"
+
+2026-05-03T01:57:43Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:57:44Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:57:47Z - WARNING - app.services.exposure_search - Provider google timed out for query "深圳地铁" filetype:csv
+2026-05-03T01:57:47Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:57:49Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:57:52Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:57:52Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
+2026-05-03T01:57:52Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:57:53Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:57:56Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:57:58Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:58:00Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:58:01Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:58:04Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:58:06Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:58:07Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
+2026-05-03T01:58:08Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:58:08Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
+2026-05-03T01:58:08Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T01:58:09Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T01:58:39Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" filetype:sql: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype%3Asql&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-03T01:58:41Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T01:59:07Z - WARNING - app.services.exposure_search - Provider baidu timed out for query "深圳地铁" site:pan.baidu.com
+2026-05-03T01:59:10Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T01:59:10Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
+2026-05-03T02:00:07Z - WARNING - app.services.exposure_search - Provider github timed out for query "深圳地铁" site:pan.baidu.com
+2026-05-03T02:00:09Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T02:00:09Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
+2026-05-03T02:00:11Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:00:14Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T02:00:14Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
+2026-05-03T02:00:34Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:00:35Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T02:00:35Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
+2026-05-03T02:01:31Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:01:34Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T02:01:34Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
+2026-05-03T02:01:40Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:01:42Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
+2026-05-03T02:01:42Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
+2026-05-03T02:02:08Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
+2026-05-03T02:02:11Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
+2026-05-03T02:02:11Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
+2026-05-03T02:02:19Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:02:20Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
+2026-05-03T02:02:20Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
+2026-05-03T02:02:30Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
+2026-05-03T02:02:33Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
+2026-05-03T02:02:33Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
+2026-05-03T02:03:27Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-03T02:31:35Z - INFO - assetmap.service - AssetMap backend service started
