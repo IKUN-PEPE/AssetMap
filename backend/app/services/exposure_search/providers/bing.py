@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 from .base import ExposureSearchProvider, ExposureSearchItem
 from ..playwright_client import PlaywrightClient
 
@@ -12,9 +13,16 @@ class BingProvider(ExposureSearchProvider):
     def __init__(self, pw_client: PlaywrightClient):
         self.pw_client = pw_client
 
-    async def search(self, query: str, max_results: int, max_pages: int, **kwargs) -> list[ExposureSearchItem]:
+    async def search(
+        self, 
+        query: str, 
+        max_results: int, 
+        max_pages: int, 
+        record_callback: Any = None,
+        **kwargs
+    ) -> list[ExposureSearchItem]:
         results = []
-        async with self.pw_client.get_context() as context:
+        async with self.pw_client.get_context(record_callback=record_callback) as context:
             for page_num in range(max_pages):
                 if len(results) >= max_results:
                     break
@@ -28,7 +36,14 @@ class BingProvider(ExposureSearchProvider):
                 is_captcha, msg = await self.pw_client.detect_captcha_or_login(page)
                 if is_captcha:
                     logger.warning(f"Bing provider detected risk control: {msg}")
-                    break
+                    # If headless is False, give the user a chance to solve it
+                    if not self.pw_client.headless:
+                        logger.info("Interactive mode: waiting for manual interaction...")
+                        solved = await self.pw_client.wait_for_manual_interaction(page)
+                        if not solved:
+                            break
+                    else:
+                        break
                 
                 # Multiple selectors for robustness
                 search_results = await page.query_selector_all("li.b_algo, .b_algo")

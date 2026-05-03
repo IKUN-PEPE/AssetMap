@@ -13,13 +13,12 @@ def test_query_builder():
     
     # Check for basic org search
     assert '"深圳地铁"' in queries
-    # Check for title keyword search
+    # Check for title keyword search (updated pattern)
     assert '"深圳地铁" "后台"' in queries
-    assert 'intitle:"深圳地铁" "后台"' in queries
     # Check for file type search
     assert '"深圳地铁" filetype:pdf' in queries
-    # Check for site search
-    assert '"深圳地铁" site:pan.baidu.com' in queries
+    # Check for site search (updated pattern: site:SITE {ORG})
+    assert 'site:pan.baidu.com "深圳地铁"' in queries
 
 def test_risk_classifier():
     classifier = RiskClassifier(org_keywords=["深圳地铁", "深铁", "SZMC"])

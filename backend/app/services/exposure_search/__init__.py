@@ -16,10 +16,60 @@ from app.services.exposure_search.providers.google import GoogleProvider
 logger = logging.getLogger(__name__)
 
 class ExposureSearchService:
-    def __init__(self, db: Session, max_concurrent_queries: int = 3):
+    def __init__(self, db: Session, max_concurrent_queries: int = 3, headless: bool = True):
         self.db = db
-        self.pw_client = PlaywrightClient()
+        self.headless = headless
+        self.pw_client = PlaywrightClient(headless=headless)
         self.semaphore = asyncio.Semaphore(max_concurrent_queries)
+
+    async def _handle_manual_clue(self, task_id: str, classifier: RiskClassifier, data: dict):
+        """Callback for manual capture from the browser."""
+        try:
+            url = data.get("url")
+            if not url:
+                return
+            
+            # Deduplicate by URL within the task
+            existing = self.db.query(ExposureSearchResult).filter(
+                ExposureSearchResult.task_id == task_id,
+                ExposureSearchResult.url == url
+            ).first()
+            
+            if not existing:
+                title = data.get("title", "Manual Capture")
+                snippet = data.get("snippet", "")
+                source_page = data.get("source_page", "unknown")
+                
+                risk_tags, matched_keywords = classifier.classify(
+                    title, url, snippet
+                )
+                
+                res = ExposureSearchResult(
+                    task_id=task_id,
+                    source="manual",
+                    query=f"Manual Capture from {source_page}",
+                    title=title,
+                    url=url,
+                    snippet=snippet,
+                    risk_tags=risk_tags,
+                    matched_keywords=matched_keywords,
+                    raw_payload={"manual": True, "source_page": source_page},
+                    status="valid"  # Mark as valid since user manually captured it
+                )
+                self.db.add(res)
+                
+                # Update task result counts
+                task = self.db.query(ExposureSearchTask).filter(ExposureSearchTask.id == task_id).first()
+                if task:
+                    task.total_results += 1
+                    task.valid_count += 1
+                
+                self.db.commit()
+                logger.info(f"Manual clue saved for task {task_id}: {url}")
+            else:
+                logger.info(f"Manual clue already exists for task {task_id}: {url}")
+        except Exception as e:
+            logger.error(f"Error in _handle_manual_clue: {e}")
 
     async def run_task(self, task_id: str):
         task = self.db.query(ExposureSearchTask).filter(ExposureSearchTask.id == task_id).first()
@@ -46,6 +96,10 @@ class ExposureSearchService:
 
             classifier = RiskClassifier(org_keywords=task.org_keywords)
             
+            # Create the manual capture callback
+            async def record_callback(data):
+                await self._handle_manual_clue(task_id, classifier, data)
+
             providers = []
             if "bing" in task.sources:
                 providers.append(BingProvider(self.pw_client))
@@ -56,10 +110,7 @@ class ExposureSearchService:
             if "google" in task.sources:
                 providers.append(GoogleProvider(self.pw_client))
 
-            total_results = 0
-            
             async def process_query(query_item):
-                nonlocal total_results
                 query = query_item["query"]
                 query_item["status"] = "running"
                 self.db.commit()
@@ -74,7 +125,8 @@ class ExposureSearchService:
                                 provider.search(
                                     query=query,
                                     max_results=10,
-                                    max_pages=1
+                                    max_pages=1,
+                                    record_callback=record_callback
                                 ),
                                 timeout=60.0
                             )
@@ -105,7 +157,8 @@ class ExposureSearchService:
                                     )
                                     self.db.add(res)
                                     query_total += 1
-                                    total_results += 1
+                                    # Increment task total results
+                                    task.total_results += 1
                             
                             self.db.commit()
                         except asyncio.TimeoutError:
@@ -122,7 +175,6 @@ class ExposureSearchService:
                 await process_query(q_item)
 
             task.status = "completed"
-            task.total_results = total_results
             task.finished_at = datetime.utcnow()
             self.db.commit()
 

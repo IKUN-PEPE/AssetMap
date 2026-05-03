@@ -40,7 +40,9 @@ async def create_task(
     db.refresh(task)
 
     if payload.auto_run:
-        service = ExposureSearchService(db)
+        # If use_playwright is False, we might skip Playwright providers, 
+        # but here we use it to decide headless mode for OSINT robustness.
+        service = ExposureSearchService(db, headless=not payload.use_playwright)
         background_tasks.add_task(service.run_task, task.id)
 
     return task

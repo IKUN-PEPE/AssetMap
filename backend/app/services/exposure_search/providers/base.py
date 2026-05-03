@@ -18,5 +18,12 @@ class ExposureSearchProvider(ABC):
         pass
 
     @abstractmethod
-    async def search(self, query: str, max_results: int, max_pages: int, **kwargs) -> list[ExposureSearchItem]:
+    async def search(
+        self, 
+        query: str, 
+        max_results: int, 
+        max_pages: int, 
+        record_callback: Any = None,
+        **kwargs
+    ) -> list[ExposureSearchItem]:
         pass

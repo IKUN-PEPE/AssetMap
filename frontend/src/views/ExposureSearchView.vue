@@ -64,7 +64,8 @@
         </el-form-item>
         <el-form-item label="执行策略">
           <el-switch v-model="taskForm.auto_run" active-text="立即执行" />
-          <el-switch v-model="taskForm.use_playwright" active-text="启用 Playwright" style="margin-left: 20px" />
+          <el-switch v-model="taskForm.use_playwright" active-text="后台运行" inactive-text="窗口交互" style="margin-left: 20px" />
+          <span class="hint">（窗口交互模式可手动处理验证码）</span>
         </el-form-item>
       </el-form>
       <template #footer>

@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, JSON, String, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -27,8 +27,8 @@ class SourceObservation(Base):
     source_name: Mapped[str] = mapped_column(String(32), index=True)
     source_record_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
     observed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    raw_payload: Mapped[dict] = mapped_column(JSON)
-    quota_meta: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    raw_payload: Mapped[dict] = mapped_column(JSONB)
+    quota_meta: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     collect_job = relationship("CollectJob", back_populates="observations")
@@ -40,8 +40,8 @@ class JobPendingAsset(Base):
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
     job_id: Mapped[str] = mapped_column(UUID(as_uuid=False), ForeignKey("collect_jobs.id"), index=True)
     source: Mapped[str] = mapped_column(String(32), index=True)
-    raw_data: Mapped[dict] = mapped_column(JSON)
-    mapped_data: Mapped[dict] = mapped_column(JSON)
+    raw_data: Mapped[dict] = mapped_column(JSONB)
+    mapped_data: Mapped[dict] = mapped_column(JSONB)
     status: Mapped[str] = mapped_column(String(32), index=True, default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
     imported_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
@@ -87,8 +87,8 @@ class LabelAuditLog(Base):
     batch_id: Mapped[str] = mapped_column(String(64), index=True)
     asset_type: Mapped[str] = mapped_column(String(32))
     asset_id: Mapped[str] = mapped_column(UUID(as_uuid=False), index=True)
-    before_label: Mapped[dict | None] = mapped_column(JSON, nullable=True)
-    after_label: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    before_label: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    after_label: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     action_type: Mapped[str] = mapped_column(String(32))
     operator: Mapped[str] = mapped_column(String(64), default="system")
     operated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
@@ -100,7 +100,7 @@ class SavedSelection(Base):
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
     selection_name: Mapped[str] = mapped_column(String(128))
     selection_type: Mapped[str] = mapped_column(String(32))
-    filter_snapshot: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    filter_snapshot: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     created_by: Mapped[str] = mapped_column(String(64), default="system")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -123,7 +123,7 @@ class Report(Base):
     report_name: Mapped[str] = mapped_column(String(255))
     report_type: Mapped[str] = mapped_column(String(32), default="html")
     scope_type: Mapped[str] = mapped_column(String(32))
-    scope_payload: Mapped[dict] = mapped_column(JSON)
+    scope_payload: Mapped[dict] = mapped_column(JSONB)
     object_path: Mapped[str | None] = mapped_column(Text, nullable=True)
     file_size: Mapped[int | None] = mapped_column(Integer, nullable=True)
     total_assets: Mapped[int] = mapped_column(Integer, default=0)

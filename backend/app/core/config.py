@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     fofa_key: str | None = None
     hunter_api_key: str | None = None
     zoomeye_api_key: str | None = None
+    github_token: str | None = None
+    bing_api_key: str | None = None
+    bing_endpoint: str = "https://api.bing.microsoft.com/v7.0/search"
+    google_api_key: str | None = None
+    google_cse_id: str | None = None
+    baidu_api_key: str | None = None
+    baidu_endpoint: str | None = None
     sample_mode: bool = True
 
     model_config = SettingsConfigDict(
