@@ -1,0 +1,33 @@
+2026-04-21T15:36:13.407348 - INFO - Task created name=采集任务_0421_2335 sources=['hunter']
+2026-04-21 23:36:14,516 - INFO - Task created job_id=54e9912e-9fae-44ce-9d10-34cc76cf8d0f name=采集任务_0421_2335 sources=['hunter']
+2026-04-21 23:36:14,567 - INFO - Task started
+2026-04-21 23:36:14,578 - INFO - Source start source=hunter query=web.title="后台管理"
+2026-04-21 23:36:14,609 - INFO - [hunter] query=web.title="后台管理" page_size=20 max_pages=1 limit=100
+2026-04-21 23:36:21,395 - INFO - [hunter] request page=1
+2026-04-21 23:36:21,395 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=1&page_size=20 headers={'host': 'hunter.qianxin.com', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'}
+2026-04-21 23:36:22,704 - INFO - [hunter] HTTP GET https://hunter.qianxin.com/openApi/search?api-key=***&search=d2ViLnRpdGxlPSLlkI7lj7DnrqHnkIYi&page=1&page_size=20 -> 200 
+2026-04-21 23:36:22,706 - INFO - [hunter] response page=1 items=20
+2026-04-21 23:36:22,709 - INFO - Source fetched source=hunter assets=20
+2026-04-21 23:36:22,769 - INFO - [hunter] save success row=1 key=url:http://dtc.oversea.test.unionfab.com:5002/ url=http://dtc.oversea.test.unionfab.com:5002/
+2026-04-21 23:36:22,797 - INFO - [hunter] save success row=2 key=url:https://120.55.183.44/ url=https://120.55.183.44/
+2026-04-21 23:36:22,818 - INFO - [hunter] save success row=3 key=url:https://test-newwireless.smartechnology.com.cn/ url=https://test-newwireless.smartechnology.com.cn/
+2026-04-21 23:36:22,841 - INFO - [hunter] save success row=4 key=url:http://all-desk-test2.ciyuanbz.com/ url=http://all-desk-test2.ciyuanbz.com/
+2026-04-21 23:36:22,864 - INFO - [hunter] save duplicate row=5 key=url:http://api-ops-test.unionfab.com:5002/ url=http://api-ops-test.unionfab.com:5002/ fallback=http://api-ops-test.unionfab.com:5002
+2026-04-21 23:36:22,896 - INFO - [hunter] save success row=6 key=url:http://124.239.146.24:8083/ url=http://124.239.146.24:8083/
+2026-04-21 23:36:22,917 - INFO - [hunter] save success row=7 key=url:https://mbti-admin.jxpdf.com/ url=https://mbti-admin.jxpdf.com/
+2026-04-21 23:36:22,936 - INFO - [hunter] save success row=8 key=url:https://8.152.209.170/ url=https://8.152.209.170/
+2026-04-21 23:36:22,959 - INFO - [hunter] save success row=9 key=url:https://crm.huatongtushu.com/ url=https://crm.huatongtushu.com/
+2026-04-21 23:36:22,981 - INFO - [hunter] save success row=10 key=url:https://ht.sxairportvip.com/ url=https://ht.sxairportvip.com/
+2026-04-21 23:36:23,002 - INFO - [hunter] save duplicate row=11 key=url:http://dtc0.unionfab.com:5002/ url=http://dtc0.unionfab.com:5002/ fallback=http://dtc0.unionfab.com:5002
+2026-04-21 23:36:23,035 - INFO - [hunter] save success row=12 key=url:https://123.56.164.136/ url=https://123.56.164.136/
+2026-04-21 23:36:23,052 - INFO - [hunter] save duplicate row=13 key=url:https://101.132.171.181/ url=https://101.132.171.181/ fallback=https://101.132.171.181
+2026-04-21 23:36:23,093 - INFO - [hunter] save success row=14 key=url:http://101.43.26.67/ url=http://101.43.26.67/
+2026-04-21 23:36:23,123 - INFO - [hunter] save duplicate row=15 key=url:http://mooseyang.com/ url=http://mooseyang.com/ fallback=http://mooseyang.com
+2026-04-21 23:36:23,159 - INFO - [hunter] save success row=16 key=url:http://ai_manage.shenzhenmeiri.cn:8080/ url=http://ai_manage.shenzhenmeiri.cn:8080/
+2026-04-21 23:36:23,179 - INFO - [hunter] save success row=17 key=url:http://119.45.11.95:8810/ url=http://119.45.11.95:8810/
+2026-04-21 23:36:23,208 - INFO - [hunter] save success row=18 key=url:http://zhezhengweb.com/ url=http://zhezhengweb.com/
+2026-04-21 23:36:23,230 - INFO - [hunter] save success row=19 key=url:http://luxiao001.y9php.cn/ url=http://luxiao001.y9php.cn/
+2026-04-21 23:36:23,251 - INFO - [hunter] save duplicate row=20 key=url:https://paper-admin.jxpdf.com/ url=https://paper-admin.jxpdf.com/ fallback=https://paper-admin.jxpdf.com
+2026-04-21 23:36:23,278 - INFO - [hunter] save summary success=15 duplicate=5 failed=0 total=20
+2026-04-21 23:36:23,291 - INFO - Source saved source=hunter progress=100 success=15 duplicate=5 failed=0
+2026-04-21 23:36:23,309 - INFO - Task finished status=success success=15 duplicate=5 failed=0 total=20

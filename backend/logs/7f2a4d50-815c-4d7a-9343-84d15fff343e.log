@@ -1,0 +1,29 @@
+2026-04-21T11:58:35.005879 - INFO - Task created name=采集任务_0421_1958 sources=['fofa']
+2026-04-21 19:58:36,122 - INFO - Task created job_id=7f2a4d50-815c-4d7a-9343-84d15fff343e name=采集任务_0421_1958 sources=['fofa']
+2026-04-21 19:58:36,132 - INFO - Task started
+2026-04-21 19:58:36,143 - INFO - Source start source=fofa query=app="HIKVISION-视频联网报警平台"
+2026-04-21 19:58:45,130 - INFO - [fofa] HTTP GET https://fofa.info/api/v1/search/all?email=2747722593%40qq.com&key=***&qbase64=YXBwPSJISUtWSVNJT04t6KeG6aKR6IGU572R5oql6K2m5bmz5Y%2BwIg%3D%3D&size=10&page=1&fields=ip%2Cport%2Cprotocol%2Chost%2Cdomain%2Ctitle%2Cserver%2Ccountry%2Ccity%2Cas_organization%2Clink headers={'host': 'fofa.info', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'user-agent': 'python-httpx/0.28.1'}
+2026-04-21 19:58:45,990 - INFO - [fofa] HTTP GET https://fofa.info/api/v1/search/all?email=2747722593%40qq.com&key=***&qbase64=YXBwPSJISUtWSVNJT04t6KeG6aKR6IGU572R5oql6K2m5bmz5Y%2BwIg%3D%3D&size=10&page=1&fields=ip%2Cport%2Cprotocol%2Chost%2Cdomain%2Ctitle%2Cserver%2Ccountry%2Ccity%2Cas_organization%2Clink -> 200 
+2026-04-21 19:58:45,994 - ERROR - Collector fofa failed
+Traceback (most recent call last):
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 1239, in run_collect_task
+    assets = run_collector_query(
+        collector,
+    ...<4 lines>...
+        job_logger=job_logger,
+    )
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 225, in run_collector_query
+    return run_coro_in_fresh_loop(collector.run(query_str, payload, config))
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\tasks\collect.py", line 202, in run_coro_in_fresh_loop
+    return loop.run_until_complete(coro)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\fofa.py", line 72, in run
+    self._raise_if_fofa_api_error(resp, data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Administrator\VScode\AssetMap\backend\app\services\collectors\fofa.py", line 27, in _raise_if_fofa_api_error
+    raise RuntimeError(data.get("errmsg") or "FOFA 查询失败")
+RuntimeError: [820031] F点余额不足
+2026-04-21 19:58:46,021 - INFO - Task finished status=failed success=0 duplicate=0 failed=0 total=0

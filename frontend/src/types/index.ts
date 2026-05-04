@@ -279,6 +279,41 @@ export interface JobConfirmImportResponse {
   status: string
 }
 
+export interface ExposureSearchTask {
+  id: string
+  name: string
+  org_keywords: string[]
+  title_keywords: string[]
+  url_keywords: string[]
+  file_types: string[]
+  sources: string[]
+  max_results: number
+  max_pages: number
+  only_documents: boolean
+  only_webpages: boolean
+  query_plan?: Array<{
+    query: string
+    status: string
+    results_count: number
+    error_message?: string
+    error_category?: string
+  }>
+  current_query?: string | null
+  next_query?: string | null
+  completed_queries: number
+  total_queries: number
+  progress_percent: number
+  status: string
+  total_results: number
+  valid_count: number
+  ignored_count: number
+  imported_count: number
+  error_message?: string | null
+  created_at?: string
+  started_at?: string | null
+  finished_at?: string | null
+}
+
 export interface JobDiscardImportResponse {
   job_id: string
   discarded: number

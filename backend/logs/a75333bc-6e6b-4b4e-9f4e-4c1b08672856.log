@@ -1,0 +1,130 @@
+2026-04-21T16:46:28.246162 - INFO - Task created name=采集任务_0422_0046 sources=['quake']
+2026-04-22 00:46:29,597 - INFO - Task created job_id=a75333bc-6e6b-4b4e-9f4e-4c1b08672856 name=采集任务_0422_0046 sources=['quake']
+2026-04-22 00:46:29,686 - INFO - Task started
+2026-04-22 00:46:29,696 - INFO - Source start source=quake query=service:"http" AND country:"China"
+2026-04-22 00:46:29,702 - INFO - [quake] query=service:"http" AND country:"China" page_size=20 max_pages=5 limit=100
+2026-04-22 00:46:35,726 - INFO - [quake] request page=1 start=0
+2026-04-22 00:46:35,727 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'content-length': '70'}
+2026-04-22 00:46:41,390 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:46:41,392 - INFO - [quake] response page=1 items=20
+2026-04-22 00:46:41,393 - INFO - [quake] request page=2 start=20
+2026-04-22 00:46:41,394 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'cookie': 'cert_common=4646577a-66d8-4db4-906e-ef9d6a58757f', 'content-length': '71'}
+2026-04-22 00:46:47,109 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:46:47,111 - INFO - [quake] response page=2 items=20
+2026-04-22 00:46:47,112 - INFO - [quake] request page=3 start=40
+2026-04-22 00:46:47,113 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'cookie': 'cert_common=4646577a-66d8-4db4-906e-ef9d6a58757f', 'content-length': '71'}
+2026-04-22 00:46:51,392 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:46:51,395 - INFO - [quake] response page=3 items=20
+2026-04-22 00:46:51,396 - INFO - [quake] request page=4 start=60
+2026-04-22 00:46:51,397 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'cookie': 'cert_common=4646577a-66d8-4db4-906e-ef9d6a58757f', 'content-length': '71'}
+2026-04-22 00:46:56,164 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:46:56,167 - INFO - [quake] response page=4 items=20
+2026-04-22 00:46:56,168 - INFO - [quake] request page=5 start=80
+2026-04-22 00:46:56,170 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service headers={'host': 'quake.360.net', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', 'x-quaketoken': 'ae3***f6', 'content-type': 'application/json', 'accept': 'application/json', 'user-agent': 'Mozilla/5.0', 'cookie': 'cert_common=4646577a-66d8-4db4-906e-ef9d6a58757f', 'content-length': '71'}
+2026-04-22 00:47:00,710 - INFO - [quake] HTTP POST https://quake.360.net/api/v3/search/quake_service -> 200 
+2026-04-22 00:47:00,712 - INFO - [quake] response page=5 items=20
+2026-04-22 00:47:00,713 - INFO - [quake] limit reached collected=100
+2026-04-22 00:47:00,717 - INFO - Source fetched source=quake assets=100
+2026-04-22 00:47:00,759 - INFO - [quake] save success row=1 key=url:http://www.likun.games/ url=http://www.likun.games/
+2026-04-22 00:47:00,789 - INFO - [quake] save success row=2 key=url:http://gzsqw.org.cn/ url=http://gzsqw.org.cn/
+2026-04-22 00:47:00,815 - INFO - [quake] save success row=3 key=url:http://bxmdsds4ahsau2d7ehdtdccsd.16798355.com/ url=http://bxmdsds4ahsau2d7ehdtdccsd.16798355.com/
+2026-04-22 00:47:00,837 - INFO - [quake] save success row=4 key=url:https://www.3335620.com/ url=https://www.3335620.com/
+2026-04-22 00:47:00,859 - INFO - [quake] save success row=5 key=url:https://mcrft5.533388ldvzs0.shop/ url=https://mcrft5.533388ldvzs0.shop/
+2026-04-22 00:47:00,888 - INFO - [quake] save success row=6 key=url:http://602228com-7yjxb.602228a0.buzz:1031/ url=http://602228com-7yjxb.602228a0.buzz:1031/
+2026-04-22 00:47:00,920 - INFO - [quake] save success row=7 key=url:http://seqing168.top/ url=http://seqing168.top/
+2026-04-22 00:47:00,966 - INFO - [quake] save success row=8 key=url:http://www.vvgqdqhw.cc/ url=http://www.vvgqdqhw.cc/
+2026-04-22 00:47:00,977 - INFO - [quake] save duplicate row=9 key=url:https://99344.suyoker.com/ url=https://99344.suyoker.com/ fallback=http://99344.suyoker.com:443
+2026-04-22 00:47:01,003 - INFO - [quake] save success row=10 key=url:http://gxa.tche360.com/ url=http://gxa.tche360.com/
+2026-04-22 00:47:01,018 - INFO - [quake] save duplicate row=11 key=url:http://m.ynzrxny.com/ url=http://m.ynzrxny.com/ fallback=http://m.ynzrxny.com
+2026-04-22 00:47:01,055 - INFO - [quake] save success row=12 key=url:http://vdbattery.com/ url=http://vdbattery.com/
+2026-04-22 00:47:01,067 - INFO - [quake] save duplicate row=13 key=url:http://154.215.172.79/ url=http://154.215.172.79/ fallback=http://154.215.172.79
+2026-04-22 00:47:01,086 - INFO - [quake] save duplicate row=14 key=url:http://www.3yiyou.cn/ url=http://www.3yiyou.cn/ fallback=http://www.3yiyou.cn
+2026-04-22 00:47:01,112 - INFO - [quake] save duplicate row=15 key=url:https://www.ncpzsxt.com/ url=https://www.ncpzsxt.com/ fallback=http://www.ncpzsxt.com:443
+2026-04-22 00:47:01,145 - INFO - [quake] save success row=16 key=url:http://222.246.147.43/ url=http://222.246.147.43/
+2026-04-22 00:47:01,165 - INFO - [quake] save success row=17 key=url:http://b56elw4.45czl5.cn/ url=http://b56elw4.45czl5.cn/
+2026-04-22 00:47:01,186 - INFO - [quake] save success row=18 key=url:https://39.105.158.80/ url=https://39.105.158.80/
+2026-04-22 00:47:01,201 - INFO - [quake] save duplicate row=19 key=url:http://goal-haixingzhibo.com/ url=http://goal-haixingzhibo.com/ fallback=http://goal-haixingzhibo.com
+2026-04-22 00:47:01,226 - INFO - [quake] save success row=20 key=url:https://www.bizarreabyss.com/ url=https://www.bizarreabyss.com/
+2026-04-22 00:47:01,239 - INFO - [quake] save duplicate row=21 key=url:http://anmazkw.ffxejyrvg.garden/ url=http://anmazkw.ffxejyrvg.garden/ fallback=http://anmazkw.ffxejyrvg.garden
+2026-04-22 00:47:01,259 - INFO - [quake] save duplicate row=22 key=url:http://ziniz.cn/ url=http://ziniz.cn/ fallback=http://ziniz.cn
+2026-04-22 00:47:01,301 - INFO - [quake] save duplicate row=23 key=url:http://www.wifimore.cn/ url=http://www.wifimore.cn/ fallback=http://www.wifimore.cn
+2026-04-22 00:47:01,334 - INFO - [quake] save success row=24 key=url:https://v.y-m.cc/ url=https://v.y-m.cc/
+2026-04-22 00:47:01,355 - INFO - [quake] save success row=25 key=url:https://23.235.169.115/ url=https://23.235.169.115/
+2026-04-22 00:47:01,377 - INFO - [quake] save success row=26 key=url:https://154.216.115.175/ url=https://154.216.115.175/
+2026-04-22 00:47:01,397 - INFO - [quake] save duplicate row=27 key=url:https://154.216.115.162/ url=https://154.216.115.162/ fallback=http://154.216.115.162:443
+2026-04-22 00:47:01,423 - INFO - [quake] save success row=28 key=url:http://obsidian.leoz.cloud/ url=http://obsidian.leoz.cloud/
+2026-04-22 00:47:01,454 - INFO - [quake] save success row=29 key=url:http://savr8r.top/ url=http://savr8r.top/
+2026-04-22 00:47:01,474 - INFO - [quake] save duplicate row=30 key=url:https://dgt62.top/ url=https://dgt62.top/ fallback=http://dgt62.top:443
+2026-04-22 00:47:01,507 - INFO - [quake] save success row=31 key=url:https://120.25.233.248/ url=https://120.25.233.248/
+2026-04-22 00:47:01,537 - INFO - [quake] save success row=32 key=url:http://117.66.17.41:9200/ url=http://117.66.17.41:9200/
+2026-04-22 00:47:01,553 - INFO - [quake] save success row=33 key=url:http://175.178.87.87:8888/ url=http://175.178.87.87:8888/
+2026-04-22 00:47:01,576 - INFO - [quake] save success row=34 key=url:http://43.138.185.225/ url=http://43.138.185.225/
+2026-04-22 00:47:01,597 - INFO - [quake] save duplicate row=35 key=url:http://156.242.152.207/ url=http://156.242.152.207/ fallback=http://156.242.152.207
+2026-04-22 00:47:01,629 - INFO - [quake] save success row=36 key=url:https://cd0bxs17fxn.356ldy0059.cc/ url=https://cd0bxs17fxn.356ldy0059.cc/
+2026-04-22 00:47:01,650 - INFO - [quake] save success row=37 key=url:http://2026ay181b.bchost.com.cn/ url=http://2026ay181b.bchost.com.cn/
+2026-04-22 00:47:01,671 - INFO - [quake] save success row=38 key=url:http://183.11.159.12:8000/ url=http://183.11.159.12:8000/
+2026-04-22 00:47:01,700 - INFO - [quake] save success row=39 key=url:https://oa.91beeshare.com/ url=https://oa.91beeshare.com/
+2026-04-22 00:47:01,723 - INFO - [quake] save success row=40 key=url:http://125.215.37.60/ url=http://125.215.37.60/
+2026-04-22 00:47:01,739 - INFO - [quake] save success row=41 key=url:http://a1820.dscd.akamai.net/ url=http://a1820.dscd.akamai.net/
+2026-04-22 00:47:01,758 - INFO - [quake] save duplicate row=42 key=url:http://cnahuisentai.cn/ url=http://cnahuisentai.cn/ fallback=http://cnahuisentai.cn
+2026-04-22 00:47:01,789 - INFO - [quake] save duplicate row=43 key=url:http://www.ljvbo551.cn/ url=http://www.ljvbo551.cn/ fallback=http://www.ljvbo551.cn
+2026-04-22 00:47:01,814 - INFO - [quake] save duplicate row=44 key=url:http://kgimwo.com/ url=http://kgimwo.com/ fallback=http://kgimwo.com
+2026-04-22 00:47:01,844 - INFO - [quake] save success row=45 key=url:http://106.14.197.48:4567/ url=http://106.14.197.48:4567/
+2026-04-22 00:47:01,867 - INFO - [quake] save success row=46 key=url:http://106.227.13.47:8888/ url=http://106.227.13.47:8888/
+2026-04-22 00:47:01,887 - INFO - [quake] save success row=47 key=url:https://901fht.18yfjgf.com/ url=https://901fht.18yfjgf.com/
+2026-04-22 00:47:01,912 - INFO - [quake] save success row=48 key=url:http://124.222.222.144/ url=http://124.222.222.144/
+2026-04-22 00:47:01,948 - INFO - [quake] save success row=49 key=url:http://112.28.207.191:8081/ url=http://112.28.207.191:8081/
+2026-04-22 00:47:01,967 - INFO - [quake] save duplicate row=50 key=url:http://www.qiutantiyu-qq.net/ url=http://www.qiutantiyu-qq.net/ fallback=http://www.qiutantiyu-qq.net
+2026-04-22 00:47:01,997 - INFO - [quake] save duplicate row=51 key=url:https://39.98.42.88/ url=https://39.98.42.88/ fallback=http://39.98.42.88:443
+2026-04-22 00:47:02,028 - INFO - [quake] save success row=52 key=url:http://182.242.147.29:10250/ url=http://182.242.147.29:10250/
+2026-04-22 00:47:02,055 - INFO - [quake] save success row=53 key=url:http://112.113.241.203:7547/ url=http://112.113.241.203:7547/
+2026-04-22 00:47:02,070 - INFO - [quake] save duplicate row=54 key=url:http://182.242.147.59:10250/ url=http://182.242.147.59:10250/ fallback=http://182.242.147.59:10250
+2026-04-22 00:47:02,098 - INFO - [quake] save success row=55 key=url:http://82.156.110.141/ url=http://82.156.110.141/
+2026-04-22 00:47:02,114 - INFO - [quake] save success row=56 key=url:http://38.238.235.3/ url=http://38.238.235.3/
+2026-04-22 00:47:02,129 - INFO - [quake] save duplicate row=57 key=url:https://47.100.42.75/ url=https://47.100.42.75/ fallback=http://47.100.42.75:443
+2026-04-22 00:47:02,159 - INFO - [quake] save success row=58 key=url:https://be6jlg.htjodjyf.com/ url=https://be6jlg.htjodjyf.com/
+2026-04-22 00:47:02,169 - INFO - [quake] save duplicate row=59 key=url:https://39.101.151.59/ url=https://39.101.151.59/ fallback=http://39.101.151.59:443
+2026-04-22 00:47:02,188 - INFO - [quake] save duplicate row=60 key=url:https://ezl59p7wtuo.19pgdx0573.cc/ url=https://ezl59p7wtuo.19pgdx0573.cc/ fallback=http://ezl59p7wtuo.19pgdx0573.cc:443
+2026-04-22 00:47:02,206 - INFO - [quake] save duplicate row=61 key=url:https://jr4pvuz.225558dhavv.com/ url=https://jr4pvuz.225558dhavv.com/ fallback=http://jr4pvuz.225558dhavv.com:443
+2026-04-22 00:47:02,223 - INFO - [quake] save duplicate row=62 key=url:http://ibt.tangxvlog77.cn/ url=http://ibt.tangxvlog77.cn/ fallback=http://ibt.tangxvlog77.cn
+2026-04-22 00:47:02,251 - INFO - [quake] save success row=63 key=url:http://m.pengshuiwaimai.com/ url=http://m.pengshuiwaimai.com/
+2026-04-22 00:47:02,262 - INFO - [quake] save duplicate row=64 key=url:https://lvban37rc.19pgldy0488.cc/ url=https://lvban37rc.19pgldy0488.cc/ fallback=http://lvban37rc.19pgldy0488.cc:443
+2026-04-22 00:47:02,287 - INFO - [quake] save success row=65 key=url:http://qfx61121.lanzoup.com/ url=http://qfx61121.lanzoup.com/
+2026-04-22 00:47:02,305 - INFO - [quake] save duplicate row=66 key=url:http://pxy.huanbaowuzihuishou.com/ url=http://pxy.huanbaowuzihuishou.com/ fallback=http://pxy.huanbaowuzihuishou.com
+2026-04-22 00:47:02,328 - INFO - [quake] save success row=67 key=url:https://api.kendte.dk/ url=https://api.kendte.dk/
+2026-04-22 00:47:02,346 - INFO - [quake] save success row=68 key=url:http://htdth.asia/ url=http://htdth.asia/
+2026-04-22 00:47:02,366 - INFO - [quake] save duplicate row=69 key=url:https://mail.sincerebus.com.tw/ url=https://mail.sincerebus.com.tw/ fallback=http://mail.sincerebus.com.tw:443
+2026-04-22 00:47:02,386 - INFO - [quake] save success row=70 key=url:http://115.182.49.9/ url=http://115.182.49.9/
+2026-04-22 00:47:02,404 - INFO - [quake] save success row=71 key=url:http://124.218.165.132:7547/ url=http://124.218.165.132:7547/
+2026-04-22 00:47:02,416 - INFO - [quake] save duplicate row=72 key=url:https://103.253.250.22/ url=https://103.253.250.22/ fallback=http://103.253.250.22:443
+2026-04-22 00:47:02,434 - INFO - [quake] save duplicate row=73 key=url:https://mrwu.com.tw/ url=https://mrwu.com.tw/ fallback=http://mrwu.com.tw:443
+2026-04-22 00:47:02,453 - INFO - [quake] save success row=74 key=url:http://52.175.28.46/ url=http://52.175.28.46/
+2026-04-22 00:47:02,469 - INFO - [quake] save duplicate row=75 key=url:http://123-195-84-242.dynamic.kbronet.com.tw/ url=http://123-195-84-242.dynamic.kbronet.com.tw/ fallback=http://123-195-84-242.dynamic.kbronet.com.tw
+2026-04-22 00:47:02,501 - INFO - [quake] save success row=76 key=url:http://150.223.32.190:8888/ url=http://150.223.32.190:8888/
+2026-04-22 00:47:02,514 - INFO - [quake] save duplicate row=77 key=url:http://sushua365.com/ url=http://sushua365.com/ fallback=http://sushua365.com
+2026-04-22 00:47:02,544 - INFO - [quake] save success row=78 key=url:https://76yu4.njlhet.com/ url=https://76yu4.njlhet.com/
+2026-04-22 00:47:02,561 - INFO - [quake] save success row=79 key=url:http://36.159.70.193:50001/ url=http://36.159.70.193:50001/
+2026-04-22 00:47:02,573 - INFO - [quake] save duplicate row=80 key=url:http://154.215.172.47/ url=http://154.215.172.47/ fallback=http://154.215.172.47
+2026-04-22 00:47:02,591 - INFO - [quake] save duplicate row=81 key=url:https://sv.rnoy7.shop/ url=https://sv.rnoy7.shop/ fallback=http://sv.rnoy7.shop:443
+2026-04-22 00:47:02,610 - INFO - [quake] save success row=82 key=url:http://210.241.19.64:2000/ url=http://210.241.19.64:2000/
+2026-04-22 00:47:02,623 - INFO - [quake] save duplicate row=83 key=url:http://124.222.222.121/ url=http://124.222.222.121/ fallback=http://124.222.222.121
+2026-04-22 00:47:02,649 - INFO - [quake] save success row=84 key=url:http://111.249.212.28:8888/ url=http://111.249.212.28:8888/
+2026-04-22 00:47:02,663 - INFO - [quake] save success row=85 key=url:https://182.16.75.227/ url=https://182.16.75.227/
+2026-04-22 00:47:02,683 - INFO - [quake] save success row=86 key=url:http://111.229.137.113:8080/ url=http://111.229.137.113:8080/
+2026-04-22 00:47:02,697 - INFO - [quake] save duplicate row=87 key=url:https://47.100.42.78/ url=https://47.100.42.78/ fallback=http://47.100.42.78:443
+2026-04-22 00:47:02,715 - INFO - [quake] save success row=88 key=url:http://n8n.localarch.ai/ url=http://n8n.localarch.ai/
+2026-04-22 00:47:02,732 - INFO - [quake] save success row=89 key=url:http://hsinchu.sce.pccu.edu.tw/ url=http://hsinchu.sce.pccu.edu.tw/
+2026-04-22 00:47:02,745 - INFO - [quake] save duplicate row=90 key=url:https://2c7pms.h.1112dns.com/ url=https://2c7pms.h.1112dns.com/ fallback=http://2c7pms.h.1112dns.com:443
+2026-04-22 00:47:02,763 - INFO - [quake] save success row=91 key=url:http://124.225.115.74:8089/ url=http://124.225.115.74:8089/
+2026-04-22 00:47:02,778 - INFO - [quake] save success row=92 key=url:http://39.175.102.117:8443/ url=http://39.175.102.117:8443/
+2026-04-22 00:47:02,796 - INFO - [quake] save success row=93 key=url:http://m.hlwapp-top.com/ url=http://m.hlwapp-top.com/
+2026-04-22 00:47:02,813 - INFO - [quake] save success row=94 key=url:http://www.xjitpt.cn/ url=http://www.xjitpt.cn/
+2026-04-22 00:47:02,825 - INFO - [quake] save duplicate row=95 key=url:http://bedguard.cn/ url=http://bedguard.cn/ fallback=http://bedguard.cn
+2026-04-22 00:47:02,846 - INFO - [quake] save success row=96 key=url:http://www.vtnh4e.cn/ url=http://www.vtnh4e.cn/
+2026-04-22 00:47:02,858 - INFO - [quake] save duplicate row=97 key=url:https://www.ogzbjp.mobi/ url=https://www.ogzbjp.mobi/ fallback=http://www.ogzbjp.mobi:443
+2026-04-22 00:47:02,877 - INFO - [quake] save success row=98 key=url:http://29671.my/ url=http://29671.my/
+2026-04-22 00:47:02,890 - INFO - [quake] save duplicate row=99 key=url:https://hbodianshiju.com.cn/ url=https://hbodianshiju.com.cn/ fallback=http://hbodianshiju.com.cn:443
+2026-04-22 00:47:02,910 - INFO - [quake] save duplicate row=100 key=url:http://t8u.mobi/ url=http://t8u.mobi/ fallback=http://t8u.mobi
+2026-04-22 00:47:02,928 - INFO - [quake] save summary success=61 duplicate=39 failed=0 total=100
+2026-04-22 00:47:02,936 - INFO - Source saved source=quake progress=100 success=61 duplicate=39 failed=0
+2026-04-22 00:47:02,950 - INFO - Task finished status=success success=61 duplicate=39 failed=0 total=100

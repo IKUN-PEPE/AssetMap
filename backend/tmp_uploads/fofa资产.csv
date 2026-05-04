@@ -1,0 +1,11 @@
+﻿host,ip,port,protocol,title,domain,country,city,link,org
+8.153.205.134,8.153.205.134,80,http,深圳地铁灯箱管理系统,,CN,Shanghai,http://8.153.205.134,"Hangzhou Alibaba Advertising Co.,Ltd."
+81.71.72.98,81.71.72.98,80,http,深圳地铁大亨,,CN,Guangzhou,http://81.71.72.98,Shenzhen Tencent Computer Systems Company Limited
+https://58.251.18.56,58.251.18.56,443,https,深圳地铁,,CN,Shenzhen,https://58.251.18.56,China Unicom Shenzen network
+https://120.76.55.226,120.76.55.226,443,https,深圳地铁11号线 - 实时到站,,CN,Shenzhen,https://120.76.55.226,"Hangzhou Alibaba Advertising Co.,Ltd."
+82.156.140.125:9008,82.156.140.125,9008,http,深圳地铁,,CN,Beijing,http://82.156.140.125:9008,Shenzhen Tencent Computer Systems Company Limited
+183.238.156.135,183.238.156.135,80,http,深圳地铁安保区信息一体化平台,,CN,Shenzhen,http://183.238.156.135,"China Mobile Communications Group Co., Ltd."
+183.238.156.138,183.238.156.138,80,http,深圳地铁,,CN,Shenzhen,http://183.238.156.138,"China Mobile Communications Group Co., Ltd."
+58.251.18.56,58.251.18.56,80,http,深圳地铁,,CN,Shenzhen,http://58.251.18.56,China Unicom Shenzen network
+58.251.18.58,58.251.18.58,80,http,深圳地铁安全管理平台,,CN,Shenzhen,http://58.251.18.58,China Unicom Shenzen network
+58.251.18.59,58.251.18.59,80,http,深圳地铁安保区信息一体化平台,,CN,Shenzhen,http://58.251.18.59,China Unicom Shenzen network

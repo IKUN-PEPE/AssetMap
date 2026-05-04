@@ -1,15 +1,16 @@
 import http from '../http'
+import type { ExposureSearchTask } from '@/types'
 
 export const createExposureSearchTask = (data: any) => {
   return http.post('/api/v1/exposure-search/tasks', data)
 }
 
 export const listExposureSearchTasks = () => {
-  return http.get('/api/v1/exposure-search/tasks')
+  return http.get<ExposureSearchTask[]>('/api/v1/exposure-search/tasks')
 }
 
 export const getExposureSearchTask = (taskId: string) => {
-  return http.get(`/api/v1/exposure-search/tasks/${taskId}`)
+  return http.get<ExposureSearchTask>(`/api/v1/exposure-search/tasks/${taskId}`)
 }
 
 export const listExposureSearchResults = (taskId: string, params?: any) => {
@@ -26,4 +27,12 @@ export const confirmImportExposureResults = (taskId: string, data: { ids?: strin
 
 export const deleteExposureSearchTask = (taskId: string) => {
   return http.delete(`/api/v1/exposure-search/tasks/${taskId}`)
+}
+
+export const stopExposureSearchTask = (taskId: string) => {
+  return http.post(`/api/v1/exposure-search/tasks/${taskId}/stop`)
+}
+
+export const retryExposureSearchQuery = (taskId: string, query: string) => {
+  return http.post(`/api/v1/exposure-search/tasks/${taskId}/retry-query`, { query })
 }
