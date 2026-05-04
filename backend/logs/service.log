@@ -1,977 +1,676 @@
-2026-04-28T15:28:56Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T15:28:56Z - INFO - assetmap.service - service log probe
-2026-04-28T15:28:56Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T15:28:56Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=10 "HTTP/1.1 200 OK"
-2026-04-28T15:31:10Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T15:31:10Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=5 "HTTP/1.1 200 OK"
-2026-04-28T15:50:53Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T08:33:43Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T08:33:43Z - INFO - httpx - HTTP Request: GET http://testserver/api/v1/logs/recent?source=service&limit=5 "HTTP/1.1 200 OK"
-2026-04-28T08:33:43Z - INFO - assetmap.service - AssetMap backend service started
-2026-04-28T08:33:43Z - INFO - assetmap.service - service log probe after utc formatter
-2026-04-28T16:41:05Z - INFO - httpx - HTTP Request: GET https://fofa.info/api/v1/info/my?email=2747722593%40qq.com&key=36b8242d459b3753912b8c62cc220831 "HTTP/1.1 200 OK"
-2026-05-02T16:12:49Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception during reset or similar
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.OperationalError: no such table: exposure_search_tasks
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
-    yield db
-  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
-    yield await run_in_threadpool(cm.__enter__)
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
-    db.commit()
-    ~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
-    trans.commit(_to_root=True)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "<string>", line 2, in commit
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
-    self._prepare_impl()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
-    self.session.flush()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
-    self._flush(objects)
-    ~~~~~~~~~~~^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
-    with util.safe_reraise():
-         ~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
-    flush_context.execute()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self.mapper,
-        ^^^^^^^^^^^^
-        uow.states_for_mapper_hierarchy(self.mapper, False, False),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        uow,
-        ^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        base_mapper,
-        ^^^^^^^^^^^^
-    ...<3 lines>...
-        insert,
-        ^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
-    result = connection.execute(
-        statement,
-        params,
-        execution_options=execution_options,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
-    return meth(
-        self,
-        distilled_parameters,
-        execution_options or NO_OPTIONS,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self, distilled_params, execution_options
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
-    ret = self._execute_context(
-        dialect,
-    ...<8 lines>...
-        cache_hit=cache_hit,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~^
-        dialect, context, statement, parameters
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        e, str_statement, effective_parameters, cursor, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
-[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('0e414b32c0414a6b9899306bb3f5ab4c', '深圳地铁测试', '["\\u6df1\\u5733\\u5730\\u94c1"]', '["\\u540e\\u53f0"]', '[]', '[]', '["bing"]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:49.286817', None, None)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
-    fairy._reset(
-    ~~~~~~~~~~~~^
-        pool,
-        ^^^^^
-    ...<2 lines>...
-        asyncio_safe=can_manipulate_connection,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
-    pool._dialect.do_rollback(self)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
-    dbapi_connection.rollback()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
-2026-05-02T16:12:49Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception terminating connection <sqlite3.Connection object at 0x000001D8C7675F30>
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.OperationalError: no such table: exposure_search_tasks
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
-    yield db
-  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
-    yield await run_in_threadpool(cm.__enter__)
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
-    db.commit()
-    ~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
-    trans.commit(_to_root=True)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "<string>", line 2, in commit
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
-    self._prepare_impl()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
-    self.session.flush()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
-    self._flush(objects)
-    ~~~~~~~~~~~^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
-    with util.safe_reraise():
-         ~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
-    flush_context.execute()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self.mapper,
-        ^^^^^^^^^^^^
-        uow.states_for_mapper_hierarchy(self.mapper, False, False),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        uow,
-        ^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        base_mapper,
-        ^^^^^^^^^^^^
-    ...<3 lines>...
-        insert,
-        ^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
-    result = connection.execute(
-        statement,
-        params,
-        execution_options=execution_options,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
-    return meth(
-        self,
-        distilled_parameters,
-        execution_options or NO_OPTIONS,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self, distilled_params, execution_options
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
-    ret = self._execute_context(
-        dialect,
-    ...<8 lines>...
-        cache_hit=cache_hit,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~^
-        dialect, context, statement, parameters
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        e, str_statement, effective_parameters, cursor, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
-[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('0e414b32c0414a6b9899306bb3f5ab4c', '深圳地铁测试', '["\\u6df1\\u5733\\u5730\\u94c1"]', '["\\u540e\\u53f0"]', '[]', '[]', '["bing"]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:49.286817', None, None)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
-    fairy._reset(
-    ~~~~~~~~~~~~^
-        pool,
-        ^^^^^
-    ...<2 lines>...
-        asyncio_safe=can_manipulate_connection,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
-    pool._dialect.do_rollback(self)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
-    dbapi_connection.rollback()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 373, in _close_connection
-    self._dialect.do_terminate(connection)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 718, in do_terminate
-    self.do_close(dbapi_connection)
-    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 721, in do_close
-    dbapi_connection.close()
-    ~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35164 and this is thread id 35480.
-2026-05-02T16:12:50Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception during reset or similar
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.OperationalError: no such table: exposure_search_tasks
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
-    yield db
-  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
-    yield await run_in_threadpool(cm.__enter__)
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
-    db.commit()
-    ~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
-    trans.commit(_to_root=True)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "<string>", line 2, in commit
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
-    self._prepare_impl()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
-    self.session.flush()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
-    self._flush(objects)
-    ~~~~~~~~~~~^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
-    with util.safe_reraise():
-         ~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
-    flush_context.execute()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self.mapper,
-        ^^^^^^^^^^^^
-        uow.states_for_mapper_hierarchy(self.mapper, False, False),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        uow,
-        ^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        base_mapper,
-        ^^^^^^^^^^^^
-    ...<3 lines>...
-        insert,
-        ^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
-    result = connection.execute(
-        statement,
-        params,
-        execution_options=execution_options,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
-    return meth(
-        self,
-        distilled_parameters,
-        execution_options or NO_OPTIONS,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self, distilled_params, execution_options
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
-    ret = self._execute_context(
-        dialect,
-    ...<8 lines>...
-        cache_hit=cache_hit,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~^
-        dialect, context, statement, parameters
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        e, str_statement, effective_parameters, cursor, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
-[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('d4161e21eb3048ed903645bb7246f965', 'Task 1', '[]', '[]', '[]', '[]', '[]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:50.591668', None, None)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
-    fairy._reset(
-    ~~~~~~~~~~~~^
-        pool,
-        ^^^^^
-    ...<2 lines>...
-        asyncio_safe=can_manipulate_connection,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
-    pool._dialect.do_rollback(self)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
-    dbapi_connection.rollback()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
-2026-05-02T16:12:50Z - ERROR - sqlalchemy.pool.impl.SingletonThreadPool - Exception terminating connection <sqlite3.Connection object at 0x000001D8C8E1E200>
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.OperationalError: no such table: exposure_search_tasks
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\VScode\AssetMap\backend\tests\test_exposure_search_api.py", line 22, in override_get_db
-    yield db
-  File "C:\Python313\Lib\site-packages\fastapi\concurrency.py", line 29, in contextmanager_in_threadpool
-    yield await run_in_threadpool(cm.__enter__)
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 120, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 674, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 34, in create_task
-    db.commit()
-    ~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
-    trans.commit(_to_root=True)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "<string>", line 2, in commit
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
-    self._prepare_impl()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
-    self.session.flush()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
-    self._flush(objects)
-    ~~~~~~~~~~~^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
-    with util.safe_reraise():
-         ~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
-    flush_context.execute()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self.mapper,
-        ^^^^^^^^^^^^
-        uow.states_for_mapper_hierarchy(self.mapper, False, False),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        uow,
-        ^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        base_mapper,
-        ^^^^^^^^^^^^
-    ...<3 lines>...
-        insert,
-        ^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
-    result = connection.execute(
-        statement,
-        params,
-        execution_options=execution_options,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
-    return meth(
-        self,
-        distilled_parameters,
-        execution_options or NO_OPTIONS,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self, distilled_params, execution_options
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
-    ret = self._execute_context(
-        dialect,
-    ...<8 lines>...
-        cache_hit=cache_hit,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~^
-        dialect, context, statement, parameters
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        e, str_statement, effective_parameters, cursor, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: exposure_search_tasks
-[SQL: INSERT INTO exposure_search_tasks (id, name, org_keywords, title_keywords, url_keywords, file_types, sources, status, total_results, valid_count, ignored_count, imported_count, error_message, created_at, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('d4161e21eb3048ed903645bb7246f965', 'Task 1', '[]', '[]', '[]', '[]', '[]', 'pending', 0, 0, 0, 0, None, '2026-05-02 16:12:50.591668', None, None)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 986, in _finalize_fairy
-    fairy._reset(
-    ~~~~~~~~~~~~^
-        pool,
-        ^^^^^
-    ...<2 lines>...
-        asyncio_safe=can_manipulate_connection,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 1441, in _reset
-    pool._dialect.do_rollback(self)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 712, in do_rollback
-    dbapi_connection.rollback()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\pool\base.py", line 373, in _close_connection
-    self._dialect.do_terminate(connection)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 718, in do_terminate
-    self.do_close(dbapi_connection)
-    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 721, in do_close
-    dbapi_connection.close()
-    ~~~~~~~~~~~~~~~~~~~~~~^^
-sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 34532 and this is thread id 30872.
-2026-05-02T16:13:51Z - ERROR - app.api.exposure_search - Failed to import assets: (sqlite3.IntegrityError) NOT NULL constraint failed: collect_jobs.sources
-[SQL: INSERT INTO collect_jobs (id, job_name, status, progress, success_count, failed_count, duplicate_count, total_count, dedup_strategy, field_mapping, auto_verify, created_by, started_at, finished_at, error_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('85c11286d7fe4e2b85c2207d45f6fd82', 'Exposure Import: Task Import', 'completed', 0, 0, 0, 0, 0, 'overwrite', '{}', 0, 'system', '2026-05-02 16:13:51.968480', '2026-05-02 16:13:51.968485', None, '2026-05-02 16:13:51.968473', '2026-05-02 16:13:51.971209')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
-Traceback (most recent call last):
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.IntegrityError: NOT NULL constraint failed: collect_jobs.sources
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\VScode\AssetMap\backend\app\api\exposure_search.py", line 140, in confirm_import
-    db.commit()
-    ~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
-    trans.commit(_to_root=True)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "<string>", line 2, in commit
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
-    self._prepare_impl()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "<string>", line 2, in _prepare_impl
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
-    self.session.flush()
-    ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
-    self._flush(objects)
-    ~~~~~~~~~~~^^^^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4466, in _flush
-    with util.safe_reraise():
-         ~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 121, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
-    flush_context.execute()
-    ~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
-    rec.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
-    util.preloaded.orm_persistence.save_obj(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self.mapper,
-        ^^^^^^^^^^^^
-        uow.states_for_mapper_hierarchy(self.mapper, False, False),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        uow,
-        ^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
-    _emit_insert_statements(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        base_mapper,
-        ^^^^^^^^^^^^
-    ...<3 lines>...
-        insert,
-        ^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1048, in _emit_insert_statements
-    result = connection.execute(
-        statement, multiparams, execution_options=execution_options
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
-    return meth(
-        self,
-        distilled_parameters,
-        execution_options or NO_OPTIONS,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        self, distilled_params, execution_options
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
-    ret = self._execute_context(
-        dialect,
-    ...<8 lines>...
-        cache_hit=cache_hit,
-    )
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ~~~~~~~~~~~~~~~~~~~~~~~~~^
-        dialect, context, statement, parameters
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-        e, str_statement, effective_parameters, cursor, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-    ~~~~~~~~~~~~~~~~~~~~~~~^
-        cursor, str_statement, effective_parameters, context
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "C:\Python313\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: collect_jobs.sources
-[SQL: INSERT INTO collect_jobs (id, job_name, status, progress, success_count, failed_count, duplicate_count, total_count, dedup_strategy, field_mapping, auto_verify, created_by, started_at, finished_at, error_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: ('85c11286d7fe4e2b85c2207d45f6fd82', 'Exposure Import: Task Import', 'completed', 0, 0, 0, 0, 0, 'overwrite', '{}', 0, 'system', '2026-05-02 16:13:51.968480', '2026-05-02 16:13:51.968485', None, '2026-05-02 16:13:51.968473', '2026-05-02 16:13:51.971209')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
-2026-05-02T16:29:18Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:30:38Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:31:44Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:32:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:35:43Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:37:32Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到人机验证
-2026-05-02T16:38:06Z - INFO - assetmap.service - AssetMap backend service started
-2026-05-02T16:53:46Z - INFO - assetmap.service - AssetMap backend service started
-2026-05-03T01:45:46Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
-2026-05-03T01:45:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:45:51Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:45:54Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:45:56Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:46:26Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" filetype:pdf: Page.goto: Timeout 30000ms exceeded.
+2026-05-04T09:52:12Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T09:52:12Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T10:02:10Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "密码" filetype:xlsx: 
+2026-05-04T10:02:14Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T10:02:14Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype%3Axlsx&type=code&p=1. Waiting for user signal...
+2026-05-04T10:12:10Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "密码" filetype:xlsx: 
+2026-05-04T10:12:12Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T10:12:12Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T10:22:10Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁": 
+2026-05-04T10:22:15Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T10:22:15Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T10:32:11Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁": 
+2026-05-04T10:32:15Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T10:32:15Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1. Waiting for user signal...
+2026-05-04T10:42:11Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁": 
+2026-05-04T10:42:13Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T10:42:13Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E7%99%BB%E5%BD%95%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T10:52:11Z - WARNING - app.services.exposure_search - Provider bing failed for query intitle:"登录" "深圳地铁": 
+2026-05-04T10:52:15Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T10:52:15Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22%E7%99%BB%E5%BD%95%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T11:02:11Z - WARNING - app.services.exposure_search - Provider baidu failed for query intitle:"登录" "深圳地铁": 
+2026-05-04T11:02:41Z - WARNING - app.services.exposure_search - Provider github failed for query intitle:"登录" "深圳地铁": Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype%3Apdf&type=code&p=1", waiting until "domcontentloaded"
+  - navigating to "https://github.com/search?q=intitle%3A%22%E7%99%BB%E5%BD%95%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1", waiting until "domcontentloaded"
 
-2026-05-03T01:46:29Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:46:32Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:46:35Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:46:39Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:46:41Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:46:44Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:46:46Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:46:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:46:51Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:46:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
-2026-05-03T01:46:55Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:46:58Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:47:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:47:07Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:47:10Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:47:13Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:47:14Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:47:17Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:47:19Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
-2026-05-03T01:47:21Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:47:25Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:47:30Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:47:32Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:47:35Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:51:52Z - INFO - assetmap.service - AssetMap backend service started
-2026-05-03T01:52:26Z - INFO - assetmap.service - AssetMap backend service started
-2026-05-03T01:54:19Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:54:19Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
-2026-05-03T01:54:42Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:54:44Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:54:47Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
-2026-05-03T01:54:47Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:54:48Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:54:48Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
-2026-05-03T01:54:49Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:54:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:54:54Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:54:57Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:54:59Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:55:26Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:55:27Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:55:30Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:55:32Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:55:35Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:55:37Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:55:40Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:55:42Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:55:44Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到需要登录
-2026-05-03T01:55:45Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:55:47Z - WARNING - app.services.exposure_search - Provider baidu timed out for query "深圳地铁" filetype:csv
-2026-05-03T01:55:48Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:55:50Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:55:50Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
-2026-05-03T01:55:50Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:55:53Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:55:54Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到登录限制
-2026-05-03T01:55:57Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:55:59Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:05Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:56:06Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:09Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:11Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:14Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:56:15Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:18Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:20Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:23Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:24Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:27Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:29Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:33Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:56:33Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:36Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:39Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:41Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:56:42Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:45Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:46Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:47Z - WARNING - app.services.exposure_search - Provider github timed out for query "深圳地铁" filetype:csv
-2026-05-03T01:56:48Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:48Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
-2026-05-03T01:56:51Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:52Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:56:55Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:56:57Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:56:59Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:57:00Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:57:03Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:57:33Z - WARNING - app.services.exposure_search - Provider google failed for query "深圳地铁" "深圳地铁": Page.goto: Timeout 30000ms exceeded.
+2026-05-04T11:02:43Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T11:02:43Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T11:12:41Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "通讯录" filetype:pdf: 
+2026-05-04T11:12:44Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T11:12:44Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype:pdf&pn=0. Waiting for user signal...
+2026-05-04T11:22:41Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "通讯录" filetype:pdf: 
+2026-05-04T11:23:02Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "通讯录" filetype:pdf: Page.goto: net::ERR_CONNECTION_RESET at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype%3Apdf&type=code&p=1
 Call log:
-  - navigating to "https://www.google.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&start=0", waiting until "domcontentloaded"
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype%3Apdf&type=code&p=1", waiting until "domcontentloaded"
 
-2026-05-03T01:57:43Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:57:44Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:57:47Z - WARNING - app.services.exposure_search - Provider google timed out for query "深圳地铁" filetype:csv
-2026-05-03T01:57:47Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:57:49Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:57:52Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:57:52Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
-2026-05-03T01:57:52Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:57:53Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:57:56Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:57:58Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:58:00Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:58:01Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:58:04Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:58:06Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:58:07Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
-2026-05-03T01:58:08Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:58:08Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
-2026-05-03T01:58:08Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T01:58:09Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T01:58:39Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" filetype:sql: Page.goto: Timeout 30000ms exceeded.
+2026-05-04T11:23:04Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T11:23:04Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T11:33:02Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "密码" filetype:pdf: 
+2026-05-04T11:33:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T11:33:05Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:pdf&pn=0. Waiting for user signal...
+2026-05-04T11:43:02Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "密码" filetype:pdf: 
+2026-05-04T11:43:06Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T11:43:06Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype%3Apdf&type=code&p=1. Waiting for user signal...
+2026-05-04T11:53:02Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "密码" filetype:pdf: 
+2026-05-04T11:53:04Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T11:53:04Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T12:03:02Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "系统清单" filetype:xlsx: 
+2026-05-04T12:03:06Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T12:03:06Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T12:13:03Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "系统清单" filetype:xlsx: 
+2026-05-04T12:13:33Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "系统清单" filetype:xlsx: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype%3Asql&type=code&p=1", waiting until "domcontentloaded"
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype%3Axlsx&type=code&p=1", waiting until "domcontentloaded"
 
-2026-05-03T01:58:41Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T01:59:07Z - WARNING - app.services.exposure_search - Provider baidu timed out for query "深圳地铁" site:pan.baidu.com
-2026-05-03T01:59:10Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T01:59:10Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
-2026-05-03T02:00:07Z - WARNING - app.services.exposure_search - Provider github timed out for query "深圳地铁" site:pan.baidu.com
-2026-05-03T02:00:09Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T02:00:09Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
-2026-05-03T02:00:11Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:00:14Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T02:00:14Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
-2026-05-03T02:00:34Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:00:35Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T02:00:35Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
-2026-05-03T02:01:31Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:01:34Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T02:01:34Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
-2026-05-03T02:01:40Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:01:42Z - WARNING - app.services.exposure_search.providers.google - Google provider detected risk control: 检测到 ，需要人机验证
-2026-05-03T02:01:42Z - INFO - app.services.exposure_search.providers.google - Interactive mode: waiting for manual interaction...
-2026-05-03T02:02:08Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Unable to retrieve content because the page is navigating and changing the content.
-2026-05-03T02:02:11Z - WARNING - app.services.exposure_search.providers.bing - Bing provider detected risk control: 检测到安全验证
-2026-05-03T02:02:11Z - INFO - app.services.exposure_search.providers.bing - Interactive mode: waiting for manual interaction...
-2026-05-03T02:02:19Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:02:20Z - WARNING - app.services.exposure_search.providers.baidu - Baidu provider detected risk control: 检测到安全验证
-2026-05-03T02:02:20Z - INFO - app.services.exposure_search.providers.baidu - Interactive mode: waiting for manual interaction...
-2026-05-03T02:02:30Z - ERROR - app.services.exposure_search.playwright_client - Error during manual interaction wait: Page.content: Target page, context or browser has been closed
-2026-05-03T02:02:33Z - WARNING - app.services.exposure_search.providers.github - GitHub provider detected risk control/login: 检测到 ，需要人机验证
-2026-05-03T02:02:33Z - INFO - app.services.exposure_search.providers.github - Interactive mode: waiting for manual interaction...
-2026-05-03T02:03:27Z - INFO - assetmap.service - AssetMap backend service started
-2026-05-03T02:31:35Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T12:13:35Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T12:13:35Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T12:23:33Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "接口文档" filetype:xlsx: 
+2026-05-04T12:23:35Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T12:23:35Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T12:33:31Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "接口文档" filetype:xlsx: 
+2026-05-04T12:33:35Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T12:33:35Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype%3Axlsx&type=code&p=1. Waiting for user signal...
+2026-05-04T12:43:31Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "接口文档" filetype:xlsx: 
+2026-05-04T12:43:33Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T12:43:33Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T12:53:31Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "测试报告" filetype:xlsx: 
+2026-05-04T12:53:35Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T12:53:35Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T13:03:31Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "测试报告" filetype:xlsx: 
+2026-05-04T13:04:02Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "测试报告" filetype:xlsx: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%22%20filetype%3Axlsx&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T13:04:04Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T13:04:04Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T13:14:02Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" filetype:xlsx: 
+2026-05-04T13:14:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T13:14:05Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T13:24:02Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" filetype:xlsx: 
+2026-05-04T13:24:06Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T13:24:06Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype%3Axlsx&type=code&p=1. Waiting for user signal...
+2026-05-04T13:34:02Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" filetype:xlsx: 
+2026-05-04T13:34:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T13:34:05Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T13:44:02Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "账号" filetype:pdf: 
+2026-05-04T13:44:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T13:44:05Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype:pdf&pn=0. Waiting for user signal...
+2026-05-04T13:54:02Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "账号" filetype:pdf: 
+2026-05-04T13:54:22Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "账号" filetype:pdf: Page.goto: net::ERR_CONNECTION_RESET at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype%3Apdf&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype%3Apdf&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T13:54:24Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T13:54:24Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T14:04:22Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "资产清单" filetype:xlsx: 
+2026-05-04T14:04:25Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:04:25Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T14:14:22Z - WARNING - app.services.exposure_search - Provider baidu failed for query "深圳地铁" "资产清单" filetype:xlsx: 
+2026-05-04T14:14:27Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T14:14:27Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype%3Axlsx&type=code&p=1. Waiting for user signal...
+2026-05-04T14:14:30Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:15:50Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T14:15:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:16:32Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T14:17:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:17:32Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T14:17:57Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/493732209 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:18:03Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/607006108 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:18:06Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:18:06Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:18:06Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=intitle:%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=1434D964FE734625BD354BD05FB3A4E1 -> skip blocked page and continue to next query/page
+2026-05-04T14:18:06Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"管理系统" "深圳地铁"&first=1
+2026-05-04T14:18:06Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"管理系统" "深圳地铁" page=1
+2026-05-04T14:18:11Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 2/3
+2026-05-04T14:18:11Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T14:18:18Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=iAOsFoDhj8CTW93ckvyR7T2AjB5awws4TrH9XlZ7Dulk_FkQpBj4L7ZwnoN9kMDo57ZjR1tHmJ6E0gU3NtHZN_&wd=&eqid=b59a0f3c036a1ca60000000669f8aaa1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:18:27Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=F_ALvpofh8aWyXjIigGOtkA5toMVpurqtwMXyqKVgaM7a-mBZI-6qLpRpDQ7t1wl82Evu38N2ty0I00KEvYk8K&wd=&eqid=b59a0f3c036a1ca60000000669f8aaa1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:18:32Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=pC_kv6JetmOr-DwWVjfrP9n8Yy7-KghvNtu9Hwwok5T30Fr0ACbh9jy9gQZoR1ZJjUlsUMZZE5p0YpsTPr5hxw5Rp_0Cb6qq-k9dq-sL2crFBS-oUv7pC_3Fr0QvO7_C&wd=&eqid=b59a0f3c036a1ca60000000669f8aaa1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:19:25Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.baidu.com/link?url=F_ALvpofh8aWyXjIigGOtkA5toMVpurqtwMXyqKVgaM7a-mBZI-6qLpRpDQ7t1wl82Evu38N2ty0I00KEvYk8K&wd=&eqid=b59a0f3c036a1ca60000000669f8aaa1
+2026-05-04T14:19:28Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:19:28Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:19:29Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=intitle:%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:19:29Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd=intitle:"管理系统" "深圳地铁"&pn=0
+2026-05-04T14:19:29Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query=intitle:"管理系统" "深圳地铁" page=1
+2026-05-04T14:19:33Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T14:19:33Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=intitle%3A%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1. Waiting for user signal...
+2026-05-04T14:19:36Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2Fsearch&source=header (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:19:37Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsearch%3Fq%3Dintitle%253A%2522%25E7%25AE%25A1%25E7%2590%2586%25E7%25B3%25BB%25E7%25BB%259F%2522%2520%2522%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2522%26type%3Dcode%26p%3D1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:19:46Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsearch%3Fq%3Dintitle%253A%2522%25E7%25AE%25A1%25E7%2590%2586%25E7%25B3%25BB%25E7%25BB%259F%2522%2520%2522%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2522%26type%3Dcode%26p%3D1
+2026-05-04T14:20:17Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:20:17Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:20:18Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=chrome-error://chromewebdata/ -> skip blocked page and continue to next query/page
+2026-05-04T14:20:18Z - INFO - app.services.exposure_search.providers.github - GitHub skip current blocked page query= url=https://github.com/search?q=intitle%3A%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1
+2026-05-04T14:20:18Z - INFO - app.services.exposure_search.providers.github - GitHub moving to next query/page after finish signal query=intitle:"管理系统" "深圳地铁" page=1
+2026-05-04T14:20:20Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:20:20Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T14:20:24Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://hrss.sz.gov.cn/attachment/0/690/690079/7891659.docx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:20:49Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.pkusz.edu.cn/__local/B/13/1F/1282360CB3B6060D1FA56F98521_2DC113B9_6A00.doc?e=.doc (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:21:10Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://ehall.jlu.edu.cn/file/bb31dce5-33a0-4e27-a31b-a0fe60483ea2 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:21:15Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://docs.static.szse.cn/www/marketServices/technicalservice/history/W020180328468088790171.doc (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:21:47Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://jksb.sztu.edu.cn/sbcbuy/layer/ueditor/net/upload/file/20210707/5652559_%E6%B7%B1%E5%9C%B3%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E3%80%8A%E8%BF%9B%E5%8F%A3%E8%AE%BE%E5%A4%87%E5%90%88%E5%90%8C%E8%BF%BD%E8%B8%AA%E7%B3%BB%E7%BB%9F%E3%80%8B%E6%93%8D%E4%BD%9C%E6%8C%87%E5%BC%9520210705.docx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:22:03Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=chat&qs=n&form=P4041&sp=-1&lq=0&pq=chat&sc=12-4&sk=&cvid=43C804DF39F441278F59FF53BD638980&ubiroff=1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:22:20Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:22:20Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:22:21Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=chat&qs=n&form=P4041&sp=-1&lq=0&pq=chat&sc=12-4&sk=&cvid=43C804DF39F441278F59FF53BD638980&ubiroff=1 -> skip blocked page and continue to next query/page
+2026-05-04T14:22:21Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "密码" filetype:xlsx&first=1
+2026-05-04T14:22:21Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "密码" filetype:xlsx page=1
+2026-05-04T14:22:23Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:22:23Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T14:22:33Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:22:33Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:22:33Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype%3Axlsx&oq=%2526quot%253B%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2526quot%253B%2520%2526quot%253B%25E5%25AF%2586%25E7%25A0%2581%2526quot%253B%2520filetype%253Axlsx&rsv_pq=d83ed9c70be99410&rsv_t=90b8KN07dshfQhYWOWY3V%2BthnGVDunQAli3nGGz%2BIxlRmgKr4kGqusPihsU&rqlang=cn&rsv_enter=1&rsv_dl=tb_click&rsv_sug3=3&rsv_btype=t&rsv_sug4=1361 -> skip blocked page and continue to next query/page
+2026-05-04T14:22:33Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "密码" filetype:xlsx&pn=0
+2026-05-04T14:22:33Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "密码" filetype:xlsx page=1
+2026-05-04T14:22:42Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:22:42Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:22:55Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "密码" filetype:xlsx: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype%3Axlsx&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype%3Axlsx&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:22:57Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (人机验证), retry 1/3
+2026-05-04T14:22:57Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T14:23:07Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/pin/1905946762893588163 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:23:12Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/342103776 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:23:18Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/pin/1908483526980015124 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:23:33Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://zhuanlan.zhihu.com/p/122852128 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:23:45Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://jtys.sz.gov.cn/zwgk/ztzl/ggqsydw/jt/dt/ywxx/dtxlxx/content/post_11086812.html (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:23:51Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:23:51Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:23:52Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=intitle:%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=2&rdrig=E95F0C44324D4D7CBB2A147F1519F321 -> skip blocked page and continue to next query/page
+2026-05-04T14:23:52Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"SSO" "深圳地铁"&first=1
+2026-05-04T14:23:52Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"SSO" "深圳地铁" page=1
+2026-05-04T14:23:55Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:23:55Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T14:24:00Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:24:00Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:24:01Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=intitle:%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:24:01Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd=intitle:"SSO" "深圳地铁"&pn=0
+2026-05-04T14:24:01Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query=intitle:"SSO" "深圳地铁" page=1
+2026-05-04T14:24:23Z - WARNING - app.services.exposure_search - Provider github failed for query intitle:"SSO" "深圳地铁": Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=intitle%3A%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=intitle%3A%22SSO%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:24:25Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:24:25Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T14:25:11Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:25:11Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:25:11Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=intitle:%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=B499B5EE17C44EEBB360A811000BE1FD -> skip blocked page and continue to next query/page
+2026-05-04T14:25:11Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"VPN" "深圳地铁"&first=1
+2026-05-04T14:25:12Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"VPN" "深圳地铁" page=1
+2026-05-04T14:25:14Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:25:14Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T14:25:15Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=Zptc_b_varqQGpb0R7GT2vBrkdCJW49EgC6UDnN1kOeg3MzgrKz94DiklWFT0FdenrrMkrCLj_CSVyhAetQrjq&wd=&eqid=bcd7362105dcb5a10000000669f8ac48 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:25:23Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=6wJOIS1A_X2TkmbJPIrB9KxoQWb87hDK0vFuIVmflAfBdyadl-sqPe74ppOowz32uJYZBngfm9vDFVqyURuo1K&wd=&eqid=bcd7362105dcb5a10000000669f8ac48 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:25:30Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.baidu.com/link?url=6wJOIS1A_X2TkmbJPIrB9KxoQWb87hDK0vFuIVmflAfBdyadl-sqPe74ppOowz32uJYZBngfm9vDFVqyURuo1K&wd=&eqid=bcd7362105dcb5a10000000669f8ac48
+2026-05-04T14:25:37Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.baidu.com/link?url=zdnE11ytZmHDFS4VbcX5MU4SGfL2lLz1nPnPJoqIU2WMzcv7fuJDBq__kIyk_u8N&wd=&eqid=bcd7362105dcb5a10000000669f8ac48 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:25:47Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.baidu.com/link?url=6wJOIS1A_X2TkmbJPIrB9KxoQWb87hDK0vFuIVmflAfBdyadl-sqPe74ppOowz32uJYZBngfm9vDFVqyURuo1K&wd=&eqid=bcd7362105dcb5a10000000669f8ac48
+2026-05-04T14:25:50Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.baidu.com/link?url=Zptc_b_varqQGpb0R7GT2vBrkdCJW49EgC6UDnN1kOeg3MzgrKz94DiklWFT0FdenrrMkrCLj_CSVyhAetQrjq&wd=&eqid=bcd7362105dcb5a10000000669f8ac48
+2026-05-04T14:25:56Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:25:56Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:25:57Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=intitle:%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:25:57Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd=intitle:"VPN" "深圳地铁"&pn=0
+2026-05-04T14:25:57Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query=intitle:"VPN" "深圳地铁" page=1
+2026-05-04T14:26:01Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T14:26:01Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=intitle%3A%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1. Waiting for user signal...
+2026-05-04T14:26:05Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsearch%3Fq%3Dintitle%253A%2522VPN%2522%2520%2522%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2522%26type%3Dcode%26p%3D1 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:26:31Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://github.com/sessions/social/google/initiate?return_to=https%3A%2F%2Fgithub.com%2Fsearch%3Fq%3Dintitle%253A%2522VPN%2522%2520%2522%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2522%26type%3Dcode%26p%3D1&disable_signup=false (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:26:32Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://github.com/sessions/social/google/initiate?return_to=https%3A%2F%2Fgithub.com%2Fsearch%3Fq%3Dintitle%253A%2522VPN%2522%2520%2522%25E6%25B7%25B1%25E5%259C%25B3%25E5%259C%25B0%25E9%2593%2581%2522%26type%3Dcode%26p%3D1&disable_signup=false
+2026-05-04T14:27:04Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:27:04Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:27:05Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=chrome-error://chromewebdata/ -> skip blocked page and continue to next query/page
+2026-05-04T14:27:05Z - INFO - app.services.exposure_search.providers.github - GitHub skip current blocked page query= url=https://github.com/search?q=intitle%3A%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1
+2026-05-04T14:27:05Z - INFO - app.services.exposure_search.providers.github - GitHub moving to next query/page after finish signal query=intitle:"VPN" "深圳地铁" page=1
+2026-05-04T14:27:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:27:07Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T14:27:10Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.sz.gov.cn/attachment/1/1594/1594093/12230305.xlsx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:27:30Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: http://www.qd-metro.com/uploadfile/file/20231228/1703725291714822.xlsx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:28:53Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://opendata.sz.gov.cn/files/article-images/2019121016572430027026.xlsx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:29:02Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%b3%bb%e7%bb%9f%e6%b8%85%e5%8d%95%22+filetype%3axlsx&rdr=1&rdrig=587BF1CFC8BD4DBD9A978CB2BA361283&FPIG=88B69C865B2F421BB7A902378DD5E7A6&first=11&FORM=PORE (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:29:04Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.sz.gov.cn/attachment/1/1594/1594093/12230305.xlsx
+2026-05-04T14:29:10Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%b3%bb%e7%bb%9f%e6%b8%85%e5%8d%95%22+filetype%3axlsx&rdr=1&rdrig=587BF1CFC8BD4DBD9A978CB2BA361283&FPIG=88B69C865B2F421BB7A902378DD5E7A6&FPIG=8F69565BB2C54D3FA9D6E7C2ACCB10B5&first=11&FORM=PORE (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:29:13Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://meeb.sz.gov.cn/attachment/1/1692/1692671/12681742.xlsx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:29:20Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://jgxy.fzu.edu.cn/jingjiyuguanlixueyuan2023niankeyanshujuhe2022nianfabiaodelunwentongjibiao.xlsx (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:29:29Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:29:29Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:29:30Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%b3%bb%e7%bb%9f%e6%b8%85%e5%8d%95%22+filetype%3axlsx&rdr=1&rdrig=587BF1CFC8BD4DBD9A978CB2BA361283&FPIG=88B69C865B2F421BB7A902378DD5E7A6&FPIG=8F69565BB2C54D3FA9D6E7C2ACCB10B5&first=11&FORM=PORE -> skip blocked page and continue to next query/page
+2026-05-04T14:29:30Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "系统清单" filetype:xlsx&first=1
+2026-05-04T14:29:30Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "系统清单" filetype:xlsx page=1
+2026-05-04T14:29:33Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:29:33Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&pn=0. Waiting for user signal...
+2026-05-04T14:29:36Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:29:36Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:29:36Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:29:36Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "系统清单" filetype:xlsx&pn=0
+2026-05-04T14:29:36Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "系统清单" filetype:xlsx page=1
+2026-05-04T14:29:56Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "系统清单" filetype:xlsx: Page.goto: net::ERR_CONNECTION_RESET at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype%3Axlsx&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype%3Axlsx&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:29:58Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:29:58Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1. Waiting for user signal...
+2026-05-04T14:30:01Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/1919698761006978677 (Task: f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1)
+2026-05-04T14:31:19Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:31:19Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:31:19Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1&rdr=1&rdrig=1BC80392E1CA4DC49C11542ACF37C1F9 -> skip blocked page and continue to next query/page
+2026-05-04T14:31:19Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"深圳地铁" "OA"&first=1
+2026-05-04T14:31:19Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"深圳地铁" "OA" page=1
+2026-05-04T14:31:23Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:31:23Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&pn=0. Waiting for user signal...
+2026-05-04T14:31:24Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:31:24Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:31:24Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:31:24Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd=intitle:"深圳地铁" "OA"&pn=0
+2026-05-04T14:31:24Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query=intitle:"深圳地铁" "OA" page=1
+2026-05-04T14:31:39Z - WARNING - app.services.exposure_search - Provider github failed for query intitle:"深圳地铁" "OA": Page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://github.com/search?q=intitle%3A%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:31:41Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:31:41Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&first=1. Waiting for user signal...
+2026-05-04T14:31:43Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.zhihu.com/question/1919698761006978677
+2026-05-04T14:31:46Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:31:46Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:31:47Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&first=1&rdr=1&rdrig=2A5ABE97324B4C9E8A33D4410E1E3BE2 -> skip blocked page and continue to next query/page
+2026-05-04T14:31:47Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "VPN"&first=1
+2026-05-04T14:31:47Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "VPN" page=1
+2026-05-04T14:31:49Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:31:49Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&pn=0. Waiting for user signal...
+2026-05-04T14:31:51Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:31:51Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:31:51Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:31:51Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "VPN"&pn=0
+2026-05-04T14:31:51Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "VPN" page=1
+2026-05-04T14:31:53Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:31:53Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:32:13Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "VPN": Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22VPN%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:32:16Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:32:16Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xls&first=1. Waiting for user signal...
+2026-05-04T14:32:19Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:32:19Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:32:20Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xls&first=1&rdr=1&rdrig=3FDB4CACB0BD434EAB942D754E7A4E70 -> skip blocked page and continue to next query/page
+2026-05-04T14:32:20Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "资产清单" filetype:xls&first=1
+2026-05-04T14:32:20Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "资产清单" filetype:xls page=1
+2026-05-04T14:32:22Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:32:22Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xls&pn=0. Waiting for user signal...
+2026-05-04T14:32:24Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:32:24Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:32:24Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:xls&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:32:24Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "资产清单" filetype:xls&pn=0
+2026-05-04T14:32:24Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "资产清单" filetype:xls page=1
+2026-05-04T14:32:28Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:32:28Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:32:46Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "资产清单" filetype:xls: Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype%3Axls&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype%3Axls&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:32:48Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:32:48Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1. Waiting for user signal...
+2026-05-04T14:32:51Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:32:51Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:32:51Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1&rdr=1&rdrig=AD7F17AC7BC14E1B8C2351140C03C733 -> skip blocked page and continue to next query/page
+2026-05-04T14:32:51Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "OA"&first=1
+2026-05-04T14:32:51Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "OA" page=1
+2026-05-04T14:32:54Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:32:54Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&pn=0. Waiting for user signal...
+2026-05-04T14:33:06Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:33:06Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:33:06Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T14:33:06Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "OA"&pn=0
+2026-05-04T14:33:06Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "OA" page=1
+2026-05-04T14:33:28Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "OA": Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T14:33:30Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T14:33:30Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T14:37:03Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T14:37:03Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T14:37:04Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:pdf&first=1&rdr=1&rdrig=7976D9FFD5124C41A78D71481413E328 -> skip blocked page and continue to next query/page
+2026-05-04T14:37:04Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "资产清单" filetype:pdf&first=1
+2026-05-04T14:37:04Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "资产清单" filetype:pdf page=1
+2026-05-04T14:37:06Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T14:37:06Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B5%84%E4%BA%A7%E6%B8%85%E5%8D%95%22%20filetype:pdf&pn=0. Waiting for user signal...
+2026-05-04T14:37:08Z - INFO - app.api.exposure_search - Stopping task f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1
+2026-05-04T14:37:08Z - INFO - app.api.exposure_search - Task f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 status set to stopping
+2026-05-04T14:37:08Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T14:37:08Z - INFO - app.services.exposure_search - Task f8ae0d34-0f99-46be-b7cb-afae4b8ce7f1 finished with status: stopped
+2026-05-04T14:48:05Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T14:48:07Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:53:19Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T14:53:22Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:54:20Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T14:54:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:56:31Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T14:56:32Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T15:17:50Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T15:17:51Z - WARNING - app.services.exposure_search - Provider bing failed for query query-1: captcha blocked
+2026-05-04T16:18:04Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search - Provider bing failed for query query-1: captcha blocked
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T16:18:05Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T16:19:18Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T16:20:04Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:20:04Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:doc&first=1. Waiting for user signal...
+2026-05-04T16:20:11Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://hrss.sz.gov.cn/attachment/0/690/690079/7891659.docx (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:17Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: http://www1.sse.net.cn/doc/xiangxing.doc (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:21Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:20:21Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:20:21Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E5%AF%86%E7%A0%81%22%20filetype:doc&first=1&rdr=1&rdrig=75CA40EC088B41B8A5143C0493BAE113 -> skip blocked page and continue to next query/page
+2026-05-04T16:20:21Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "密码" filetype:doc&first=1
+2026-05-04T16:20:21Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "密码" filetype:doc page=1
+2026-05-04T16:20:23Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:20:23Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T16:20:26Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/9562395414 (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:29Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/1966491525878878310 (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:40Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/526252812 (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:45Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=intitle%3a%22%e7%bb%9f%e4%b8%80%e8%ae%a4%e8%af%81%22+%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22&rdr=1&rdrig=DEC6CD74B2A943EE8E473F2ECE0C5754&FPIG=D82C96C0415E45CB858F43ECA68EB903&first=10&FORM=PORE (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:47Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.zhihu.com/question/9562395414
+2026-05-04T16:20:52Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/643382712 (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:20:59Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.zhihu.com/question/526252812
+2026-05-04T16:21:02Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=intitle%3a%22%e7%bb%9f%e4%b8%80%e8%ae%a4%e8%af%81%22+%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22&rdr=1&rdrig=DEC6CD74B2A943EE8E473F2ECE0C5754&FPIG=D82C96C0415E45CB858F43ECA68EB903&FPIG=F1A633DE8326413094618E939244DFF9&first=10&FORM=PORE (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:21:04Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: http://www.chinamining.org.cn/ (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:21:43Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:21:43Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:21:44Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=intitle%3a%22%e7%bb%9f%e4%b8%80%e8%ae%a4%e8%af%81%22+%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22&rdr=1&rdrig=DEC6CD74B2A943EE8E473F2ECE0C5754&FPIG=D82C96C0415E45CB858F43ECA68EB903&FPIG=F1A633DE8326413094618E939244DFF9&first=10&FORM=PORE -> skip blocked page and continue to next query/page
+2026-05-04T16:21:44Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"统一认证" "深圳地铁"&first=1
+2026-05-04T16:21:44Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"统一认证" "深圳地铁" page=1
+2026-05-04T16:21:46Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:21:46Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T16:21:50Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:21:50Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:21:50Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%B3%BB%E7%BB%9F%E6%B8%85%E5%8D%95%22%20filetype:xlsx&first=1&rdr=1&rdrig=541E6B2FD90344EFAEC9BCB982493D88 -> skip blocked page and continue to next query/page
+2026-05-04T16:21:50Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "系统清单" filetype:xlsx&first=1
+2026-05-04T16:21:50Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "系统清单" filetype:xlsx page=1
+2026-05-04T16:21:52Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:21:52Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T16:21:55Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/map/ (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:21:58Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/shentieyunying/ (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:22:00Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/shentieyunying/yunyingfuwu/ (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:22:01Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/shentieyunying/yunyingzixun/ (Task: 7e3a12b3-a704-455d-84b9-f08902f6dfbb)
+2026-05-04T16:22:03Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:03Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:03Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:pdf&first=1&rdr=1&rdrig=3D44D2776D75497B9335A25A42AAF376 -> skip blocked page and continue to next query/page
+2026-05-04T16:22:03Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" filetype:pdf&first=1
+2026-05-04T16:22:03Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" filetype:pdf page=1
+2026-05-04T16:22:06Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:06Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1. Waiting for user signal...
+2026-05-04T16:22:08Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:08Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:08Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1&rdr=1&rdrig=C8E199CA7699490DB92ED40B5FA89037 -> skip blocked page and continue to next query/page
+2026-05-04T16:22:08Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "运维平台"&first=1
+2026-05-04T16:22:08Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "运维平台" page=1
+2026-05-04T16:22:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:10Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20-%E6%8B%9B%E8%81%98%20-%E6%96%B0%E9%97%BB%20-%E5%85%AC%E5%91%8A%20-%E9%87%87%E8%B4%AD%20-%E6%8B%9B%E6%A0%87&first=1. Waiting for user signal...
+2026-05-04T16:22:12Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:12Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:12Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20-%E6%8B%9B%E8%81%98%20-%E6%96%B0%E9%97%BB%20-%E5%85%AC%E5%91%8A%20-%E9%87%87%E8%B4%AD%20-%E6%8B%9B%E6%A0%87&first=1&rdr=1&rdrig=363BE256F4D545D98CFB246026BF0159 -> skip blocked page and continue to next query/page
+2026-05-04T16:22:12Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" -招聘 -新闻 -公告 -采购 -招标&first=1
+2026-05-04T16:22:12Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" -招聘 -新闻 -公告 -采购 -招标 page=1
+2026-05-04T16:22:14Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:14Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1. Waiting for user signal...
+2026-05-04T16:22:17Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:17Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:17Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1&rdr=1&rdrig=8D10D52889064ECCB90B9B2268134CC6 -> skip blocked page and continue to next query/page
+2026-05-04T16:22:17Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"深圳地铁" "运维平台"&first=1
+2026-05-04T16:22:17Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"深圳地铁" "运维平台" page=1
+2026-05-04T16:22:19Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:19Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T16:22:21Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:21Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:21Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype:xlsx&first=1&rdr=1&rdrig=44F9D763CE524EDBB5B3F05538629761 -> skip blocked page and continue to next query/page
+2026-05-04T16:22:21Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "账号" filetype:xlsx&first=1
+2026-05-04T16:22:22Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "账号" filetype:xlsx page=1
+2026-05-04T16:22:24Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:24Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T16:22:25Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:25Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:26Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=7e3a12b3-a704-455d-84b9-f08902f6dfbb page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%22%20filetype:xlsx&first=1&rdr=1&rdrig=E70285516A6B4341A9FB31981AD4790C -> skip blocked page and continue to next query/page
+2026-05-04T16:22:26Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "测试报告" filetype:xlsx&first=1
+2026-05-04T16:22:26Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "测试报告" filetype:xlsx page=1
+2026-05-04T16:22:27Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:22:27Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:22:28Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:22:28Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:doc&first=1. Waiting for user signal...
+2026-05-04T16:32:26Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" filetype:doc: 
+2026-05-04T16:32:28Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:32:28Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%B4%A6%E5%8F%B7%22%20filetype:doc&first=1. Waiting for user signal...
+2026-05-04T16:37:28Z - INFO - app.api.exposure_search - Stopping task 7e3a12b3-a704-455d-84b9-f08902f6dfbb
+2026-05-04T16:37:28Z - INFO - app.api.exposure_search - Task 7e3a12b3-a704-455d-84b9-f08902f6dfbb status set to stopping
+2026-05-04T16:37:28Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T16:37:28Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "账号" filetype:doc: Page.reload: Target page, context or browser has been closed
+2026-05-04T16:37:28Z - INFO - app.services.exposure_search - Task 7e3a12b3-a704-455d-84b9-f08902f6dfbb finished with status: stopped
+2026-05-04T16:50:39Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T16:51:21Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:51:21Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T16:51:24Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/ (Task: 819b90ab-03f8-4d43-99d6-d68132f48d4a)
+2026-05-04T16:51:27Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/jituagaikuang/jituanjianjie/jituanjianjie/ (Task: 819b90ab-03f8-4d43-99d6-d68132f48d4a)
+2026-05-04T16:51:35Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.szmc.net/home/xinwenzhongxin/gongsixinwen/202412/104601.html (Task: 819b90ab-03f8-4d43-99d6-d68132f48d4a)
+2026-05-04T16:51:41Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.szmc.net/home/xinwenzhongxin/gongsixinwen/202412/104601.html
+2026-05-04T16:51:45Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FD1480E327B546EDB766E54E3768E47D (Task: 819b90ab-03f8-4d43-99d6-d68132f48d4a)
+2026-05-04T16:51:47Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FD1480E327B546EDB766E54E3768E47D
+2026-05-04T16:51:47Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FD1480E327B546EDB766E54E3768E47D
+2026-05-04T16:51:48Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FD1480E327B546EDB766E54E3768E47D
+2026-05-04T16:51:50Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.szmc.net/home/xinwenzhongxin/gongsixinwen/202412/104601.html
+2026-05-04T16:52:01Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.szmc.net/home/xinwenzhongxin/gongsixinwen/202412/104601.html
+2026-05-04T16:52:05Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:52:05Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:52:05Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=819b90ab-03f8-4d43-99d6-d68132f48d4a page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FD1480E327B546EDB766E54E3768E47D -> skip blocked page and continue to next query/page
+2026-05-04T16:52:05Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁"&first=1
+2026-05-04T16:52:05Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" page=1
+2026-05-04T16:52:06Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:52:06Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:xlsx&first=1. Waiting for user signal...
+2026-05-04T16:52:09Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:52:09Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:52:10Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=819b90ab-03f8-4d43-99d6-d68132f48d4a page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20filetype:xlsx&first=1&rdr=1&rdrig=80C8DA1873604B1EB26317E588682F13 -> skip blocked page and continue to next query/page
+2026-05-04T16:52:10Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" filetype:xlsx&first=1
+2026-05-04T16:52:10Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" filetype:xlsx page=1
+2026-05-04T16:52:11Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:52:11Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22SSO%22&first=1. Waiting for user signal...
+2026-05-04T16:52:18Z - INFO - app.api.exposure_search - Stopping task 819b90ab-03f8-4d43-99d6-d68132f48d4a
+2026-05-04T16:52:18Z - INFO - app.api.exposure_search - Task 819b90ab-03f8-4d43-99d6-d68132f48d4a status set to stopping
+2026-05-04T16:52:19Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T16:52:19Z - INFO - app.services.exposure_search - Task 819b90ab-03f8-4d43-99d6-d68132f48d4a finished with status: stopped
+2026-05-04T16:56:51Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T16:57:15Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:57:15Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype:pdf&first=1. Waiting for user signal...
+2026-05-04T16:57:17Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/2031771022613903190 (Task: 4cc92465-955f-4f3b-a087-f93bd0c160b1)
+2026-05-04T16:57:27Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:57:27Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:57:27Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=4cc92465-955f-4f3b-a087-f93bd0c160b1 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E9%80%9A%E8%AE%AF%E5%BD%95%22%20filetype:pdf&first=1&rdr=1&rdrig=ECF09FF54A69488387B3BB9E2BD77EDF -> skip blocked page and continue to next query/page
+2026-05-04T16:57:27Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "通讯录" filetype:pdf&first=1
+2026-05-04T16:57:27Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "通讯录" filetype:pdf page=1
+2026-05-04T16:57:28Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:57:28Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1. Waiting for user signal...
+2026-05-04T16:57:31Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/2025507998328514557 (Task: 4cc92465-955f-4f3b-a087-f93bd0c160b1)
+2026-05-04T16:57:37Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.zhihu.com/question/2025507998328514557
+2026-05-04T16:57:40Z - INFO - app.services.exposure_search - [RPC] Manual clue skipped (exists): https://www.zhihu.com/question/2025507998328514557
+2026-05-04T16:57:43Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/12532778146 (Task: 4cc92465-955f-4f3b-a087-f93bd0c160b1)
+2026-05-04T16:57:46Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/topic/19560551/hot (Task: 4cc92465-955f-4f3b-a087-f93bd0c160b1)
+2026-05-04T16:57:49Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:57:49Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:57:49Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=4cc92465-955f-4f3b-a087-f93bd0c160b1 page=https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22OA%22&first=1&rdr=1&rdrig=11284E0673DD4BDF98CDAD5FBBA101F9 -> skip blocked page and continue to next query/page
+2026-05-04T16:57:49Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"深圳地铁" "OA"&first=1
+2026-05-04T16:57:49Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"深圳地铁" "OA" page=1
+2026-05-04T16:57:51Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:57:51Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1. Waiting for user signal...
+2026-05-04T16:57:52Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T16:57:52Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T16:57:53Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=4cc92465-955f-4f3b-a087-f93bd0c160b1 page=https://cn.bing.com/search?q=intitle:%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1&rdr=1&rdrig=D76841BE71AE47229CE580DCD7064A78 -> skip blocked page and continue to next query/page
+2026-05-04T16:57:53Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"深圳地铁" "运维平台"&first=1
+2026-05-04T16:57:53Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"深圳地铁" "运维平台" page=1
+2026-05-04T16:57:54Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T16:57:54Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T16:58:14Z - INFO - app.api.exposure_search - Stopping task 4cc92465-955f-4f3b-a087-f93bd0c160b1
+2026-05-04T16:58:14Z - INFO - app.api.exposure_search - Task 4cc92465-955f-4f3b-a087-f93bd0c160b1 status set to stopping
+2026-05-04T16:58:14Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T16:58:15Z - INFO - app.services.exposure_search - Task 4cc92465-955f-4f3b-a087-f93bd0c160b1 finished with status: stopped
+2026-05-04T17:04:31Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T17:04:58Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:04:59Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:04:59Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:05:00Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 2/3
+2026-05-04T17:05:00Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 2/3
+2026-05-04T17:05:00Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 2/3
+2026-05-04T17:05:01Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 3/3
+2026-05-04T17:05:01Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 3/3
+2026-05-04T17:05:02Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (安全验证), retry 3/3
+2026-05-04T17:05:03Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T17:05:04Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T17:05:04Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T17:05:04Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 2/3
+2026-05-04T17:05:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 2/3
+2026-05-04T17:05:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 3/3
+2026-05-04T17:05:05Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 2/3
+2026-05-04T17:05:06Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 3/3
+2026-05-04T17:05:07Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 3/3
+2026-05-04T17:05:27Z - WARNING - app.services.exposure_search - Provider github failed for query intitle:"VPN" "深圳地铁": Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=intitle%3A%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=intitle%3A%22VPN%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T17:05:27Z - INFO - app.api.exposure_search - Stopping task d7995ac7-166b-4c17-8a4e-e26a8981b6ca
+2026-05-04T17:05:27Z - INFO - app.api.exposure_search - Task d7995ac7-166b-4c17-8a4e-e26a8981b6ca status set to stopping
+2026-05-04T17:05:28Z - WARNING - app.services.exposure_search - Provider github failed for query intitle:"管理系统" "深圳地铁": Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://github.com/search?q=intitle%3A%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1
+Call log:
+  - navigating to "https://github.com/search?q=intitle%3A%22%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&type=code&p=1", waiting until "domcontentloaded"
+
+2026-05-04T17:05:28Z - INFO - app.services.exposure_search - Task d7995ac7-166b-4c17-8a4e-e26a8981b6ca finished with status: stopped
+2026-05-04T17:05:28Z - WARNING - app.services.exposure_search - Provider github failed for query "深圳地铁" "通讯录" filetype:xls: BrowserContext.close: Target page, context or browser has been closed
+2026-05-04T17:05:28Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "密码" filetype:pdf: BrowserContext.close: Target page, context or browser has been closed
+2026-05-04T17:05:41Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:05:41Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E7%99%BB%E5%BD%95%22&first=1. Waiting for user signal...
+2026-05-04T17:05:46Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8&first=11&FORM=PORE (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:05:48Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8&FPIG=1FBFBF77B79E4A7AB9A17646C0EB2B14&first=11&FORM=PORE (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:05:53Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8%2c1FBFBF77B79E4A7AB9A17646C0EB2B14&first=21&FORM=PORE (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:05:55Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8%2c1FBFBF77B79E4A7AB9A17646C0EB2B14&first=31&FORM=PORE (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:05:59Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8%2c1FBFBF77B79E4A7AB9A17646C0EB2B14&first=41&FORM=PORE (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:06:02Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:06:02Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:06:03Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=313744e4-d80b-4e9b-b72b-136f69c11b80 page=https://cn.bing.com/search?q=%22%e6%b7%b1%e5%9c%b3%e5%9c%b0%e9%93%81%22+%22%e7%99%bb%e5%bd%95%22&rdr=1&rdrig=49F23109FF40409BAF380FE7E74D2C30&FPIG=F8A7D74AB85C494480717593A3F5C4B8%2c1FBFBF77B79E4A7AB9A17646C0EB2B14&first=41&FORM=PORE -> skip blocked page and continue to next query/page
+2026-05-04T17:06:03Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "登录"&first=1
+2026-05-04T17:06:03Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "登录" page=1
+2026-05-04T17:06:04Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:06:04Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xls&first=1. Waiting for user signal...
+2026-05-04T17:06:06Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/14820548710 (Task: 313744e4-d80b-4e9b-b72b-136f69c11b80)
+2026-05-04T17:06:35Z - INFO - app.api.exposure_search - Stopping task 313744e4-d80b-4e9b-b72b-136f69c11b80
+2026-05-04T17:06:35Z - INFO - app.api.exposure_search - Task 313744e4-d80b-4e9b-b72b-136f69c11b80 status set to stopping
+2026-05-04T17:06:35Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T17:06:35Z - WARNING - app.services.exposure_search - Provider bing failed for query "深圳地铁" "接口文档" filetype:xls: Page.reload: Target page, context or browser has been closed
+2026-05-04T17:06:35Z - INFO - app.services.exposure_search - Task 313744e4-d80b-4e9b-b72b-136f69c11b80 finished with status: stopped
+2026-05-04T17:09:17Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T17:09:36Z - INFO - app.api.exposure_search - Stopping task 1abf72d7-7e29-4ccc-9f04-9634035425c1
+2026-05-04T17:09:36Z - INFO - app.api.exposure_search - Task 1abf72d7-7e29-4ccc-9f04-9634035425c1 status set to stopping
+2026-05-04T17:09:37Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:09:37Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:09:37Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:09:38Z - INFO - app.services.exposure_search - Task 1abf72d7-7e29-4ccc-9f04-9634035425c1 finished with status: stopped
+2026-05-04T17:09:44Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:09:44Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xls&first=1. Waiting for user signal...
+2026-05-04T17:09:46Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/14820548710 (Task: 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2)
+2026-05-04T17:09:50Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/2025507998328514557 (Task: 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2)
+2026-05-04T17:09:54Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:09:54Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:09:54Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 page=https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xls&first=1&rdr=1&rdrig=4CCE8A7927C3492682B64246AEF52C38 -> skip blocked page and continue to next query/page
+2026-05-04T17:09:54Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q="深圳地铁" "接口文档" filetype:xls&first=1
+2026-05-04T17:09:54Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query="深圳地铁" "接口文档" filetype:xls page=1
+2026-05-04T17:09:58Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 2/3
+2026-05-04T17:09:58Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xls&pn=0. Waiting for user signal...
+2026-05-04T17:10:01Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:10:01Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:10:02Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 page=https://www.baidu.com/s?wd=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype:xls&pn=0 -> skip blocked page and continue to next query/page
+2026-05-04T17:10:02Z - INFO - app.services.exposure_search.providers.baidu - Baidu skip current blocked page query= url=https://www.baidu.com/s?wd="深圳地铁" "接口文档" filetype:xls&pn=0
+2026-05-04T17:10:02Z - INFO - app.services.exposure_search.providers.baidu - Baidu moving to next query/page after finish signal query="深圳地铁" "接口文档" filetype:xls page=1
+2026-05-04T17:10:05Z - WARNING - app.services.exposure_search.providers.github - GitHub detected risk/login (人机验证), retry 1/3
+2026-05-04T17:10:05Z - WARNING - app.services.exposure_search - Intervention required for https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype%3Axls&type=code&p=1. Waiting for user signal...
+2026-05-04T17:10:08Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:10:08Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:10:08Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 page=https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype%3Axls&type=code&p=1 -> skip blocked page and continue to next query/page
+2026-05-04T17:10:08Z - INFO - app.services.exposure_search.providers.github - GitHub skip current blocked page query= url=https://github.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%22%20filetype%3Axls&type=code&p=1
+2026-05-04T17:10:08Z - INFO - app.services.exposure_search.providers.github - GitHub moving to next query/page after finish signal query="深圳地铁" "接口文档" filetype:xls page=1
+2026-05-04T17:10:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:10:10Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T17:10:14Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/1966491525878878310 (Task: 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2)
+2026-05-04T17:10:17Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:10:17Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:10:18Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 page=https://cn.bing.com/search?q=intitle:%22%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=4BCCDC172CA3424E94BE6EAB027C8874 -> skip blocked page and continue to next query/page
+2026-05-04T17:10:18Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"统一认证" "深圳地铁"&first=1
+2026-05-04T17:10:18Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"统一认证" "深圳地铁" page=1
+2026-05-04T17:10:20Z - WARNING - app.services.exposure_search.providers.baidu - Baidu detected risk (登录限制), retry 1/3
+2026-05-04T17:10:20Z - WARNING - app.services.exposure_search - Intervention required for https://www.baidu.com/s?wd=intitle:%22%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&pn=0. Waiting for user signal...
+2026-05-04T17:10:21Z - INFO - app.api.exposure_search - Stopping task 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2
+2026-05-04T17:10:21Z - INFO - app.api.exposure_search - Task 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 status set to stopping
+2026-05-04T17:10:21Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T17:10:22Z - INFO - app.services.exposure_search - Task 1facf6f6-53dd-4dd1-8b0a-54bee30bf3c2 finished with status: stopped
+2026-05-04T17:12:28Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search - Provider bing failed for query query-1: captcha blocked
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T17:12:29Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T17:13:09Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search - Provider bing failed for query query-1: captcha blocked
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 1/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 2/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (检测到人机验证), retry 3/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 2/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 3/3
+2026-05-04T17:13:10Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (captcha), retry 1/3
+2026-05-04T17:20:59Z - WARNING - app.services.exposure_search - Intervention required for https://example.com/captcha. Waiting for user signal...
+2026-05-04T17:21:01Z - WARNING - app.services.exposure_search - Provider bing failed for query query-1: captcha blocked
+2026-05-04T17:21:59Z - INFO - assetmap.service - AssetMap backend service started
+2026-05-04T17:22:19Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:22:19Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E7%99%BB%E5%BD%95%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T17:22:23Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/570188423 (Task: 061d6ee8-bc36-4b43-9d60-31354e3d7f99)
+2026-05-04T17:22:29Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/333590069 (Task: 061d6ee8-bc36-4b43-9d60-31354e3d7f99)
+2026-05-04T17:22:35Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://www.zhihu.com/question/33688002 (Task: 061d6ee8-bc36-4b43-9d60-31354e3d7f99)
+2026-05-04T17:22:40Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:22:40Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:22:41Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=061d6ee8-bc36-4b43-9d60-31354e3d7f99 page=https://cn.bing.com/search?q=intitle:%22%E7%99%BB%E5%BD%95%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=69E903F9A01446E3B0893897DDD05F83 -> skip blocked page and continue to next query/page
+2026-05-04T17:22:41Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"登录" "深圳地铁"&first=1
+2026-05-04T17:22:41Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"登录" "深圳地铁" page=1
+2026-05-04T17:22:42Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:22:42Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=intitle:%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1. Waiting for user signal...
+2026-05-04T17:22:45Z - INFO - app.services.exposure_search - [RPC] Manual clue saved: https://gd.zhiliaobiaoxun.com/article/91348988 (Task: 061d6ee8-bc36-4b43-9d60-31354e3d7f99)
+2026-05-04T17:22:50Z - INFO - app.services.exposure_search.playwright_client - Finish current query signal received.
+2026-05-04T17:22:50Z - INFO - app.services.exposure_search - Received finish-current-query signal from browser.
+2026-05-04T17:22:51Z - INFO - app.services.exposure_search - Finish-current-query signal received for task=061d6ee8-bc36-4b43-9d60-31354e3d7f99 page=https://cn.bing.com/search?q=intitle:%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22%20%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22&first=1&rdr=1&rdrig=FCB19393336846278CC0D737FFF4AC4B -> skip blocked page and continue to next query/page
+2026-05-04T17:22:51Z - INFO - app.services.exposure_search.providers.bing - Bing skip current blocked page query= url=https://www.bing.com/search?q=intitle:"运维平台" "深圳地铁"&first=1
+2026-05-04T17:22:51Z - INFO - app.services.exposure_search.providers.bing - Bing moving to next query/page after finish signal query=intitle:"运维平台" "深圳地铁" page=1
+2026-05-04T17:22:53Z - WARNING - app.services.exposure_search.providers.bing - Bing detected risk (登录限制), retry 1/3
+2026-05-04T17:22:53Z - WARNING - app.services.exposure_search - Intervention required for https://cn.bing.com/search?q=%22%E6%B7%B1%E5%9C%B3%E5%9C%B0%E9%93%81%22%20%22%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%22&first=1. Waiting for user signal...
+2026-05-04T17:22:57Z - INFO - app.api.exposure_search - Stopping task 061d6ee8-bc36-4b43-9d60-31354e3d7f99
+2026-05-04T17:22:57Z - INFO - app.api.exposure_search - Task 061d6ee8-bc36-4b43-9d60-31354e3d7f99 status set to stopping
+2026-05-04T17:22:57Z - INFO - app.services.exposure_search - Stop signal detected during intervention.
+2026-05-04T17:22:58Z - INFO - app.services.exposure_search - Task 061d6ee8-bc36-4b43-9d60-31354e3d7f99 finished with status: stopped
