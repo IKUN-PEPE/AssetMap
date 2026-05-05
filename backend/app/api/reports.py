@@ -238,7 +238,6 @@ def create_report(payload: ReportCreateRequest, db: Session = Depends(get_db)):
         report_type=payload.report_formats[0] if payload.report_formats else "html",
         scope_type=payload.scope_type,
         scope_payload={
-            "selection_id": payload.selection_id,
             "asset_ids": payload.asset_ids,
             "total_assets": total_assets,
             "excluded_assets": excluded_assets,

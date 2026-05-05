@@ -14,7 +14,6 @@
         <el-menu-item index="/jobs">采集任务</el-menu-item>
         <el-menu-item index="/exposure-search">暴露面搜索</el-menu-item>
         <el-menu-item index="/assets">资产列表</el-menu-item>
-        <el-menu-item index="/selections">选择集</el-menu-item>
         <el-menu-item index="/reports">报告中心</el-menu-item>
         <el-menu-item index="/logs">实时日志</el-menu-item>
         <el-menu-item index="/system">系统配置</el-menu-item>

@@ -1,80 +1,155 @@
 # AssetMap
 
-AssetMap 是一个面向资产测绘结果管理、批量截图验证和报告输出的项目。当前版本已经具备 **后端基础版** 和 **Vue 3 + Element Plus 前端基础版**，围绕 FOFA、Hunter、ZoomEye 三类数据源的统一资产模型、截图服务、标签管理、选择集和报告任务完成了第一阶段落地。
+## 项目说明
 
-## 当前实现状态
+AssetMap 是一个包含后端 API、前端管理后台、资产采集管理、截图验证、报告输出和暴露面搜索的项目。
 
-### 已实现
+项目目录分为两部分：
 
-#### 后端
-- FastAPI 后端基础骨架
-- PostgreSQL 数据模型与数据库连接层
-- 资产相关核心模型：`collect_jobs`、`source_observations`、`hosts`、`services`、`web_endpoints`、`screenshots`、`labels`、`label_audit_logs`、`saved_selections`、`selection_items`、`reports`
-- 基础 API 路由
-- sample 模式资产导入链路
-- Playwright 截图服务封装
-- 标签、选择集、报告任务基础接口
-- 数据库初始化入口 `backend/init_db.py`
-- 主目录统一启动入口 `main.py`
-- 基础测试
+- `backend/`：FastAPI 后端
+- `frontend/`：Vue 3 + Vite 前端
 
-#### 前端
-- Vue 3 + Vite + Element Plus 工程骨架
-- 管理后台布局
-- 仪表盘页面
-- 采集任务页面
-- 资产列表页面
-- 资产详情页面
-- 选择集页面
-- 报告中心页面
-- 系统配置页面
-- 基础 API 封装与类型定义
-- 与后端第一阶段接口的基础对接
-- 前端环境变量文件：`.env.development`、`.env.example`
+## 运行环境
 
-### 当前未完成
+建议环境：
 
-- 真实 FOFA / Hunter / ZoomEye API 接入
-- HTML / PDF 报告真实生成
-- 完整认证和权限控制
-- Celery / Redis 异步任务系统
-- Alembic 数据迁移
-- 前端登录页、权限页、完整状态管理
-- 前端生产代理配置与部署配置
+- Python 3.11+
+- Node.js 20+
+- npm 10+
+- Docker Desktop
+- GNU Make 或兼容的 `make`
+- PostgreSQL 16（如果不用 Docker）
 
-## 目录说明
+Windows 下如果没有 `make`，也可以直接执行文档里的 `docker compose`、`python`、`npm` 命令。
 
-- `main.py`：项目根目录统一启动入口（默认启动后端）
-- `backend/`：后端代码、测试、依赖、数据库初始化脚本
-- `frontend/`：前端 Vue 3 管理后台工程
-- `archive/docs/`：方案文档与总结文档归档目录
-- `archive/legacy-prototype/`：早期原型脚本、测试与压缩包归档目录
-- `archive/runtime/`：运行产物归档目录（截图、结果、日志）
+## 需要安装的依赖
 
-## 启动方式
+### 后端依赖文件
 
-### 1. 安装后端依赖
+后端依赖定义在：
+
+- `backend/requirements.txt`
+
+安装命令：
 
 ```bash
 python -m pip install -r backend/requirements.txt
 ```
 
-### 2. 安装前端依赖
+当前主要依赖包括：
+
+- `fastapi`
+- `uvicorn`
+- `sqlalchemy`
+- `psycopg[binary]`
+- `pydantic`
+- `pydantic-settings`
+- `playwright`
+- `openpyxl`
+- `httpx`
+- `huey`
+- `pytest`
+
+如果要使用暴露面搜索的浏览器能力，还需要安装 Playwright 浏览器：
+
+```bash
+python -m playwright install chromium
+```
+
+### 前端依赖文件
+
+前端依赖定义在：
+
+- `frontend/package.json`
+
+安装命令：
 
 ```bash
 cd frontend
 npm install
 ```
 
-### 3. 初始化数据库
+当前主要依赖包括：
+
+- `vue`
+- `vue-router`
+- `pinia`
+- `element-plus`
+- `axios`
+- `dayjs`
+- `echarts`
+- `vue-echarts`
+- `vite`
+- `typescript`
+- `vue-tsc`
+
+## 数据库一键启动
+
+项目根目录已提供：
+
+- `docker-compose.yml`
+- `Makefile`
+
+### 启动数据库
 
 ```bash
-python backend/init_db.py
+make db-up
 ```
 
-> 注意：默认数据库配置为 PostgreSQL，本机需要先启动数据库服务，并保证连接参数正确。
+### 初始化数据库
 
-### 4. 从主目录启动后端
+```bash
+make db-init
+```
+
+### 常用数据库命令
+
+```bash
+make db-down
+make db-reset
+make db-logs
+```
+
+如果本机 `5432` 已被占用，可以改端口：
+
+```bash
+POSTGRES_PORT=55432 make db-up
+```
+
+## 环境变量
+
+### 后端环境变量
+
+示例文件：
+
+- `backend/.env.example`
+
+主要配置：
+
+```env
+DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/assetmap
+```
+
+如果你已经有自己的 PostgreSQL，请把 `backend/.env` 改成你的实际连接串。
+
+### 前端环境变量
+
+示例文件：
+
+- `frontend/.env.example`
+- `frontend/.env.development`
+
+主要配置：
+
+```env
+VITE_API_BASE_URL=http://127.0.0.1:9527
+```
+
+## 启动项目
+
+### 启动后端
+
+在项目根目录执行：
 
 ```bash
 python main.py
@@ -82,10 +157,9 @@ python main.py
 
 默认后端地址：
 
-- Host: `127.0.0.1`
-- Port: `9527`
+- `http://127.0.0.1:9527`
 
-### 5. 启动前端
+### 启动前端
 
 ```bash
 cd frontend
@@ -96,95 +170,123 @@ npm run dev
 
 - `http://127.0.0.1:5173`
 
-### 6. 前端环境变量
+### Windows 快速重启脚本
 
-前端已支持通过环境变量配置后端地址。
+项目根目录提供：
 
-开发环境默认文件：
+- `dev-restart.ps1`
+- `dev-stop.ps1`
 
-- `frontend/.env.development`
+使用方式：
 
-示例文件：
-
-- `frontend/.env.example`
-
-当前配置项：
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:9527
+```powershell
+powershell -ExecutionPolicy Bypass -File .\dev-restart.ps1
 ```
 
-### 7. 运行测试
+## 项目使用流程
+
+推荐顺序：
+
+1. 启动数据库
+2. 初始化数据库
+3. 启动后端
+4. 启动前端
+5. 打开前端页面开始使用
+
+### 常见功能
+
+#### 资产采集
+
+- 进入采集任务页面
+- 配置数据源和查询条件
+- 启动采集任务
+
+#### 资产管理
+
+- 在资产列表查看采集结果
+- 执行截图验证
+- 标记标签
+- 查看资产详情
+
+#### 暴露面搜索
+
+- 进入暴露面搜索页面
+- 新建搜索任务
+- 查看搜索进度、当前语法、下一条语法
+- 在结果中筛选、标记、导入资产
+
+#### 报告功能
+
+- 在报告中心创建报告
+- 下载生成结果
+
+## 测试与构建
+
+### 后端测试
 
 ```bash
 python -m pytest backend/tests
 ```
 
-### 8. 构建前端
+单测示例：
+
+```bash
+pytest backend/tests/test_reports.py -q
+```
+
+### 前端构建
 
 ```bash
 cd frontend
 npm run build
 ```
 
-前端构建产物输出在：
+构建产物目录：
 
 - `frontend/dist/`
 
-## 当前前端页面
+## 常见问题
 
-当前前端已包含以下页面：
+### 1. 数据库启动失败
 
-- 仪表盘
-- 采集任务
-- 资产列表
-- 资产详情
-- 选择集
-- 报告中心
-- 系统配置
+通常是本机 `5432` 端口被占用。可改成：
 
-当前页面已完成与后端基础接口的第一轮对接，但仍属于第一阶段骨架版。
+```bash
+POSTGRES_PORT=55432 make db-up
+```
 
-## 当前 API 范围
+并同步调整 `backend/.env` 里的 `DATABASE_URL` 端口。
 
-已实现接口包括：
+### 2. 暴露面搜索浏览器功能不可用
 
-- `GET /health`
-- `POST /api/v1/jobs/collect`
-- `GET /api/v1/jobs/{job_id}`
-- `GET /api/v1/assets`
-- `GET /api/v1/assets/{asset_id}`
-- `POST /api/v1/screenshots/batch`
-- `POST /api/v1/labels/batch`
-- `POST /api/v1/selections`
-- `GET /api/v1/selections`
-- `POST /api/v1/reports`
-- `GET /api/v1/system/config`
+通常是没有安装 Playwright 浏览器：
 
-## 文档索引
+```bash
+python -m playwright install chromium
+```
 
-以下文档已整理归档，可直接查看：
+### 3. 前端打不开接口
 
-- [AssetMap 本地总结报告](./archive/docs/AssetMap-本地总结报告.md)
-- [AssetMap 系统设计说明书](./archive/docs/AssetMap-系统设计说明书.md)
-- [AssetMap 数据库与 API 设计](./archive/docs/AssetMap-数据库与API设计.md)
-- [AssetMap 项目方案文档](./archive/docs/AssetMap%20项目方案文档.md)
-- [数据库初始化说明](./backend/INIT_DB.md)
+检查：
 
-## 当前已知问题
+- 后端是否已启动
+- `frontend/.env.development` 的 `VITE_API_BASE_URL` 是否正确
 
-- 如果 PostgreSQL 未启动，`backend/init_db.py` 和后端数据库相关接口会失败。
-- 当前 sample 导入模式可用，真实数据源尚未接通。
-- 报告接口当前仅完成任务创建，还未生成真实 HTML / PDF。
-- 前端虽然已支持 `VITE_API_BASE_URL`，但尚未补生产环境配置。
-- 前端构建虽然成功，但首版打包体积偏大，后续可按需拆包优化。
+### 4. Make 命令不可用
 
-## 下一步建议
+Windows 下如果没有 `make`，直接使用：
 
-建议按以下顺序继续推进：
+```bash
+docker compose up -d postgres
+python backend/init_db.py
+```
 
-1. 增加后端 `.env.example` 并切换数据库配置到环境变量模式
-2. 修通 PostgreSQL 本地连接
-3. 接入真实 FOFA / Hunter / ZoomEye API
-4. 增加报告 HTML / PDF 生成
-5. 开始前端登录与权限控制
+## 相关文件
+
+- `backend/requirements.txt`
+- `backend/.env.example`
+- `backend/init_db.py`
+- `frontend/package.json`
+- `frontend/.env.example`
+- `docker-compose.yml`
+- `Makefile`

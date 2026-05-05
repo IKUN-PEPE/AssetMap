@@ -15,7 +15,7 @@ from urllib.parse import quote
 from app.core.config import settings
 from app.core.db import SessionLocal, get_db
 from app.models import Host, Service, WebEndpoint
-from app.models.support import Label, LabelAuditLog, Screenshot, SelectionItem, SourceObservation
+from app.models.support import Label, LabelAuditLog, Screenshot, SourceObservation
 from app.services.screenshot.service import build_output_filename, run_screenshot_job
 
 router = APIRouter()
@@ -366,7 +366,6 @@ def delete_asset(asset_id: str, db: Session = Depends(get_db)):
     db.query(Screenshot).filter(Screenshot.web_endpoint_id == asset.id).delete(synchronize_session=False)
     db.query(Label).filter(and_(Label.asset_type == "web_endpoint", Label.asset_id == asset.id)).delete(synchronize_session=False)
     db.query(LabelAuditLog).filter(and_(LabelAuditLog.asset_type == "web_endpoint", LabelAuditLog.asset_id == asset.id)).delete(synchronize_session=False)
-    db.query(SelectionItem).filter(and_(SelectionItem.asset_type == "web_endpoint", SelectionItem.asset_id == asset.id)).delete(synchronize_session=False)
 
     source_obs_query = db.query(SourceObservation).filter(SourceObservation.source_name == source) if source else db.query(SourceObservation)
     source_obs_query = source_obs_query.filter(

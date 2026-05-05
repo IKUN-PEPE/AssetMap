@@ -94,28 +94,6 @@ class LabelAuditLog(Base):
     operated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
 
-class SavedSelection(Base):
-    __tablename__ = "saved_selections"
-
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
-    selection_name: Mapped[str] = mapped_column(String(128))
-    selection_type: Mapped[str] = mapped_column(String(32))
-    filter_snapshot: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
-    created_by: Mapped[str] = mapped_column(String(64), default="system")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class SelectionItem(Base):
-    __tablename__ = "selection_items"
-
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid4()))
-    selection_id: Mapped[str] = mapped_column(UUID(as_uuid=False), ForeignKey("saved_selections.id"), index=True)
-    asset_type: Mapped[str] = mapped_column(String(32), default="web_endpoint")
-    asset_id: Mapped[str] = mapped_column(UUID(as_uuid=False), index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
-
 class Report(Base):
     __tablename__ = "reports"
 

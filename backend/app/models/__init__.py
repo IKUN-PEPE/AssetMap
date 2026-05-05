@@ -6,9 +6,7 @@ from app.models.support import (
     LabelAuditLog,
     JobPendingAsset,
     Report,
-    SavedSelection,
     Screenshot,
-    SelectionItem,
     SourceObservation,
     SystemConfig,
 )
@@ -24,8 +22,6 @@ __all__ = [
     "Label",
     "LabelAuditLog",
     "JobPendingAsset",
-    "SavedSelection",
-    "SelectionItem",
     "Report",
     "ExposureSearchTask",
     "ExposureSearchResult",

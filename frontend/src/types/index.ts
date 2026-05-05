@@ -56,13 +56,6 @@ export interface SystemConnectionTestResult {
   error?: string
 }
 
-export interface SelectionItem {
-  id: string
-  selection_name: string
-  selection_type: string
-  created_by: string
-}
-
 export type ReportStatus = 'pending' | 'running' | 'completed' | 'failed' | 'file_missing'
 
 export interface ReportRead {
@@ -84,7 +77,6 @@ export interface ReportRead {
 export interface ReportCreatePayload {
   report_name: string
   scope_type: string
-  selection_id?: string | null
   asset_ids?: string[]
   report_formats?: string[]
   report_content?: string | null
@@ -375,9 +367,3 @@ export interface CollectJobDetail extends CollectJob {
   task_details?: JobTaskDetails
 }
 
-export interface SelectionCreatePayload {
-  selection_name: string
-  selection_type: string
-  filter_snapshot?: Record<string, unknown> | null
-  asset_ids?: string[]
-}

@@ -8,7 +8,6 @@ from app.api import (
     logs,
     reports,
     screenshots,
-    selections,
     system,
     statistics,
 )
@@ -20,7 +19,6 @@ api_router.include_router(exposure_search.router, prefix="/exposure-search", tag
 api_router.include_router(statistics.router, prefix="/stats", tags=["stats"])
 api_router.include_router(screenshots.router, prefix="/screenshots", tags=["screenshots"])
 api_router.include_router(labels.router, prefix="/labels", tags=["labels"])
-api_router.include_router(selections.router, prefix="/selections", tags=["selections"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(system.router, prefix="/system", tags=["system"])
 api_router.include_router(logs.router, prefix="/logs", tags=["logs"])

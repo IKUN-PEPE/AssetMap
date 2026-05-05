@@ -5,7 +5,6 @@ const DashboardView = () => import('@/views/DashboardView.vue')
 const JobsView = () => import('@/views/JobsView.vue')
 const AssetsView = () => import('@/views/AssetsView.vue')
 const AssetDetailView = () => import('@/views/AssetDetailView.vue')
-const SelectionsView = () => import('@/views/SelectionsView.vue')
 const ReportsView = () => import('@/views/ReportsView.vue')
 const SystemView = () => import('@/views/SystemView.vue')
 const LogsView = () => import('@/views/LogsView.vue')
@@ -23,7 +22,6 @@ const router = createRouter({
         { path: 'exposure-search', name: 'exposure-search', component: ExposureSearchView },
         { path: 'assets', name: 'assets', component: AssetsView },
         { path: 'assets/:id', name: 'asset-detail', component: AssetDetailView, props: true },
-        { path: 'selections', name: 'selections', component: SelectionsView },
         { path: 'reports', name: 'reports', component: ReportsView },
         { path: 'logs', name: 'logs', component: LogsView },
         { path: 'system', name: 'system', component: SystemView },

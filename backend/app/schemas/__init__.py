@@ -4,7 +4,6 @@ from app.schemas.common import (
     ReportCreateRequest,
     ReportRead,
     ScreenshotBatchRequest,
-    SelectionCreateRequest,
 )
 from app.schemas.job import CollectJobCreate, CollectJobRead, FofaCsvImportRequest
 
@@ -15,7 +14,6 @@ __all__ = [
     "AssetRead",
     "ScreenshotBatchRequest",
     "LabelBatchRequest",
-    "SelectionCreateRequest",
     "ReportCreateRequest",
     "ReportRead",
 ]

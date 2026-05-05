@@ -17,18 +17,9 @@ class LabelBatchRequest(BaseModel):
     created_by: str = "system"
 
 
-class SelectionCreateRequest(BaseModel):
-    selection_name: str
-    selection_type: str
-    filter_snapshot: dict | None = None
-    asset_ids: list[str] = Field(default_factory=list)
-    created_by: str = "system"
-
-
 class ReportCreateRequest(BaseModel):
     report_name: str
     scope_type: str
-    selection_id: str | None = None
     asset_ids: list[str] = Field(default_factory=list)
     report_formats: list[str] = Field(default_factory=lambda: ["html"])
     report_content: str | None = None

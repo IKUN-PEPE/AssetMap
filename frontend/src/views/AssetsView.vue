@@ -2,7 +2,7 @@
   <div class="page-shell">
     <div class="page-header">
       <h1 class="page-title">资产列表</h1>
-      <p class="page-subtitle">查看当前已导入资产，并执行截图、标签与选择集操作。</p>
+      <p class="page-subtitle">查看当前已导入资产，并执行截图与标签操作。</p>
     </div>
 
     <el-card>
