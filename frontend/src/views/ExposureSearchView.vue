@@ -6,6 +6,11 @@
           <span>暴露面搜索 / Exposure Search</span>
           <div class="header-actions">
             <el-button :loading="refreshing" @click="manualRefresh">手动刷新</el-button>
+            <el-button @click="selectAllVisibleTasks" :disabled="!tasks.length">全选任务</el-button>
+            <el-button @click="clearSelectedTasks" :disabled="!selectedTasks.length">取消选择</el-button>
+            <el-button type="danger" @click="handleBatchDeleteTasks" :disabled="!selectedTasks.length">
+              删除选中任务
+            </el-button>
             <span class="refresh-label">自动刷新</span>
             <el-switch v-model="autoRefreshEnabled" />
             <el-select v-model="refreshIntervalSec" :disabled="!autoRefreshEnabled" style="width: 110px">
@@ -55,7 +60,14 @@
         </div>
       </div>
 
-      <el-table :data="tasks" style="width: 100%" v-loading="loading">
+      <el-table
+        ref="tasksTableRef"
+        :data="tasks"
+        style="width: 100%"
+        v-loading="loading"
+        @selection-change="handleTaskSelectionChange"
+      >
+        <el-table-column type="selection" width="55" />
         <el-table-column type="expand">
           <template #default="scope">
             <div class="query-plan-panel">
@@ -346,12 +358,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs'
 
 import {
   batchDeleteExposureResults,
+  batchDeleteExposureSearchTasks,
   batchUpdateExposureResults,
   confirmImportExposureResults,
   createExposureSearchTask,
@@ -376,6 +389,8 @@ type ExposureSearchResultItem = {
 }
 
 const tasks = ref<ExposureSearchTask[]>([])
+const selectedTasks = ref<ExposureSearchTask[]>([])
+const tasksTableRef = ref()
 const loading = ref(false)
 const refreshing = ref(false)
 const resultsLoading = ref(false)
@@ -433,10 +448,55 @@ const fetchTasks = async () => {
   try {
     const res = await listExposureSearchTasks()
     tasks.value = res.data
+    clearSelectedTasks()
   } catch (_err) {
     ElMessage.error('获取任务列表失败')
   } finally {
     loading.value = false
+  }
+}
+
+const handleTaskSelectionChange = (val: ExposureSearchTask[]) => {
+  selectedTasks.value = val
+}
+
+const selectAllVisibleTasks = async () => {
+  if (!tasksTableRef.value) return
+  await nextTick()
+  tasksTableRef.value.clearSelection()
+  await nextTick()
+  tasksTableRef.value.toggleAllSelection()
+  selectedTasks.value = [...tasks.value]
+}
+
+const clearSelectedTasks = () => {
+  tasksTableRef.value?.clearSelection()
+  selectedTasks.value = []
+}
+
+const handleBatchDeleteTasks = async () => {
+  const ids = selectedTasks.value.map((task) => task.id)
+  if (!ids.length) return
+  try {
+    await ElMessageBox.confirm(`确认删除选中的 ${ids.length} 个任务及其所有结果？`, '批量删除任务', {
+      type: 'warning',
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+    })
+    await batchDeleteExposureSearchTasks({ ids })
+    ElMessage.success('任务删除成功')
+    if (currentTask.value && ids.includes(currentTask.value.id)) {
+      showResultsDrawer.value = false
+      currentTask.value = null
+      activeResultQueryFilter.value = ''
+      allResults.value = []
+      results.value = []
+      clearSelectedResults()
+    }
+    await fetchTasks()
+  } catch (err: any) {
+    if (err === 'cancel' || err === 'close') return
+    ElMessage.error('批量删除任务失败')
   }
 }
 
@@ -529,12 +589,13 @@ const handleSelectionChange = (val: ExposureSearchResultItem[]) => {
   selectedResults.value = val
 }
 
-const selectAllVisibleResults = () => {
+const selectAllVisibleResults = async () => {
   if (!resultsTableRef.value) return
+  await nextTick()
   resultsTableRef.value.clearSelection()
-  results.value.forEach((row) => {
-    resultsTableRef.value.toggleRowSelection(row, true)
-  })
+  await nextTick()
+  resultsTableRef.value.toggleAllSelection()
+  selectedResults.value = [...results.value]
 }
 
 const clearSelectedResults = () => {

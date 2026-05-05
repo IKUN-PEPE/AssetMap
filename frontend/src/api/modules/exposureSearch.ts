@@ -33,6 +33,10 @@ export const deleteExposureSearchTask = (taskId: string) => {
   return http.delete(`/api/v1/exposure-search/tasks/${taskId}`)
 }
 
+export const batchDeleteExposureSearchTasks = (data: { ids: string[] }) => {
+  return http.post('/api/v1/exposure-search/tasks/batch-delete', data)
+}
+
 export const stopExposureSearchTask = (taskId: string) => {
   return http.post(`/api/v1/exposure-search/tasks/${taskId}/stop`)
 }

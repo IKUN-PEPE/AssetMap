@@ -174,6 +174,36 @@ def test_batch_delete_results_removes_selected_rows_and_syncs_counts():
     db.close()
 
 
+def test_batch_delete_tasks_removes_selected_tasks_and_results():
+    db = TestingSessionLocal()
+    keep_task = ExposureSearchTask(name="Keep Task", org_keywords=[], title_keywords=[], url_keywords=[], file_types=[], sources=[])
+    remove_task_1 = ExposureSearchTask(name="Remove Task 1", org_keywords=[], title_keywords=[], url_keywords=[], file_types=[], sources=[])
+    remove_task_2 = ExposureSearchTask(name="Remove Task 2", org_keywords=[], title_keywords=[], url_keywords=[], file_types=[], sources=[])
+    db.add_all([keep_task, remove_task_1, remove_task_2])
+    db.commit()
+
+    remove_result = ExposureSearchResult(task_id=remove_task_1.id, source="bing", query="q", title="Remove", url="https://example.com/remove")
+    keep_result = ExposureSearchResult(task_id=keep_task.id, source="bing", query="q", title="Keep", url="https://example.com/keep")
+    db.add_all([remove_result, keep_result])
+    db.commit()
+
+    keep_task_id = keep_task.id
+    remove_ids = [remove_task_1.id, remove_task_2.id]
+    db.close()
+
+    response = client.post("/api/v1/exposure-search/tasks/batch-delete", json={"ids": remove_ids})
+
+    assert response.status_code == 200
+    assert response.json()["deleted"] == 2
+
+    db = TestingSessionLocal()
+    task_ids = {task.id for task in db.query(ExposureSearchTask).all()}
+    result_task_ids = {result.task_id for result in db.query(ExposureSearchResult).all()}
+    assert task_ids == {keep_task_id}
+    assert result_task_ids == {keep_task_id}
+    db.close()
+
+
 @pytest.mark.asyncio
 async def test_preview_text_file_rejects_localhost_targets():
     from app.api import exposure_search as exposure_search_api

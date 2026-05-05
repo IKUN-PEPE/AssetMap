@@ -99,6 +99,10 @@ class BatchDeleteExposureResults(BaseModel):
     ids: list[str]
 
 
+class BatchDeleteExposureTasks(BaseModel):
+    ids: list[str]
+
+
 class ConfirmImportExposureResults(BaseModel):
     ids: list[str]
     import_all_valid: bool = False

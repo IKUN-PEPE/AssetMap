@@ -10,6 +10,7 @@ from app.core.db import get_db
 from app.models.exposure_search import ExposureSearchTask, ExposureSearchResult
 from app.schemas.exposure_search import (
     BatchDeleteExposureResults,
+    BatchDeleteExposureTasks,
     ExposureSearchTaskCreate,
     ExposureSearchTaskSchema,
     ExposureSearchResultSchema,
@@ -470,6 +471,18 @@ async def retry_query(task_id: str, payload: RetryExposureQueryRequest, db: Sess
     if not refreshed:
         raise HTTPException(status_code=404, detail="Task not found after retry")
     return _serialize_task(db, refreshed)
+
+
+@router.post("/tasks/batch-delete")
+def batch_delete_tasks(payload: BatchDeleteExposureTasks, db: Session = Depends(get_db)):
+    ensure_exposure_search_schema_columns(db)
+    tasks = db.query(ExposureSearchTask).filter(ExposureSearchTask.id.in_(payload.ids)).all()
+    deleted_count = len(tasks)
+    for task in tasks:
+        db.delete(task)
+    db.commit()
+    return {"message": f"Deleted {deleted_count} tasks", "deleted": deleted_count}
+
 
 @router.delete("/tasks/{task_id}")
 def delete_task(task_id: str, db: Session = Depends(get_db)):
