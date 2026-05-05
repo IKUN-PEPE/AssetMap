@@ -23,6 +23,7 @@ ENV/
 .pytest_tmp_full/
 .pt/
 .runtime/
+.gemini_security/
 backend/.pytest_cache/
 backend/.tmp/
 backend/tmp_pytest/
@@ -37,6 +38,7 @@ backend/*.db
 backend/*.sqlite
 backend/*.sqlite3
 backend/tmp_*.db
+backend/huey_db.sqlite3
 
 # Keep the current tracked Huey DB untouched unless it is explicitly untracked later.
 !backend/huey_db.sqlite3
