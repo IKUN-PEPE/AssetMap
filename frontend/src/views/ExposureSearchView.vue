@@ -279,6 +279,12 @@
         <el-button v-if="activeResultQueryFilter" size="small" @click="clearResultQueryFilter">
           清除语法过滤
         </el-button>
+        <el-button @click="selectAllVisibleResults" :disabled="!results.length">
+          全选当前结果
+        </el-button>
+        <el-button @click="clearSelectedResults" :disabled="!selectedResults.length">
+          取消选择
+        </el-button>
         <el-button type="success" @click="handleConfirmImport" :disabled="!selectedResults.length">
           导入选中项为资产
         </el-button>
@@ -288,12 +294,21 @@
         <el-button @click="handleBatchUpdateStatus('ignored')" :disabled="!selectedResults.length">
           忽略选中
         </el-button>
+        <el-button type="danger" @click="handleBatchDeleteResults" :disabled="!selectedResults.length">
+          删除选中
+        </el-button>
         <span class="toolbar-hint">
           注：非网页结果（如 PDF、GitHub 代码等）将作为有效线索保留，不进入 Web 资产库。
         </span>
       </div>
 
-      <el-table :data="results" style="width: 100%" v-loading="resultsLoading" @selection-change="handleSelectionChange">
+      <el-table
+        ref="resultsTableRef"
+        :data="results"
+        style="width: 100%"
+        v-loading="resultsLoading"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="source" label="来源" width="100">
           <template #default="scope">
@@ -336,6 +351,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs'
 
 import {
+  batchDeleteExposureResults,
   batchUpdateExposureResults,
   confirmImportExposureResults,
   createExposureSearchTask,
@@ -372,6 +388,7 @@ const currentTask = ref<ExposureSearchTask | null>(null)
 const results = ref<ExposureSearchResultItem[]>([])
 const allResults = ref<ExposureSearchResultItem[]>([])
 const selectedResults = ref<ExposureSearchResultItem[]>([])
+const resultsTableRef = ref()
 const activeResultQueryFilter = ref('')
 const queryPlanFilters = ref<Record<string, string>>({})
 const retryingQueries = ref<Record<string, boolean>>({})
@@ -512,15 +529,30 @@ const handleSelectionChange = (val: ExposureSearchResultItem[]) => {
   selectedResults.value = val
 }
 
+const selectAllVisibleResults = () => {
+  if (!resultsTableRef.value) return
+  resultsTableRef.value.clearSelection()
+  results.value.forEach((row) => {
+    resultsTableRef.value.toggleRowSelection(row, true)
+  })
+}
+
+const clearSelectedResults = () => {
+  resultsTableRef.value?.clearSelection()
+  selectedResults.value = []
+}
+
 const filterResultsByQuery = async (task: ExposureSearchTask, query: string) => {
   await viewResults(task)
   activeResultQueryFilter.value = query
   results.value = allResults.value.filter((item) => item.query === query)
+  clearSelectedResults()
 }
 
 const clearResultQueryFilter = () => {
   activeResultQueryFilter.value = ''
   results.value = allResults.value
+  clearSelectedResults()
 }
 
 const handleBatchUpdateStatus = async (status: string) => {
@@ -529,8 +561,30 @@ const handleBatchUpdateStatus = async (status: string) => {
     await batchUpdateExposureResults({ ids, status })
     ElMessage.success('状态更新成功')
     if (currentTask.value) await viewResults(currentTask.value)
+    await fetchTasks()
+    clearSelectedResults()
   } catch (_err) {
     ElMessage.error('更新失败')
+  }
+}
+
+const handleBatchDeleteResults = async () => {
+  const ids = selectedResults.value.map((r) => r.id)
+  if (!ids.length) return
+  try {
+    await ElMessageBox.confirm(`确认删除选中的 ${ids.length} 条结果？`, '批量删除结果', {
+      type: 'warning',
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+    })
+    await batchDeleteExposureResults({ ids })
+    ElMessage.success('删除成功')
+    if (currentTask.value) await viewResults(currentTask.value)
+    await fetchTasks()
+    clearSelectedResults()
+  } catch (err: any) {
+    if (err === 'cancel' || err === 'close') return
+    ElMessage.error('删除失败')
   }
 }
 
@@ -542,6 +596,7 @@ const handleConfirmImport = async () => {
     ElMessage.success(res.data.message || '导入成功')
     await viewResults(currentTask.value)
     await fetchTasks()
+    clearSelectedResults()
   } catch (_err) {
     ElMessage.error('导入资产失败')
   }

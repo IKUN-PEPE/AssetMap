@@ -143,6 +143,37 @@ def test_list_results_returns_no_preview_url_for_regular_web_page():
     assert body[0]["preview_url"] is None
 
 
+def test_batch_delete_results_removes_selected_rows_and_syncs_counts():
+    db = TestingSessionLocal()
+    task = ExposureSearchTask(name="Batch Delete Task", org_keywords=[], title_keywords=[], url_keywords=[], file_types=[], sources=[])
+    db.add(task)
+    db.commit()
+
+    keep = ExposureSearchResult(task_id=task.id, source="bing", query="q", title="Keep", url="https://example.com/keep", status="valid")
+    remove_pending = ExposureSearchResult(task_id=task.id, source="bing", query="q", title="Remove Pending", url="https://example.com/remove-1", status="pending")
+    remove_ignored = ExposureSearchResult(task_id=task.id, source="bing", query="q", title="Remove Ignored", url="https://example.com/remove-2", status="ignored")
+    db.add_all([keep, remove_pending, remove_ignored])
+    db.commit()
+    task_id = task.id
+    keep_id = keep.id
+    remove_ids = [remove_pending.id, remove_ignored.id]
+    db.close()
+
+    response = client.post("/api/v1/exposure-search/results/batch-delete", json={"ids": remove_ids})
+
+    assert response.status_code == 200
+    assert response.json()["deleted"] == 2
+
+    db = TestingSessionLocal()
+    remaining = db.query(ExposureSearchResult).filter(ExposureSearchResult.task_id == task_id).all()
+    refreshed_task = db.get(ExposureSearchTask, task_id)
+    assert [item.id for item in remaining] == [keep_id]
+    assert refreshed_task.total_results == 1
+    assert refreshed_task.valid_count == 1
+    assert refreshed_task.ignored_count == 0
+    db.close()
+
+
 @pytest.mark.asyncio
 async def test_preview_text_file_rejects_localhost_targets():
     from app.api import exposure_search as exposure_search_api

@@ -9,6 +9,7 @@ import socket
 from app.core.db import get_db
 from app.models.exposure_search import ExposureSearchTask, ExposureSearchResult
 from app.schemas.exposure_search import (
+    BatchDeleteExposureResults,
     ExposureSearchTaskCreate,
     ExposureSearchTaskSchema,
     ExposureSearchResultSchema,
@@ -350,6 +351,23 @@ def batch_update_results(payload: BatchUpdateExposureResults, db: Session = Depe
     for tid in task_ids:
         ExposureSearchService.sync_task_counts(db, tid)
     return {"message": f"Updated {len(results)} results"}
+
+
+@router.post("/results/batch-delete")
+def batch_delete_results(payload: BatchDeleteExposureResults, db: Session = Depends(get_db)):
+    ensure_exposure_search_schema_columns(db)
+    results = db.query(ExposureSearchResult).filter(ExposureSearchResult.id.in_(payload.ids)).all()
+    task_ids = {res.task_id for res in results}
+    deleted_count = len(results)
+
+    for res in results:
+        db.delete(res)
+    db.commit()
+
+    for tid in task_ids:
+        ExposureSearchService.sync_task_counts(db, tid)
+    return {"message": f"Deleted {deleted_count} results", "deleted": deleted_count}
+
 
 @router.post("/tasks/{task_id}/confirm-import")
 async def confirm_import(

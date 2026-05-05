@@ -21,6 +21,10 @@ export const batchUpdateExposureResults = (data: { ids: string[]; status: string
   return http.post('/api/v1/exposure-search/results/batch-update', data)
 }
 
+export const batchDeleteExposureResults = (data: { ids: string[] }) => {
+  return http.post('/api/v1/exposure-search/results/batch-delete', data)
+}
+
 export const confirmImportExposureResults = (taskId: string, data: { ids?: string[]; import_all_valid?: boolean }) => {
   return http.post(`/api/v1/exposure-search/tasks/${taskId}/confirm-import`, data)
 }
